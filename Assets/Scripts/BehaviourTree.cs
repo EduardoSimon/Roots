@@ -3,27 +3,29 @@ using UnityEngine;
 
 namespace BT_Core
 {
-    public enum BehaviourStatus
+    public enum TaskStatus
     {
         Succeeded,
         Failed,
-        Running
+        Running,
+        NonInitialized,
+        Invalid
     }
     
     public class BehaviourTree : ScriptableObject
     {
-        public Behaviour RootNode { get; private set; }
+        public Task RootNode { get; private set; }
 
-        public BehaviourStatus Tick()
+        public TaskStatus Tick()
         {
-            return RootNode.Update();
+            return RootNode.Tick();
         }
 
-        public void AddRoot(Behaviour behaviour)
+        public void AddRoot(Task task)
         {
-            if(behaviour == null)
+            if(task == null)
                 throw new NoNullAllowedException("Cant add a null root node.");
-            RootNode = behaviour;
+            RootNode = task;
         }
     }
 }
