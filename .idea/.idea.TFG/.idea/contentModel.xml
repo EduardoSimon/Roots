@@ -11,8 +11,11 @@
           <e p="BTEditor.cs" t="Include" />
           <e p="CoreTests.cs" t="Include" />
           <e p="GUITest.cs" t="Include" />
+          <e p="ZoomExtensions.cs" t="Include" />
+          <e p="ZoomTest.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
+          <e p="ACondition.cs" t="Include" />
           <e p="ATask.cs" t="Include" />
           <e p="BehaviourTree.cs" t="Include" />
           <e p="Composite.cs" t="Include" />
