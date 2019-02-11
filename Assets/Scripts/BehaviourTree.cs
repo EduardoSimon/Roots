@@ -9,23 +9,22 @@ namespace BT_Core
         Failed,
         Running,
         NonInitialized,
-        Invalid
+        Invalid,
+        Aborted
     }
     
     public class BehaviourTree : ScriptableObject
     {
-        public Action RootNode { get; private set; }
+        public ATask RootNode { get; private set; }
 
         public TaskStatus Tick()
         {
             return RootNode.Tick();
         }
 
-        public void AddRoot(Action action)
+        public void AddRoot(ATask action)
         {
-            if(action == null)
-                throw new NoNullAllowedException("Cant add a null root node.");
-            RootNode = action;
+            RootNode = action ?? throw new NoNullAllowedException("Cant add a null root node.");
         }
     }
 }

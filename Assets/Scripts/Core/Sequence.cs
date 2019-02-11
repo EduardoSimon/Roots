@@ -42,12 +42,12 @@ namespace BT_Core
             return "Updating the sequence with" +  Children.Count + " children.";
         }
 
-        public void AddChild(Action action)
+        public void AddChild(ATask action)
         {
             Children.Add(action);
         }
 
-        public void RemoveChildren(Action action)
+        public void RemoveChildren(ATask action)
         {
             Children.Remove(action);
         }

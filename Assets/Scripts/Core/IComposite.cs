@@ -5,8 +5,8 @@ namespace BT_Core
     public interface IComposite
     {
         List<ATask> Children { get;}
-        void AddChild(Action action);
-        void RemoveChildren(Action action);
+        void AddChild(ATask task);
+        void RemoveChildren(ATask action);
         void ClearChildren();
     }
 }

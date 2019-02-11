@@ -10,6 +10,12 @@ namespace BT_Core
         
         public TaskStatus Tick()
         {
+            if (Status == TaskStatus.Aborted)
+            {
+                OnTerminate(Status);
+                return Status;
+            }
+            
             if (Status == TaskStatus.NonInitialized)
                 OnInitialize();
 
@@ -19,6 +25,11 @@ namespace BT_Core
                 OnTerminate(Status);
 
             return Status;
+        }
+
+        public void Abort()
+        {
+            Status = TaskStatus.Aborted;
         }
     }
 }
