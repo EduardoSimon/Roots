@@ -7,7 +7,6 @@ using NUnit.Framework.Internal;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Task = BT_Core.Task;
 
 namespace BT_Tests
 {
@@ -27,7 +26,7 @@ namespace BT_Tests
             public void Tree_Returns_Status_Not_Null()
             {
                 var tree = ScriptableObject.CreateInstance<BehaviourTree>();
-                tree.AddRoot(new Task());
+                tree.AddRoot(new Action());
                 var status = tree.Tick();
             
                 Assert.IsNotNull(status);
@@ -37,7 +36,7 @@ namespace BT_Tests
             public void Tree_Returns_Status(TaskStatus status)
             {
                 var tree = ScriptableObject.CreateInstance<BehaviourTree>();
-                tree.AddRoot(new Task());
+                tree.AddRoot(new Action());
                 var returnedStatus = tree.Tick();
             
                 Assert.That(returnedStatus == status);
@@ -47,7 +46,7 @@ namespace BT_Tests
             public void Tree_has_not_null_root()
             {
                 var tree = ScriptableObject.CreateInstance<BehaviourTree>();
-                tree.AddRoot(new Task());
+                tree.AddRoot(new Action());
             
                 Assert.That(tree.RootNode != null);
             }
@@ -61,7 +60,7 @@ namespace BT_Tests
                 var tree = ScriptableObject.CreateInstance<BehaviourTree>();
                 tree.AddRoot(new Sequence(new []
                 {
-                    new Task(), new Task(), 
+                    new Action(), new Action(), 
                 }));
                 
                 var returnedStatus = tree.Tick();
@@ -148,7 +147,7 @@ namespace BT_Tests
                 var tree = ScriptableObject.CreateInstance<BehaviourTree>();
                 tree.AddRoot(new Selector(new []
                 {
-                    new Task(), new Task(), 
+                    new Action(), new Action(), 
                 }));
                 
                 var returnedStatus = tree.Tick();

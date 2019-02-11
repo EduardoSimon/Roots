@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BT_Core
 {
-    public class Selector : Task, IComposite
+    public class Selector : ATask, IComposite
     {
         public List<ATask> Children { get; private set; }
 
@@ -12,6 +12,11 @@ namespace BT_Core
             Children = children != null ? children.ToList() : new List<ATask>();
 
             Status = TaskStatus.NonInitialized;
+        }
+
+        protected override void OnInitialize()
+        {
+            return;
         }
 
         protected override TaskStatus Update()
@@ -35,14 +40,19 @@ namespace BT_Core
             return TaskStatus.Invalid;
         }
 
-        public void AddChild(Task task)
+        protected override void OnTerminate(TaskStatus status)
         {
-            Children.Add(task);
+            return;
         }
 
-        public void RemoveChildren(Task task)
+        public void AddChild(Action action)
         {
-            Children.Remove(task);
+            Children.Add(action);
+        }
+
+        public void RemoveChildren(Action action)
+        {
+            Children.Remove(action);
         }
 
         public void ClearChildren()

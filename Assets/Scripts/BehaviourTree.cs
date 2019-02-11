@@ -14,18 +14,18 @@ namespace BT_Core
     
     public class BehaviourTree : ScriptableObject
     {
-        public Task RootNode { get; private set; }
+        public Action RootNode { get; private set; }
 
         public TaskStatus Tick()
         {
             return RootNode.Tick();
         }
 
-        public void AddRoot(Task task)
+        public void AddRoot(Action action)
         {
-            if(task == null)
+            if(action == null)
                 throw new NoNullAllowedException("Cant add a null root node.");
-            RootNode = task;
+            RootNode = action;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BT_Core
 {
-    public class Sequence : Task, IComposite
+    public class Sequence : Action, IComposite
     {
         public List<ATask> Children { get; private set; }
 
@@ -42,14 +42,14 @@ namespace BT_Core
             return "Updating the sequence with" +  Children.Count + " children.";
         }
 
-        public void AddChild(Task task)
+        public void AddChild(Action action)
         {
-            Children.Add(task);
+            Children.Add(action);
         }
 
-        public void RemoveChildren(Task task)
+        public void RemoveChildren(Action action)
         {
-            Children.Remove(task);
+            Children.Remove(action);
         }
 
         public void ClearChildren()
