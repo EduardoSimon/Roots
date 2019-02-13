@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.CompilerServices;
+using Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -15,6 +17,7 @@ namespace BT_Editor
         private static float zoom;
         private static Rect zoomArea;
         private bool isSpacePressed = false;
+        public SearchTasksWindow _searchTasksWindow;
 
         [MenuItem("BT/Editor")]
         static void Init()
@@ -35,14 +38,6 @@ namespace BT_Editor
             ProccessEvents(Event.current);
 
             //EditorZoomArea.Begin(zoom, zoomArea);
-            
-
-
-            if (isSpacePressed)
-            {
-                Rect window = GUI.Window(25, new Rect(position.x + 50, position.y + 50, 100,100), DoMyWindow, "hello");
-                GUI.changed = true;
-            }
 
             //EditorZoomArea.End();
             
@@ -76,17 +71,20 @@ namespace BT_Editor
                     break;
                 
                 case EventType.KeyUp:
-                    if (e.keyCode == KeyCode.Space)
+                    
+                    if (e.keyCode == KeyCode.Space && position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
                     {
-                        Debug.Log("released space key");
-                        isSpacePressed = true;
+                        if (_searchTasksWindow == null)
+                        {
+                            _searchTasksWindow = CreateInstance<SearchTasksWindow>();
+                            Vector2 mouseScreenPos = GUIUtility.GUIToScreenPoint(e.mousePosition);
+                            _searchTasksWindow.parentWindow = this;
+                            _searchTasksWindow.position = new Rect(mouseScreenPos.x - position.width/10, mouseScreenPos.y - position.height/10, 300, 300);
+                            _searchTasksWindow.ShowPopup();
+                            _searchTasksWindow.Focus();
+                        }
 
                     }
-                    else
-                    {
-                        //isSpacePressed = false;
-                    }
-
                     break;
                         
                 
@@ -94,6 +92,7 @@ namespace BT_Editor
                     zoom = e.delta.y;
                     GUI.changed = true;
                     break;
+                
             }
         }
 
