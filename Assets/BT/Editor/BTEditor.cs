@@ -1,20 +1,23 @@
 using System;
+using System.Runtime.CompilerServices;
+using Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace BT_Editor
 {
     public class BTEditor : EditorWindow
     {
-        private Vector2 offset;
-        private Vector2 drag;
+        private Vector2 _offset;
+        private Vector2 _drag;
         private static BTEditor _editor;
-        private static float zoom;
-        private static Rect zoomArea;
-        private bool isSpacePressed = false;
+        private static float _zoom;
+        private static Rect _zoomArea;
+        [FormerlySerializedAs("_searchTasksWindow")] public SearchTasksWindow searchTasksWindow;
 
         [MenuItem("BT/Editor")]
         static void Init()
@@ -35,14 +38,6 @@ namespace BT_Editor
             ProccessEvents(Event.current);
 
             //EditorZoomArea.Begin(zoom, zoomArea);
-            
-
-
-            if (isSpacePressed)
-            {
-                Rect window = GUI.Window(25, new Rect(position.x + 50, position.y + 50, 100,100), DoMyWindow, "hello");
-                GUI.changed = true;
-            }
 
             //EditorZoomArea.End();
             
@@ -51,7 +46,7 @@ namespace BT_Editor
 
         private void ProccessEvents(Event e)
         {
-            drag = Vector2.zero;
+            _drag = Vector2.zero;
             switch (e.type)
             {
                 /*
@@ -66,7 +61,7 @@ namespace BT_Editor
                     if (e.button == 0)
                     {
                         //todo will need movement of window nodes
-                        drag = e.delta;
+                        _drag = e.delta;
                         GUI.changed = true;
                     }
                     break;
@@ -76,24 +71,28 @@ namespace BT_Editor
                     break;
                 
                 case EventType.KeyUp:
-                    if (e.keyCode == KeyCode.Space)
+                    
+                    if (e.keyCode == KeyCode.Space && position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
                     {
-                        Debug.Log("released space key");
-                        isSpacePressed = true;
+                        if (searchTasksWindow == null)
+                        {
+                            searchTasksWindow = CreateInstance<SearchTasksWindow>();
+                            Vector2 mouseScreenPos = GUIUtility.GUIToScreenPoint(e.mousePosition);
+                            searchTasksWindow.parentWindow = this;
+                            searchTasksWindow.position = new Rect(mouseScreenPos.x - position.width/10, mouseScreenPos.y - position.height/10, 300, 300);
+                            searchTasksWindow.ShowPopup();
+                            searchTasksWindow.Focus();
+                        }
 
                     }
-                    else
-                    {
-                        //isSpacePressed = false;
-                    }
-
                     break;
                         
                 
                 case EventType.ScrollWheel:
-                    zoom = e.delta.y;
+                    _zoom = e.delta.y;
                     GUI.changed = true;
                     break;
+                
             }
         }
 
@@ -132,8 +131,8 @@ namespace BT_Editor
             Handles.BeginGUI();
             Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
  
-            offset += drag * 0.5f;
-            Vector3 newOffset = new Vector3(offset.x % gridSpacing, offset.y % gridSpacing, 0);
+            _offset += _drag * 0.5f;
+            Vector3 newOffset = new Vector3(_offset.x % gridSpacing, _offset.y % gridSpacing, 0);
  
             for (int i = 0; i < widthDivs; i++)
             {
