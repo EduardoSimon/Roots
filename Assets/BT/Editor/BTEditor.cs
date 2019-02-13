@@ -5,19 +5,19 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace BT_Editor
 {
     public class BTEditor : EditorWindow
     {
-        private Vector2 offset;
-        private Vector2 drag;
+        private Vector2 _offset;
+        private Vector2 _drag;
         private static BTEditor _editor;
-        private static float zoom;
-        private static Rect zoomArea;
-        private bool isSpacePressed = false;
-        public SearchTasksWindow _searchTasksWindow;
+        private static float _zoom;
+        private static Rect _zoomArea;
+        [FormerlySerializedAs("_searchTasksWindow")] public SearchTasksWindow searchTasksWindow;
 
         [MenuItem("BT/Editor")]
         static void Init()
@@ -46,7 +46,7 @@ namespace BT_Editor
 
         private void ProccessEvents(Event e)
         {
-            drag = Vector2.zero;
+            _drag = Vector2.zero;
             switch (e.type)
             {
                 /*
@@ -61,7 +61,7 @@ namespace BT_Editor
                     if (e.button == 0)
                     {
                         //todo will need movement of window nodes
-                        drag = e.delta;
+                        _drag = e.delta;
                         GUI.changed = true;
                     }
                     break;
@@ -74,14 +74,14 @@ namespace BT_Editor
                     
                     if (e.keyCode == KeyCode.Space && position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
                     {
-                        if (_searchTasksWindow == null)
+                        if (searchTasksWindow == null)
                         {
-                            _searchTasksWindow = CreateInstance<SearchTasksWindow>();
+                            searchTasksWindow = CreateInstance<SearchTasksWindow>();
                             Vector2 mouseScreenPos = GUIUtility.GUIToScreenPoint(e.mousePosition);
-                            _searchTasksWindow.parentWindow = this;
-                            _searchTasksWindow.position = new Rect(mouseScreenPos.x - position.width/10, mouseScreenPos.y - position.height/10, 300, 300);
-                            _searchTasksWindow.ShowPopup();
-                            _searchTasksWindow.Focus();
+                            searchTasksWindow.parentWindow = this;
+                            searchTasksWindow.position = new Rect(mouseScreenPos.x - position.width/10, mouseScreenPos.y - position.height/10, 300, 300);
+                            searchTasksWindow.ShowPopup();
+                            searchTasksWindow.Focus();
                         }
 
                     }
@@ -89,7 +89,7 @@ namespace BT_Editor
                         
                 
                 case EventType.ScrollWheel:
-                    zoom = e.delta.y;
+                    _zoom = e.delta.y;
                     GUI.changed = true;
                     break;
                 
@@ -131,8 +131,8 @@ namespace BT_Editor
             Handles.BeginGUI();
             Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
  
-            offset += drag * 0.5f;
-            Vector3 newOffset = new Vector3(offset.x % gridSpacing, offset.y % gridSpacing, 0);
+            _offset += _drag * 0.5f;
+            Vector3 newOffset = new Vector3(_offset.x % gridSpacing, _offset.y % gridSpacing, 0);
  
             for (int i = 0; i < widthDivs; i++)
             {
