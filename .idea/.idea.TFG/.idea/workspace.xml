@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2589c29e-1010-4266-8e11-4b652c04dc3b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TFG/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TFG/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/BTEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/BTEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/CoreTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/CoreTests.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/GUITest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/GUITest.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/SearchTasksWindow.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/SearchTasksWindow.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/ZoomExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/ZoomExtensions.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/ZoomTest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/ZoomTest.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/BTSkin.guiskin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/BTSkin.guiskin.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/search_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/search_icon.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/star.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/star.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/BT/Editor/SearchTasksWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BT/Editor/SearchTasksWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/ATask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/ATask.cs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +33,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Core/Parallel.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="855">
+            <state relative-caret-position="840">
               <caret line="64" column="9" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
               <folding>
                 <marker date="1549904045591" expanded="false" signature="6:52" ph="..." />
@@ -79,14 +60,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Core/ATask.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
+            <state relative-caret-position="51">
+              <caret line="4" column="50" selection-start-line="4" selection-start-column="50" selection-end-line="4" selection-end-column="50" />
               <folding>
-                <marker date="1549904045571" expanded="true" signature="17:818" ph="{...}" />
-                <marker date="1549904045571" expanded="true" signature="51:816" ph="{...}" />
-                <marker date="1549904045571" expanded="true" signature="305:720" ph="{...}" />
-                <marker date="1549904045571" expanded="true" signature="361:457" ph="{...}" />
-                <marker date="1549904045571" expanded="true" signature="749:810" ph="{...}" />
+                <marker date="1550085207228" expanded="true" signature="37:857" ph="{...}" />
+                <marker date="1550085207228" expanded="true" signature="90:855" ph="{...}" />
+                <marker date="1550085207228" expanded="true" signature="344:759" ph="{...}" />
+                <marker date="1550085207228" expanded="true" signature="400:496" ph="{...}" />
+                <marker date="1550085207228" expanded="true" signature="788:849" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -151,7 +132,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/BT/Editor/BTEditor.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
+            <state relative-caret-position="150">
               <caret line="19" column="77" selection-start-line="19" selection-start-column="60" selection-end-line="19" selection-end-column="77" />
               <folding>
                 <marker date="1550046601112" expanded="false" signature="6:236" ph="..." />
@@ -183,19 +164,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/BT/Editor/SearchTasksWindow.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+            <state relative-caret-position="231">
+              <caret line="74" column="60" lean-forward="true" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="60" />
               <folding>
-                <marker date="1550049566027" expanded="true" signature="6:121" ph="..." />
-                <marker date="1550049566027" expanded="true" signature="139:2436" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="191:2434" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="359:464" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="498:626" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="648:2419" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="794:945" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="1016:1167" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="1938:2286" ph="{...}" />
-                <marker date="1550049566027" expanded="true" signature="2044:2268" ph="{...}" />
+                <marker date="1550434202128" expanded="false" signature="6:216" ph="..." />
+                <marker date="1550434202128" expanded="true" signature="234:3126" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="286:3124" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="502:1214" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="1000:1108" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="1236:3109" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="1382:1533" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="1604:1755" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="2491:2980" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="2588:2966" ph="{...}" />
+                <marker date="1550434202128" expanded="true" signature="2696:2948" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -263,11 +245,11 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Selector.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Sequence.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/BehaviourTree.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Core/ATask.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Core/Parallel.cs" />
         <option value="$PROJECT_DIR$/Assets/Editor/SearchTasksWindow.cs" />
         <option value="$PROJECT_DIR$/Assets/Editor/BTEditor.cs" />
         <option value="$PROJECT_DIR$/Assets/BT/Editor/BTEditor.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Core/ATask.cs" />
         <option value="$PROJECT_DIR$/Assets/BT/Editor/SearchTasksWindow.cs" />
       </list>
     </option>
@@ -347,11 +329,12 @@
       <workItem from="1549966585492" duration="315000" />
       <workItem from="1549984466833" duration="10951000" />
       <workItem from="1550045630138" duration="3897000" />
+      <workItem from="1550084315773" duration="4174000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51757000" />
+    <option name="totallyTimeSpent" value="55931000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -434,20 +417,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Editor/GUITest.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
-          <folding>
-            <marker date="1549390886773" expanded="false" signature="6:166" ph="..." />
-            <marker date="1549390886773" expanded="true" signature="186:789" ph="{...}" />
-            <marker date="1549390886773" expanded="true" signature="213:787" ph="{...}" />
-            <marker date="1549390886773" expanded="true" signature="330:500" ph="{...}" />
-            <marker date="1549390886773" expanded="true" signature="568:763" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Editor/GUITest.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/Editor/ZoomExtensions.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/Editor/ZoomTest.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Core/ACondition.cs" />
@@ -461,13 +431,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Editor/CoreTests.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3660">
-          <caret line="252" selection-start-line="252" selection-end-line="252" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Editor/CoreTests.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/Editor/SearchTasksWindow.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/Editor/BTEditor.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/BehaviourTree.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -485,7 +451,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Core/Parallel.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
+        <state relative-caret-position="840">
           <caret line="64" column="9" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
           <folding>
             <marker date="1549904045591" expanded="false" signature="6:52" ph="..." />
@@ -504,30 +470,6 @@
             <marker date="1549904045591" expanded="true" signature="2435:2664" ph="{...}" />
             <marker date="1549904045591" expanded="true" signature="2720:3012" ph="{...}" />
             <marker date="1549904045591" expanded="true" signature="3057:3119" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Editor/SearchTasksWindow.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/Core/ATask.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
-          <folding>
-            <marker date="1549904045571" expanded="true" signature="17:818" ph="{...}" />
-            <marker date="1549904045571" expanded="true" signature="51:816" ph="{...}" />
-            <marker date="1549904045571" expanded="true" signature="305:720" ph="{...}" />
-            <marker date="1549904045571" expanded="true" signature="361:457" ph="{...}" />
-            <marker date="1549904045571" expanded="true" signature="749:810" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -571,13 +513,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Editor/BTEditor.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1110">
-          <caret line="81" column="103" selection-start-line="81" selection-start-column="103" selection-end-line="81" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Core/IComposite.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -591,7 +526,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/BT/Editor/BTEditor.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
+        <state relative-caret-position="150">
           <caret line="19" column="77" selection-start-line="19" selection-start-column="60" selection-end-line="19" selection-end-column="77" />
           <folding>
             <marker date="1550046601112" expanded="false" signature="6:236" ph="..." />
@@ -619,6 +554,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/Core/ATask.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="4" column="50" selection-start-line="4" selection-start-column="50" selection-end-line="4" selection-end-column="50" />
+          <folding>
+            <marker date="1550085207228" expanded="true" signature="37:857" ph="{...}" />
+            <marker date="1550085207228" expanded="true" signature="90:855" ph="{...}" />
+            <marker date="1550085207228" expanded="true" signature="344:759" ph="{...}" />
+            <marker date="1550085207228" expanded="true" signature="400:496" ph="{...}" />
+            <marker date="1550085207228" expanded="true" signature="788:849" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/BT/TasksDatabase.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -633,19 +582,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/BT/Editor/SearchTasksWindow.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="231">
+          <caret line="74" column="60" lean-forward="true" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="60" />
           <folding>
-            <marker date="1550049566027" expanded="true" signature="6:121" ph="..." />
-            <marker date="1550049566027" expanded="true" signature="139:2436" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="191:2434" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="359:464" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="498:626" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="648:2419" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="794:945" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="1016:1167" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="1938:2286" ph="{...}" />
-            <marker date="1550049566027" expanded="true" signature="2044:2268" ph="{...}" />
+            <marker date="1550434202128" expanded="false" signature="6:216" ph="..." />
+            <marker date="1550434202128" expanded="true" signature="234:3126" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="286:3124" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="502:1214" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="1000:1108" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="1236:3109" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="1382:1533" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="1604:1755" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="2491:2980" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="2588:2966" ph="{...}" />
+            <marker date="1550434202128" expanded="true" signature="2696:2948" ph="{...}" />
           </folding>
         </state>
       </provider>

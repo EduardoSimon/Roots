@@ -1,6 +1,8 @@
+using UnityEngine;
+
 namespace BT_Core
 {
-    public abstract class ATask
+    public abstract class ATask : ScriptableObject
     {
         protected TaskStatus Status;
         
