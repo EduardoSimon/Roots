@@ -19,12 +19,13 @@
           <e p="TasksDatabase.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
-          <e p="Action.cs" t="Include" />
-          <e p="BehaviourTree.cs" t="Include" />
           <e p="Core" t="Include">
             <e p="ACondition.cs" t="Include" />
+            <e p="Action.cs" t="Include" />
             <e p="ADecorator.cs" t="Include" />
             <e p="ATask.cs" t="Include" />
+            <e p="BehaviourTree.cs" t="Include" />
+            <e p="BlackBoard.cs" t="Include" />
             <e p="IComposite.cs" t="Include" />
             <e p="Parallel.cs" t="Include" />
             <e p="Selector.cs" t="Include" />
