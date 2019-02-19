@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\edu97\.Rider2018.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\edu97\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_TFG.-1700217861.00" t="ExcludeRecursive" />
-    <e p="D:\Unity\TFG" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$/../../../Caches/Rider2018.2/extResources" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../../../Caches/Rider2018.2/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_TFG.-909095107.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -11,30 +11,30 @@
           <e p="Editor" t="Include">
             <e p="BTEditor.cs" t="Include" />
             <e p="CoreTests.cs" t="Include" />
+            <e p="CustomNodeDrawerAttribute.cs" t="Include" />
             <e p="GUITest.cs" t="Include" />
             <e p="SearchTasksWindow.cs" t="Include" />
             <e p="ZoomExtensions.cs" t="Include" />
             <e p="ZoomTest.cs" t="Include" />
           </e>
-          <e p="TasksDatabase.cs" t="Include" />
-        </e>
-        <e p="Scripts" t="Include">
-          <e p="Core" t="Include">
-            <e p="ACondition.cs" t="Include" />
-            <e p="Action.cs" t="Include" />
-            <e p="ADecorator.cs" t="Include" />
-            <e p="ATask.cs" t="Include" />
-            <e p="BehaviourTree.cs" t="Include" />
-            <e p="BlackBoard.cs" t="Include" />
-            <e p="IComposite.cs" t="Include" />
-            <e p="Parallel.cs" t="Include" />
-            <e p="Selector.cs" t="Include" />
-            <e p="Sequence.cs" t="Include" />
+          <e p="Scripts" t="Include">
+            <e p="Core" t="Include">
+              <e p="ACondition.cs" t="Include" />
+              <e p="Action.cs" t="Include" />
+              <e p="ADecorator.cs" t="Include" />
+              <e p="ATask.cs" t="Include" />
+              <e p="BehaviourTree.cs" t="Include" />
+              <e p="BlackBoard.cs" t="Include" />
+              <e p="IComposite.cs" t="Include" />
+              <e p="Parallel.cs" t="Include" />
+              <e p="Selector.cs" t="Include" />
+              <e p="Sequence.cs" t="Include" />
+            </e>
+            <e p="Decorators" t="Include">
+              <e p="Repeat.cs" t="Include" />
+            </e>
+            <e p="MockTask.cs" t="Include" />
           </e>
-          <e p="Decorators" t="Include">
-            <e p="Repeat.cs" t="Include" />
-          </e>
-          <e p="MockTask.cs" t="Include" />
         </e>
         <e p="TextMesh Pro" t="Include">
           <e p="Resources" t="Include">

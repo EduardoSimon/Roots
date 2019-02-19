@@ -13,13 +13,15 @@ namespace Editor
 {
     public class SearchTasksWindow : EditorWindow
     {
-        string searchString = "";
+        private string searchString = "";
         private GUISkin _skin;
-        public BTEditor parentWindow;
-
         private string[] _avaliableTasks;
         private Type[] _types;
 
+        public BTEditor parentWindow;
+        
+        public event Action<Type> OnSearchedTaskClicked; 
+        
         private void OnEnable()
         {
             Debug.Log("Search window enabled");
@@ -48,13 +50,13 @@ namespace Editor
             {
                 parentWindow.Focus();
                 this.Close();
-                parentWindow.searchTasksWindow = null;
+                parentWindow.SearchableTaskWindow = null;
             }
             else if (Event.current.type == EventType.MouseLeaveWindow)
             {
                 parentWindow.Focus();
                 this.Close();
-                parentWindow.searchTasksWindow = null;
+                parentWindow.SearchableTaskWindow = null;
             }
 
             GUI.skin = _skin;
@@ -78,9 +80,8 @@ namespace Editor
                 {
                     if (GUILayout.Button(_avaliableTasks[i], EditorStyles.toolbarButton))
                     {
+                        OnSearchedTaskClicked?.Invoke(_types[i]);
                         Debug.Log("Creating a " + _avaliableTasks[i] + " task node.");
-                        var instance = CreateInstance(_types[i]);
-                        Debug.Log(instance.GetType());
                     }
                 }
             }
@@ -92,6 +93,6 @@ namespace Editor
             
             
         }
-        
+
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using Editor;
 using UnityEditor;
@@ -7,6 +8,7 @@ using UnityEngine.Assertions.Must;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Object = System.Object;
 
 namespace BT_Editor
 {
@@ -17,7 +19,8 @@ namespace BT_Editor
         private static BTEditor _editor;
         private static float _zoom;
         private static Rect _zoomArea;
-        [FormerlySerializedAs("_searchTasksWindow")] public SearchTasksWindow searchTasksWindow;
+
+        public SearchTasksWindow SearchableTaskWindow;
 
         [MenuItem("BT/Editor")]
         static void Init()
@@ -31,12 +34,21 @@ namespace BT_Editor
             //zoomArea = _editor.position;
         }
 
+        private void OnSearchedTaskClicked(Type type)
+        {
+            //received type
+            var instance = Activator.CreateInstance(type);
+            Debug.Log(instance.GetType());
+            SearchableTaskWindow.OnSearchedTaskClicked -= OnSearchedTaskClicked;
+        }
+
         private void OnGUI()
         {
             DrawBackgroundGrid(20,0.2f,Color.grey);
             DrawBackgroundGrid(100,0.4f,Color.grey);
             ProccessEvents(Event.current);
-
+            Vector2 mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
+            
             //EditorZoomArea.Begin(zoom, zoomArea);
 
             //EditorZoomArea.End();
@@ -74,14 +86,15 @@ namespace BT_Editor
                     
                     if (e.keyCode == KeyCode.Space && position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
                     {
-                        if (searchTasksWindow == null)
+                        if (SearchableTaskWindow == null)
                         {
-                            searchTasksWindow = CreateInstance<SearchTasksWindow>();
+                            SearchableTaskWindow = CreateInstance<SearchTasksWindow>();
                             Vector2 mouseScreenPos = GUIUtility.GUIToScreenPoint(e.mousePosition);
-                            searchTasksWindow.parentWindow = this;
-                            searchTasksWindow.position = new Rect(mouseScreenPos.x - position.width/10, mouseScreenPos.y - position.height/10, 300, 300);
-                            searchTasksWindow.ShowPopup();
-                            searchTasksWindow.Focus();
+                            SearchableTaskWindow.parentWindow = this;
+                            SearchableTaskWindow.position = new Rect(mouseScreenPos.x - position.width/10, mouseScreenPos.y - position.height/10, 300, 300);
+                            SearchableTaskWindow.ShowPopup();
+                            SearchableTaskWindow.Focus();
+                            SearchableTaskWindow.OnSearchedTaskClicked += OnSearchedTaskClicked;
                         }
 
                     }
