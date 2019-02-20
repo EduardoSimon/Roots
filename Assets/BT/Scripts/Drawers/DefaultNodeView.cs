@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BT
 {
-    public class DefaultNodeDrawer : EditorWindow
+    public class DefaultNodeView : BaseNodeView
     {
         private void OnGUI()
         {

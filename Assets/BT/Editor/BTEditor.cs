@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using Editor;
@@ -14,11 +15,13 @@ namespace BT
 {
     public class BTEditor : EditorWindow
     {
+        List<BaseNodeView> _nodeViews = new List<BaseNodeView>();
         private Vector2 _offset;
         private Vector2 _drag;
         private static BTEditor _editor;
         private static float _zoom;
         private static Rect _zoomArea;
+        private bool showWindows;
 
         public SearchTasksWindow SearchableTaskWindow;
 
@@ -27,18 +30,21 @@ namespace BT
         {
             _editor = (BTEditor) EditorWindow.CreateInstance<BTEditor>();
             _editor.titleContent = new GUIContent("BT Editor",Resources.Load<Texture>("star"),"A behavior tree visual editor for everyone");
+            _editor.minSize = new Vector2(800,600);
             _editor.Show();
-            _editor.Focus();
+ 
             _editor.wantsMouseMove = true;
             //zoom = 1f;
             //zoomArea = _editor.position;
         }
 
-        public void OnSearchedTaskClicked(Type type)
+        public void OnSearchedTaskClicked(SearchTasksWindow.NodeType nodeType)
         {
             //without the type.fullname it does not work
-            EditorWindow instance = EditorWindow.CreateInstance(type.FullName.ToString()) as EditorWindow;
-            instance.Show();
+            BaseNodeView instance = EditorWindow.CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
+            System.Diagnostics.Debug.Assert(instance != null, "instance of node drawer is null");
+            
+            instance.task = CreateInstance(nodeType.taskType.FullName) as ATask;
             Debug.Log(instance.GetType().Name);
         }
 
@@ -52,7 +58,18 @@ namespace BT
             //EditorZoomArea.Begin(zoom, zoomArea);
 
             //EditorZoomArea.End();
-            
+
+            if (GUILayout.Button("Show window"))
+                showWindows = !showWindows;
+
+            if (showWindows)
+            {
+                BeginWindows();
+                GUI.Window(435, new Rect(Event.current.mousePosition.x,Event.current.mousePosition.y, 50, 60),DoMyWindow,"demo");
+                EndWindows(); 
+            }
+
+
             if(GUI.changed) Repaint();
         }
 
@@ -110,19 +127,20 @@ namespace BT
 
         void DoMyWindow(int windowID)
         {
-            if (GUI.Button(new Rect(10, 20, 100, 20), "Hello World"))
-            {
-                Debug.Log("Got a click");
-            }
+            GUILayout.Label("hi");   
+            GUI.DragWindow();
+
         }
         
-        private static void ProcessRightClickEvent()
+        private void ProcessRightClickEvent()
         {
             Debug.Log("Right Clicked the window");
             GenericMenu genericMenu = new GenericMenu();
             genericMenu.AddItem(new GUIContent("Add Task", "Add a built-in task or a custom made one."), false, () =>
             {
-                Debug.Log("Adding a task");
+
+
+               
             });
             
             genericMenu.AddSeparator("");

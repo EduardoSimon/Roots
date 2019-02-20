@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BT
 {
-    [CustomNodeDrawer(typeof(SequenceDrawer))]
+    [CustomNodeDrawer(typeof(SequenceView))]
     [SearchMenu("Sequence")]
     public class Sequence : Action, IComposite
     {

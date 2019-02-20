@@ -1,7 +1,7 @@
 
 namespace BT
 {
-    [CustomNodeDrawer(typeof(ActionDrawer))]
+    [CustomNodeDrawer(typeof(ActionView))]
     [SearchMenu("Action")]
     public class Action : ATask
     {

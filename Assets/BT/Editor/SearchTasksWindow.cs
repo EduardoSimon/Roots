@@ -12,10 +12,22 @@ namespace Editor
 {
     public class SearchTasksWindow : EditorWindow
     {
+        public struct NodeType
+        {
+            public Type taskType;
+            public Type DrawerType;
+
+            public NodeType(Type taskType, Type drawerType)
+            {
+                this.taskType = taskType;
+                DrawerType = drawerType;
+            }
+        }
+        
         private string searchString = "";
         private GUISkin _skin;
         private Type[] _types;
-        Dictionary<string[],Type> _avaliableTasks = new Dictionary<string[], Type>();
+        Dictionary<string[],NodeType> _avaliableTasks = new Dictionary<string[], NodeType>();
 
         public BTEditor parentWindow;
                 
@@ -41,12 +53,11 @@ namespace Editor
                     {
                         if (customNodeDrawerAttributes.Length > 0 && customNodeDrawerAttributes[0] != null)
                         {
-                            _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] =
-                                customNodeDrawerAttributes[0].DrawWindowType;
+                            _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] = new NodeType(type,customNodeDrawerAttributes[0].DrawWindowType);
                         }
                         else if (customNodeDrawerAttributes.Length == 0)
                         {
-                            _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] = typeof(DefaultNodeDrawer);
+                            _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] = new NodeType(type,typeof(DefaultNodeView));
                         }
                     }  
                 }
@@ -102,5 +113,6 @@ namespace Editor
             GUILayout.EndVertical();
         }
 
+        
     }
 }
