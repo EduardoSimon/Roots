@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Object = System.Object;
 
-namespace BT_Editor
+namespace BT
 {
     public class BTEditor : EditorWindow
     {
@@ -34,12 +34,12 @@ namespace BT_Editor
             //zoomArea = _editor.position;
         }
 
-        private void OnSearchedTaskClicked(Type type)
+        public void OnSearchedTaskClicked(Type type)
         {
-            //received type
-            var instance = Activator.CreateInstance(type);
-            Debug.Log(instance.GetType());
-            SearchableTaskWindow.OnSearchedTaskClicked -= OnSearchedTaskClicked;
+            //without the type.fullname it does not work
+            EditorWindow instance = EditorWindow.CreateInstance(type.FullName.ToString()) as EditorWindow;
+            instance.Show();
+            Debug.Log(instance.GetType().Name);
         }
 
         private void OnGUI()
@@ -94,7 +94,6 @@ namespace BT_Editor
                             SearchableTaskWindow.position = new Rect(mouseScreenPos.x - position.width/10, mouseScreenPos.y - position.height/10, 300, 300);
                             SearchableTaskWindow.ShowPopup();
                             SearchableTaskWindow.Focus();
-                            SearchableTaskWindow.OnSearchedTaskClicked += OnSearchedTaskClicked;
                         }
 
                     }

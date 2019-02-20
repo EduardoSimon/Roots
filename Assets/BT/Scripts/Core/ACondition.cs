@@ -1,6 +1,6 @@
 using TMPro;
 
-namespace BT_Core
+namespace BT
 {
     public abstract class ACondition : ATask
     {   

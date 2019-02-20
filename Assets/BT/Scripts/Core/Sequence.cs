@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace BT_Core
+namespace BT
 {
+    [CustomNodeDrawer(typeof(SequenceDrawer))]
+    [SearchMenu("Sequence")]
     public class Sequence : Action, IComposite
     {
         public List<ATask> Children { get; private set; }

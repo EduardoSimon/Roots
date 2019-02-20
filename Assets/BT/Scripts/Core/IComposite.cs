@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BT_Core
+namespace BT
 {
     public interface IComposite
     {

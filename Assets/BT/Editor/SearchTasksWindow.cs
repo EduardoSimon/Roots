@@ -4,8 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using BT_Core;
-using BT_Editor;
+using BT;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,33 +14,42 @@ namespace Editor
     {
         private string searchString = "";
         private GUISkin _skin;
-        private string[] _avaliableTasks;
         private Type[] _types;
+        Dictionary<string[],Type> _avaliableTasks = new Dictionary<string[], Type>();
 
         public BTEditor parentWindow;
-        
-        public event Action<Type> OnSearchedTaskClicked; 
-        
+                
         private void OnEnable()
         {
             Debug.Log("Search window enabled");
             _skin = Resources.Load<GUISkin>("BTSkin");
             this.wantsMouseEnterLeaveWindow = true;
             
-            List<string> avaliableTasks = new List<string>();
-            List<Type> types = new List<Type>();
+            //List<string> avaliableTasks = new List<string>();
+            List<Type> drawerTypes = new List<Type>();
 
-            foreach (Type type in Assembly.GetAssembly(typeof(ATask))
-                .GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(ATask))))
-            {
-                avaliableTasks.Add(type.Name);
-                types.Add(type);
-            }
-
-            _avaliableTasks = avaliableTasks.ToArray();
-            _types = types.ToArray();
-
+                foreach (Type type in Assembly.GetAssembly(typeof(ATask)).GetTypes().Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(ATask))))
+                {
+                   SearchMenuAttribute[] searchMenuAttributes =
+                        (SearchMenuAttribute[]) type.GetCustomAttributes(typeof(SearchMenuAttribute), false);
+                   
+                   CustomNodeDrawerAttribute[] customNodeDrawerAttributes =
+                       (CustomNodeDrawerAttribute[]) type.GetCustomAttributes(typeof(CustomNodeDrawerAttribute), false);
+                    
+                    //in theory allowmultiple is not allowed, so it shouldnt find more than one instance of the attribute
+                    if (searchMenuAttributes.Length > 0 && searchMenuAttributes[0] != null)
+                    {
+                        if (customNodeDrawerAttributes.Length > 0 && customNodeDrawerAttributes[0] != null)
+                        {
+                            _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] =
+                                customNodeDrawerAttributes[0].DrawWindowType;
+                        }
+                        else if (customNodeDrawerAttributes.Length == 0)
+                        {
+                            _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] = typeof(DefaultNodeDrawer);
+                        }
+                    }  
+                }
         }
 
         void OnGUI()
@@ -73,25 +81,25 @@ namespace Editor
             GUILayout.Space(30);
 
             GUILayout.BeginVertical();
-                
-            for (int i = 0; i < _avaliableTasks.Length; i++)
+
+
+            foreach (var key in _avaliableTasks.Keys)
             {
-                if (_avaliableTasks[i].ToLower().Contains(searchString.ToLower()))
+                foreach (var s in key)
                 {
-                    if (GUILayout.Button(_avaliableTasks[i], EditorStyles.toolbarButton))
+                    if (s.ToLower().Contains(searchString.ToLower()))
                     {
-                        OnSearchedTaskClicked?.Invoke(_types[i]);
-                        Debug.Log("Creating a " + _avaliableTasks[i] + " task node.");
+                        if (GUILayout.Button(s, EditorStyles.toolbarButton))
+                        {
+                            Debug.Log("Creating a " + s + " task node.");
+
+                            parentWindow.OnSearchedTaskClicked(_avaliableTasks[key]);
+                        }
                     }
                 }
             }
+            
             GUILayout.EndVertical();
-                
-            
-            
-            
-            
-            
         }
 
     }

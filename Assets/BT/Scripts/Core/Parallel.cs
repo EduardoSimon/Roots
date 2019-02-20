@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BT_Core
+namespace BT
 {
+    [SearchMenu("Parallel")]
     public class Parallel : ATask, IComposite
     {
         public enum Policy

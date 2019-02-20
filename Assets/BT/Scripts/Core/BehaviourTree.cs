@@ -1,7 +1,7 @@
 using System.Data;
 using UnityEngine;
 
-namespace BT_Core
+namespace BT
 {
     public enum TaskStatus
     {
@@ -24,7 +24,7 @@ namespace BT_Core
 
         public void AddRoot(ATask action)
         {
-            RootNode = action ?? throw new NoNullAllowedException("Cant add a null root node.");
+            RootNode = action ? action : throw new NoNullAllowedException("Cant add a null root node.");
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using BT_Editor;
+using BT;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;

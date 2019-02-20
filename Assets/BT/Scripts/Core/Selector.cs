@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BT_Core
+namespace BT
 {
     public class Selector : ATask, IComposite
     {

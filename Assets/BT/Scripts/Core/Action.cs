@@ -1,6 +1,8 @@
 
-namespace BT_Core
+namespace BT
 {
+    [CustomNodeDrawer(typeof(ActionDrawer))]
+    [SearchMenu("Action")]
     public class Action : ATask
     {
         public Action()

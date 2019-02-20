@@ -1,4 +1,4 @@
-namespace BT_Core.Decorators
+namespace BT.Decorators
 {
     public class Repeat : ADecorator
     {

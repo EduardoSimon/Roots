@@ -1,4 +1,4 @@
-namespace BT_Core
+namespace BT
 {
     public class MockTask : ATask
     {
