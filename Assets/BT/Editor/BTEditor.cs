@@ -15,13 +15,14 @@ namespace BT
 {
     public class BTEditor : EditorWindow
     {
-        List<BaseNodeView> _nodeViews = new List<BaseNodeView>();
+        private static List<BaseNodeView> _nodeViews = new List<BaseNodeView>();
         private Vector2 _offset;
         private Vector2 _drag;
+        private Vector2 _mousePosition;
         private static BTEditor _editor;
         private static float _zoom;
         private static Rect _zoomArea;
-        private bool showWindows;
+        private bool showWindows = true;
 
         public SearchTasksWindow SearchableTaskWindow;
 
@@ -41,18 +42,22 @@ namespace BT
         public void OnSearchedTaskClicked(SearchTasksWindow.NodeType nodeType)
         {
             //without the type.fullname it does not work
-            BaseNodeView instance = EditorWindow.CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
-            System.Diagnostics.Debug.Assert(instance != null, "instance of node drawer is null");
-            
+            BaseNodeView instance = ScriptableObject.CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
             instance.task = CreateInstance(nodeType.taskType.FullName) as ATask;
+            instance.windowRect = new Rect(SearchableTaskWindow.position.x + 150,_mousePosition.y,100,50);
+            instance.windowTitle = instance.task.GetType().Name;
             Debug.Log(instance.GetType().Name);
+            _nodeViews.Add(instance);
+            Debug.Log(_nodeViews.Count);
         }
 
         private void OnGUI()
         {
+            _mousePosition = Event.current.mousePosition;
             DrawBackgroundGrid(20,0.2f,Color.grey);
             DrawBackgroundGrid(100,0.4f,Color.grey);
             ProccessEvents(Event.current);
+            ProcessNodeEvents(Event.current);
             Vector2 mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
             
             //EditorZoomArea.Begin(zoom, zoomArea);
@@ -62,15 +67,64 @@ namespace BT
             if (GUILayout.Button("Show window"))
                 showWindows = !showWindows;
 
+            if (GUILayout.Button("Clear Windows"))
+            {
+                foreach (var view in _nodeViews)
+                {
+                    DestroyImmediate(view);
+                }
+                
+                _nodeViews.Clear();
+            }
+                
             if (showWindows)
             {
-                BeginWindows();
-                GUI.Window(435, new Rect(Event.current.mousePosition.x,Event.current.mousePosition.y, 50, 60),DoMyWindow,"demo");
-                EndWindows(); 
+                DrawWindows();
             }
 
 
             if(GUI.changed) Repaint();
+        }
+
+        private void ProcessNodeEvents(Event current)
+        {
+            if(_nodeViews != null)
+            {
+                for (int i = _nodeViews.Count - 1; i >= 0; i--)
+                {
+                    bool guiChanged = _nodeViews[i].ProcessEvents(current);
+
+                    if (guiChanged)
+                    {
+                        GUI.changed = true;
+                    }
+                    
+                    
+                }    
+            }
+            
+        }
+
+        private void DrawWindows()
+        {
+            BeginWindows();
+
+            for (var index = 0; index < _nodeViews.Count; index++)
+            {
+                _nodeViews[index].DrawConnections();
+
+                _nodeViews[index].windowRect = GUI.Window(index, _nodeViews[index].windowRect, DrawNodeWindowCallback,_nodeViews[index].windowTitle);
+
+            }
+            
+            EndWindows(); 
+
+
+        }
+
+        void DrawNodeWindowCallback(int id)
+        {
+            _nodeViews[id].DrawWindow();
         }
 
         private void ProccessEvents(Event e)
@@ -89,8 +143,16 @@ namespace BT
                 case EventType.MouseDrag:
                     if (e.button == 0)
                     {
-                        //todo will need movement of window nodes
                         _drag = e.delta;
+                        
+                        if (_nodeViews != null)
+                        {
+                            foreach (var nodeView in _nodeViews)
+                            {
+                                nodeView.Drag(_drag);
+                            }
+                        }
+                        
                         GUI.changed = true;
                     }
                     break;
