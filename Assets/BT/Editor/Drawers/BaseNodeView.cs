@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using BT;
 
 namespace BT
 {
@@ -9,7 +10,8 @@ namespace BT
         public Rect windowRect;
         public string windowTitle;
         public bool isDragged;
-        
+        private bool isSelected;
+
         public virtual void DrawWindow()
         {
             GUI.Label(new Rect(windowRect.x,windowRect.y,50,50),"Hi" );
@@ -34,21 +36,25 @@ namespace BT
                     {
                         if (windowRect.Contains(e.mousePosition))
                         {
-                            isDragged = true;
+                            //isDragged = true;
                             GUI.changed = true;
+                            //isSelected = true;
+                            BTEditor.SelectedNode = this;
                         }
                         else
                         {
                             GUI.changed = true;
+                            //isSelected = false;
                         }
                     }
 
                     break;
 
                 case EventType.MouseUp:
-                    isDragged = false;
+                    //isDragged = false;
+                    BTEditor.SelectedNode = null;
                     break;
-
+/*
                 case EventType.MouseDrag:
                     if (e.button == 0 && isDragged)
                     {
@@ -57,7 +63,7 @@ namespace BT
                         return true;
                     }
 
-                    break;
+                    break;*/
             }
 
             return false;

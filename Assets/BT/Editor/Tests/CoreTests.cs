@@ -17,7 +17,7 @@ namespace BT_Tests
             [Test]
             public void Tree_Is_Not_Null()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
             
                 Assert.IsNotNull(tree);
             }
@@ -25,7 +25,7 @@ namespace BT_Tests
             [Test]
             public void Tree_Returns_Status_Not_Null()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 tree.AddRoot(new Action());
                 var status = tree.Tick();
             
@@ -35,7 +35,7 @@ namespace BT_Tests
             [TestCase(TaskStatus.Running)]
             public void Tree_Returns_Status(TaskStatus status)
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 tree.AddRoot(new Action());
                 var returnedStatus = tree.Tick();
             
@@ -45,7 +45,7 @@ namespace BT_Tests
             [Test]
             public void Tree_has_not_null_root()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 tree.AddRoot(new Action());
             
                 Assert.That(tree.RootNode != null);
@@ -57,7 +57,7 @@ namespace BT_Tests
             [Test]
             public void Sequence_has_children()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 tree.AddRoot(new Sequence(new []
                 {
                     new Action(), new Action(), 
@@ -72,7 +72,7 @@ namespace BT_Tests
             [Test]
             public void Sequence_Success_after_all_children_succeeded()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Sequence(new ATask[]
                 {
@@ -90,7 +90,7 @@ namespace BT_Tests
             [Test]
             public void Sequence_Fails_after_any_children_fails()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Sequence(new ATask[]
                 {
@@ -109,7 +109,7 @@ namespace BT_Tests
             [Test]
             public void Sequence_returns_running_when_any_of_its_children_is_running()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Sequence(new ATask[]
                 {
@@ -127,7 +127,7 @@ namespace BT_Tests
             [Test]
             public void Sequence_returns_Success_when_it_has_no_children()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
     
                 tree.AddRoot(new Sequence());
                 
@@ -144,7 +144,7 @@ namespace BT_Tests
             [Test]
             public void Selector_has_children()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 tree.AddRoot(new Selector(new []
                 {
                     new Action(), new Action(), 
@@ -159,7 +159,7 @@ namespace BT_Tests
             [Test]
             public void Selector_Success_after_all_children_succeeded()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Selector(new ATask[]
                 {
@@ -177,7 +177,7 @@ namespace BT_Tests
             [Test]
             public void Selector_Success_after_any_children_succeeded()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Selector(new ATask[]
                 {
@@ -195,7 +195,7 @@ namespace BT_Tests
             [Test]
             public void Selector_in_running_after_any_children_running()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Selector(new ATask[]
                 {
@@ -213,7 +213,7 @@ namespace BT_Tests
             [Test]
             public void Selector_fails_after_every_children_fails()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Selector(new ATask[]
                 {
@@ -231,7 +231,7 @@ namespace BT_Tests
             [Test]
             public void Selector_success_when_last_node_has_succeeded()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Selector(new ATask[]
                 {
@@ -249,7 +249,7 @@ namespace BT_Tests
             [Test]
             public void Selector_is_running_when_last_node_is_running()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Selector(new ATask[]
                 {
@@ -267,7 +267,7 @@ namespace BT_Tests
             [Test]
             public void Selector_fails_if_it_has_no_children()
             {
-                var tree = ScriptableObject.CreateInstance<BehaviourTree>();
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 
                 tree.AddRoot(new Selector());
                 

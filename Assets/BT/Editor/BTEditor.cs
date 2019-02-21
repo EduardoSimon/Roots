@@ -23,6 +23,8 @@ namespace BT
         private static float _zoom;
         private static Rect _zoomArea;
         private bool showWindows = true;
+        public static BaseNodeView SelectedNode;
+        public static BehaviorTree CurrentTree;
 
         public SearchTasksWindow SearchableTaskWindow;
 
@@ -64,6 +66,23 @@ namespace BT
 
             //EditorZoomArea.End();
 
+            DrawGlobalGUIControls();
+
+
+            if (showWindows)
+            {
+                DrawWindows();
+            }
+
+
+            if(GUI.changed) Repaint();
+        }
+
+        private void DrawGlobalGUIControls()
+        {
+            GUILayout.BeginHorizontal();
+            
+            CurrentTree = EditorGUILayout.ObjectField(CurrentTree,typeof(BehaviorTree),false) as BehaviorTree;
             if (GUILayout.Button("Show window"))
                 showWindows = !showWindows;
 
@@ -73,17 +92,11 @@ namespace BT
                 {
                     DestroyImmediate(view);
                 }
-                
+
                 _nodeViews.Clear();
             }
-                
-            if (showWindows)
-            {
-                DrawWindows();
-            }
-
-
-            if(GUI.changed) Repaint();
+            
+            GUILayout.BeginHorizontal();
         }
 
         private void ProcessNodeEvents(Event current)
@@ -125,6 +138,8 @@ namespace BT
         void DrawNodeWindowCallback(int id)
         {
             _nodeViews[id].DrawWindow();
+            if(_nodeViews[id].isDragged)
+                GUI.DragWindow();
         }
 
         private void ProccessEvents(Event e)
@@ -143,18 +158,23 @@ namespace BT
                 case EventType.MouseDrag:
                     if (e.button == 0)
                     {
-                        _drag = e.delta;
-                        
-                        if (_nodeViews != null)
+                        if (SelectedNode != null)
                         {
-                            foreach (var nodeView in _nodeViews)
-                            {
-                                nodeView.Drag(_drag);
-                            }
+                            _drag = Vector2.zero;
+                            SelectedNode.Drag(e.delta);
+                            GUI.changed = true;
+                            break;
                         }
                         
+                        _drag = e.delta;
+
+                        foreach (var nodeView in _nodeViews)
+                        {
+                            nodeView.Drag(_drag);
+                        }
                         GUI.changed = true;
                     }
+                    
                     break;
 
                 case EventType.ContextClick:

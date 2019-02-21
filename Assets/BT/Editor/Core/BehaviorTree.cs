@@ -13,7 +13,8 @@ namespace BT
         Aborted
     }
     
-    public class BehaviourTree : ScriptableObject
+    [CreateAssetMenu(menuName = "BT/Behavior Tree")]
+    public class BehaviorTree : ScriptableObject
     {
         public ATask RootNode { get; private set; }
 
