@@ -1,14 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
 using Editor;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 using Object = System.Object;
 
 namespace BT
@@ -29,7 +22,7 @@ namespace BT
         public SearchTasksWindow SearchableTaskWindow;
 
         [MenuItem("BT/Editor")]
-        static void Init()
+        private static void Init()
         {
             _editor = (BTEditor) EditorWindow.CreateInstance<BTEditor>();
             _editor.titleContent = new GUIContent("BT Editor",Resources.Load<Texture>("star"),"A behavior tree visual editor for everyone");
@@ -83,6 +76,13 @@ namespace BT
             GUILayout.BeginHorizontal();
             
             CurrentTree = EditorGUILayout.ObjectField(CurrentTree,typeof(BehaviorTree),false) as BehaviorTree;
+
+            if (GUILayout.Button("Load Graph Data"))
+                LoadTreeGraph();
+
+            if (GUILayout.Button("Save Graph Data"))
+                SaveGraphData();
+            
             if (GUILayout.Button("Show window"))
                 showWindows = !showWindows;
 
@@ -96,7 +96,21 @@ namespace BT
                 _nodeViews.Clear();
             }
             
-            GUILayout.BeginHorizontal();
+            
+            GUILayout.EndHorizontal();
+        }
+
+        private void SaveGraphData()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void LoadTreeGraph()
+        {
+            if (CurrentTree == null)
+            {
+                Debug.LogError("Select a graph to Load Data From");
+            }
         }
 
         private void ProcessNodeEvents(Event current)

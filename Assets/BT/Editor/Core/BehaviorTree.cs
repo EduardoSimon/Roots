@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
@@ -16,6 +17,10 @@ namespace BT
     [CreateAssetMenu(menuName = "BT/Behavior Tree")]
     public class BehaviorTree : ScriptableObject
     {
+        #if UNITY_EDITOR
+        public static List<BaseNodeView> NodeViews = new List<BaseNodeView>();
+        #endif
+        
         public ATask RootNode { get; private set; }
 
         public TaskStatus Tick()

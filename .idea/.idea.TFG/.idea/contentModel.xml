@@ -35,6 +35,8 @@
               <e p="SequenceView.cs" t="Include" />
             </e>
             <e p="MockTask.cs" t="Include" />
+            <e p="Patrol.cs" t="Include" />
+            <e p="PatrolNodeView.cs" t="Include" />
             <e p="SearchTasksWindow.cs" t="Include" />
             <e p="Tests" t="Include">
               <e p="CoreTests.cs" t="Include" />
