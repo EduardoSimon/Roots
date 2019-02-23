@@ -27,7 +27,7 @@ namespace Editor
         private string searchString = "";
         private GUISkin _skin;
         private Type[] _types;
-        Dictionary<string[],NodeType> _avaliableTasks = new Dictionary<string[], NodeType>();
+        public  Dictionary<string[],NodeType> _avaliableTasks = new Dictionary<string[], NodeType>();
 
         public BTEditor parentWindow;
                 

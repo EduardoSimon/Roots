@@ -18,7 +18,7 @@ namespace BT
     public class BehaviorTree : ScriptableObject
     {
         #if UNITY_EDITOR
-        public static List<BaseNodeView> NodeViews = new List<BaseNodeView>();
+        public Dictionary<BaseNodeView,BaseNodeView.NodeData> savedData = new Dictionary<BaseNodeView, BaseNodeView.NodeData>();
         #endif
         
         public ATask RootNode { get; private set; }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Editor;
 using UnityEditor;
@@ -30,20 +31,27 @@ namespace BT
             _editor.Show();
  
             _editor.wantsMouseMove = true;
+            _nodeViews = new List<BaseNodeView>();
             //zoom = 1f;
             //zoomArea = _editor.position;
         }
 
         public void OnSearchedTaskClicked(SearchTasksWindow.NodeType nodeType)
         {
+                CreateNodeView(nodeType,
+                new Rect(SearchableTaskWindow.position.x + position.width/1000, _mousePosition.y, 200, 50),
+                nodeType.taskType.ToString());
             //without the type.fullname it does not work
+
+        }
+
+        private void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
+        {
             BaseNodeView instance = ScriptableObject.CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
             instance.task = CreateInstance(nodeType.taskType.FullName) as ATask;
-            instance.windowRect = new Rect(SearchableTaskWindow.position.x + 150,_mousePosition.y,100,50);
-            instance.windowTitle = instance.task.GetType().Name;
-            Debug.Log(instance.GetType().Name);
+            instance.windowRect = windowRect;    
+            instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
-            Debug.Log(_nodeViews.Count);
         }
 
         private void OnGUI()
@@ -75,7 +83,10 @@ namespace BT
         {
             GUILayout.BeginHorizontal();
             
+            EditorGUI.BeginChangeCheck();
             CurrentTree = EditorGUILayout.ObjectField(CurrentTree,typeof(BehaviorTree),false) as BehaviorTree;
+            if(EditorGUI.EndChangeCheck())
+                GUI.FocusControl(null);
 
             if (GUILayout.Button("Load Graph Data"))
                 LoadTreeGraph();
@@ -102,7 +113,19 @@ namespace BT
 
         private void SaveGraphData()
         {
-            throw new System.NotImplementedException();
+            if (CurrentTree.savedData.Count != 0)
+            {
+                CurrentTree.savedData.Clear();
+                Debug.Log("Overriding the data");
+            }
+            
+            foreach (var nodeView in _nodeViews)
+            {
+                CurrentTree.savedData[nodeView] = nodeView.SaveData();
+            }
+            
+            Debug.Log("Saved " + CurrentTree.savedData.Count + " nodes.");
+            
         }
 
         private void LoadTreeGraph()
@@ -110,6 +133,20 @@ namespace BT
             if (CurrentTree == null)
             {
                 Debug.LogError("Select a graph to Load Data From");
+            }
+            else
+            {
+                _nodeViews.Clear();
+                
+                foreach (var savedDataKey in CurrentTree.savedData.Keys)
+                {
+                    BaseNodeView.NodeData data = CurrentTree.savedData[savedDataKey];
+                    SearchTasksWindow.NodeType type = new SearchTasksWindow.NodeType(data.task.GetType(), typeof(DefaultNodeView));
+                    CreateNodeView(type,data.windowRect,data.windowTitle);
+                }
+                
+                Debug.Log("Loaded " + _nodeViews.Count + "nodes");
+
             }
         }
 
@@ -152,8 +189,6 @@ namespace BT
         void DrawNodeWindowCallback(int id)
         {
             _nodeViews[id].DrawWindow();
-            if(_nodeViews[id].isDragged)
-                GUI.DragWindow();
         }
 
         private void ProccessEvents(Event e)
@@ -161,14 +196,11 @@ namespace BT
             _drag = Vector2.zero;
             switch (e.type)
             {
-                /*
+                
                 case EventType.MouseDown:
-                    Debug.Log("Mouse was pressed");
+                        this.Focus();
                     break;
-                case EventType.MouseUp:
-                    Debug.Log("Mouse was released");
-                    break;
-                    */
+                
                 case EventType.MouseDrag:
                     if (e.button == 0)
                     {
@@ -220,14 +252,6 @@ namespace BT
                 
             }
         }
-
-        void DoMyWindow(int windowID)
-        {
-            GUILayout.Label("hi");   
-            GUI.DragWindow();
-
-        }
-        
         private void ProcessRightClickEvent()
         {
             Debug.Log("Right Clicked the window");
