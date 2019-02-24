@@ -5,6 +5,8 @@ namespace BT
     [SearchMenu("Action")]
     public class Action : ATask
     {
+        public BlackBoard board;
+        
         public Action()
         {
             Status = TaskStatus.NonInitialized;

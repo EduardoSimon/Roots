@@ -39,7 +39,7 @@ namespace BT
         public void OnSearchedTaskClicked(SearchTasksWindow.NodeType nodeType)
         {
                 CreateNodeView(nodeType,
-                new Rect(SearchableTaskWindow.position.x + position.width/1000, _mousePosition.y, 200, 50),
+                new Rect(SearchableTaskWindow.position.x + position.width/1000, _mousePosition.y, 200, 150),
                 nodeType.taskType.ToString());
             //without the type.fullname it does not work
 
