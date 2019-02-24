@@ -5,8 +5,8 @@ using UnityEngine;
 namespace BT
 {
     [CustomNodeDrawer(typeof(SequenceView))]
-    [SearchMenu("Sequence")]
-    public class Sequence : Action, IComposite
+    [SearchMenu("Composites")]
+    public class Sequence : AAction, IComposite
     {
         public List<ATask> Children { get; private set; }
 

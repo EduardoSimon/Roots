@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BT
 {
-    [SearchMenu("Parallel")]
+    [SearchMenu("Composites")]
     public class Parallel : ATask, IComposite
     {
         public enum Policy

@@ -5,8 +5,8 @@ using UnityEngine;
 namespace BT
 {
     [SearchMenu("Action/Patrol")]
-    [CustomNodeDrawer(typeof(Action))]
-    public class Patrol : Action
+    [CustomNodeDrawer(typeof(AAction))]
+    public class Patrol : AAction
     {
         protected override void OnInitialize()
         {

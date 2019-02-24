@@ -2,12 +2,11 @@
 namespace BT
 {
     [CustomNodeDrawer(typeof(ActionView))]
-    [SearchMenu("Action")]
-    public class Action : ATask
+    public abstract class AAction : ATask
     {
         public BlackBoard board;
         
-        public Action()
+        public AAction()
         {
             Status = TaskStatus.NonInitialized;
         }

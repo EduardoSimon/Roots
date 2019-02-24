@@ -9,8 +9,8 @@ namespace BT
         {
             base.DrawWindow();   
             EditorGUI.BeginChangeCheck();
-            Action action = (Action) task;
-            action.board = EditorGUILayout.ObjectField(action.board,typeof(BlackBoard),false) as BlackBoard;
+            AAction aAction = (AAction) task;
+            aAction.board = EditorGUILayout.ObjectField(aAction.board,typeof(BlackBoard),false) as BlackBoard;
             if (EditorGUI.EndChangeCheck())
             {
                 GUI.FocusControl(null);
