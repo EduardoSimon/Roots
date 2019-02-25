@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using BT;
+using BT.Editor.Tests;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using UnityEditor.VersionControl;
@@ -22,56 +23,57 @@ namespace BT_Tests
                 Assert.IsNotNull(tree);
             }
 
-            /*
+            
             [Test]
             public void Tree_Returns_Status_Not_Null()
             {
                 var tree = ScriptableObject.CreateInstance<BehaviorTree>();
-                tree.AddRoot(new AAction());
+                tree.AddRoot(ScriptableObject.CreateInstance<MockAction>());
                 var status = tree.Tick();
             
                 Assert.IsNotNull(status);
-            }*/
+            }
 
-            /*
+            
             [TestCase(TaskStatus.Running)]
             public void Tree_Returns_Status(TaskStatus status)
             {
                 var tree = ScriptableObject.CreateInstance<BehaviorTree>();
-                tree.AddRoot(new AAction());
+                tree.AddRoot(ScriptableObject.CreateInstance<MockAction>());
                 var returnedStatus = tree.Tick();
             
                 Assert.That(returnedStatus == status);
-            }*/
+            }
 
-            /*
+            
             [Test]
             public void Tree_has_not_null_root()
             {
                 var tree = ScriptableObject.CreateInstance<BehaviorTree>();
-                tree.AddRoot(new AAction());
+                tree.AddRoot(ScriptableObject.CreateInstance<MockAction>());
             
                 Assert.That(tree.RootNode != null);
-            }*/
+            }
         }
 
         public class SequenceTests
         {
-            /*
+            
             [Test]
             public void Sequence_has_children()
             {
                 var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 tree.AddRoot(new Sequence(new []
                 {
-                    new AAction(), new AAction(), 
+                    ScriptableObject.CreateInstance<MockAction>(),
+                    ScriptableObject.CreateInstance<MockAction>()
                 }));
                 
                 var returnedStatus = tree.Tick();
     
                 var sequence = tree.RootNode as Sequence;
                 Assert.That(sequence != null && sequence.Children.Count > 0);
-            }*/
+            }
     
             [Test]
             public void Sequence_Success_after_all_children_succeeded()
@@ -144,7 +146,7 @@ namespace BT_Tests
         
         public class SelectorTests
         {
-            /*
+            
                         
             [Test]
             public void Selector_has_children()
@@ -152,14 +154,15 @@ namespace BT_Tests
                 var tree = ScriptableObject.CreateInstance<BehaviorTree>();
                 tree.AddRoot(new Selector(new []
                 {
-                    new AAction(), new AAction(), 
+                    ScriptableObject.CreateInstance<MockAction>(),
+                    ScriptableObject.CreateInstance<MockAction>()
                 }));
                 
                 var returnedStatus = tree.Tick();
     
                 var selector = tree.RootNode as Selector;
                 Assert.That(selector != null && selector.Children.Count > 0);
-            }*/
+            }
             
             [Test]
             public void Selector_Success_after_all_children_succeeded()

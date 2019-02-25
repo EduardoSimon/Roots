@@ -9,6 +9,7 @@ using BT;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Editor
 {
@@ -30,7 +31,7 @@ namespace Editor
         private string searchString = "";
         private GUISkin _skin;
         private Type[] _types;
-        public  Dictionary<string[],NodeType> _avaliableTasks = new Dictionary<string[], NodeType>();
+        [FormerlySerializedAs("_avaliableTasks")] public  Dictionary<string[],NodeType> _avaliableTasksDictionary = new Dictionary<string[], NodeType>();
 
         public BTEditor parentWindow;
                 
@@ -64,12 +65,12 @@ namespace Editor
                 {
                     if (customNodeDrawerAttributes.Length > 0 && customNodeDrawerAttributes[0] != null)
                     {
-                        _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] =
+                        _avaliableTasksDictionary[searchMenuAttributes[0].GetMenuPathSplit()] =
                             new NodeType(type, customNodeDrawerAttributes[0].DrawWindowType);
                     }
                     else if (customNodeDrawerAttributes.Length == 0)
                     {
-                        _avaliableTasks[searchMenuAttributes[0].GetMenuPathSplit()] =
+                        _avaliableTasksDictionary[searchMenuAttributes[0].GetMenuPathSplit()] =
                             new NodeType(type, typeof(DefaultNodeView));
                     }
                 }
@@ -108,7 +109,7 @@ namespace Editor
 
             List<string> foldouts = new List<string>();
             
-            foreach (var avaliableTask in _avaliableTasks.Keys)
+            foreach (var avaliableTask in _avaliableTasksDictionary.Keys)
             {
                 if (!foldouts.Contains(avaliableTask[0]))
                 {
@@ -120,7 +121,7 @@ namespace Editor
                         EditorGUI.indentLevel++;
                         //draw all inside 
 
-                        foreach (var key in _avaliableTasks.Keys)
+                        foreach (var key in _avaliableTasksDictionary.Keys)
                         {
                             if (key[0] == avaliableTask[0])
                             {
@@ -150,7 +151,7 @@ namespace Editor
 
         private void SearchTasks()
         {
-            foreach (var key in _avaliableTasks.Keys)
+            foreach (var key in _avaliableTasksDictionary.Keys)
             {
                 foreach (var s in key)
                 {
@@ -160,9 +161,92 @@ namespace Editor
                         {
                             Debug.Log("Creating a " + s + " task node.");
 
-                            parentWindow.OnSearchedTaskClicked(_avaliableTasks[key]);
+                            parentWindow.OnSearchedTaskClicked(_avaliableTasksDictionary[key]);
                         }
                     }
+                }
+            }
+
+        }
+
+        public SearchTreeNode CreateSearchTree()
+        {
+            SearchTreeNode root = new SearchTreeNode("Tasks", null,null);
+            
+            foreach (var key in _avaliableTasksDictionary.Keys)
+            {
+                if(root.IsStringContainedInChildren(key[0]))
+                    root.AddChildren(new SearchTreeNode(_avaliableTasksDictionary[key].taskType.Name,_avaliableTasksDictionary[key],root));
+                
+                for (int i = 0; i < key.Length; i++)
+                {
+                    
+                }
+
+            }
+
+            for (int i = 0; i < _avaliableTasksDictionary.Keys.Count; i++)
+            {
+                if(root.IsStringContainedInChildren(key[i],i))
+            }
+        }
+        public class SearchTreeNode
+        {
+            private string _title;
+            private NodeType? _nodeType;
+            private List<SearchTreeNode> _children = new List<SearchTreeNode>();
+            public SearchTreeNode Parent { get; private set; }
+
+            public SearchTreeNode(string title, NodeType? nodeType, SearchTreeNode parent)
+            {
+                _title = title;
+                _nodeType = nodeType;
+                Parent = parent;
+            }
+
+            public void AddChildren(SearchTreeNode children)
+            {
+                if (!_children.Contains(children))
+                {
+                    _children.Add(children);
+                    children.Parent = this;
+                }
+                else
+                    Debug.LogError("Cant the same node twice as a children.");
+            }
+            
+            public bool IsStringContainedInChildren(string s, int maxDepth)
+            {
+                for (int i = 0; i < _children.Count; i++)
+                {
+                    if (_children[i]._title == s)
+                        return true;
+                }
+
+                return false;
+            }
+            
+            public bool IsStringContainedInChildren(string s)
+            {
+                for (int i = 0; i < _children.Count; i++)
+                {
+                    if (_children[i]._title == s)
+                        return true;
+                }
+
+                return false;
+            }
+
+            public void Traverse(int maxDepth, ref int depth)
+            {
+                depth++;
+
+                if (depth >= maxDepth)
+                    return;
+                
+                for (int i = 0; i < _children.Count; i++)
+                {
+                    _children[i].Traverse(maxDepth,ref depth);
                 }
             }
         }
