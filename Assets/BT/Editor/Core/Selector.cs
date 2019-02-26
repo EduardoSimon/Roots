@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BT
 {
-    [SearchMenu("Composites")]
+    [SearchMenu("Composites/Selector")]
     public class Selector : ATask, IComposite
     {
         public List<ATask> Children { get; private set; }

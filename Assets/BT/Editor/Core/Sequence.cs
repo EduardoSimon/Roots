@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BT
 {
     [CustomNodeDrawer(typeof(SequenceView))]
-    [SearchMenu("Composites")]
+    [SearchMenu("Composites/Sequence")]
     public class Sequence : AAction, IComposite
     {
         public List<ATask> Children { get; private set; }

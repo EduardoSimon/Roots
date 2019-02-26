@@ -28,8 +28,8 @@ namespace Editor
             }
         }
 
-        static AnimBool m_ShowExtraFields;
-        private string searchString = "";
+        //private AnimBool m_ShowExtraFields;
+        private string searchString;
         private GUISkin _skin;
         private Type[] _types;
         private SearchTreeNode _tree;
@@ -45,9 +45,6 @@ namespace Editor
             GetTypes();
             _tree = CreateSearchTree();
             
-            m_ShowExtraFields = new AnimBool(true);
-            m_ShowExtraFields.speed = 10f;
-            m_ShowExtraFields.valueChanged.AddListener(Repaint);
         }
 
         private void GetTypes()
@@ -82,7 +79,7 @@ namespace Editor
 
         void OnGUI()
         {
-            /*
+            
             if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Escape && EditorWindow.focusedWindow == this)
             {
                 parentWindow.Focus();
@@ -94,7 +91,7 @@ namespace Editor
                 parentWindow.Focus();
                 this.Close();
                 parentWindow.SearchableTaskWindow = null;
-            }*/
+            }
 
             GUI.skin = _skin;
             GUILayout.BeginVertical("Task Finder", EditorStyles.toolbarButton);
@@ -138,26 +135,44 @@ namespace Editor
         
         public void TraverseDrawing(SearchTreeNode node)
         {
-            m_ShowExtraFields.target = EditorGUILayout.Foldout(m_ShowExtraFields.target,node.Title,EditorStyles.foldout);
-                
-            if (EditorGUILayout.BeginFadeGroup(m_ShowExtraFields.faded))
+            if (node.Parent != null)
             {
-                EditorGUI.indentLevel++;
-                //draw all inside 
+                if (node.Parent.activated)
+                {
+                    if (!node.HasChildren())
+                    {
+                        EditorGUI.indentLevel++;
+                        EditorGUILayout.SelectableLabel(node.Title);
+                        EditorGUI.indentLevel--;
+                    }
+                    else
+                    {
+                        EditorGUI.indentLevel++;
+                        node.activated = EditorGUILayout.Foldout(node.activated, node.Title);
+                        if (node.activated)
+                        {
+                            for (int i = 0; i < node.Children.Count; i++)
+                            {
+                                TraverseDrawing(node.Children[i]);
+                            }
+                        }
 
-                EditorGUI.indentLevel--;
+                        EditorGUI.indentLevel--;
+                    }
+                    
+
+                }
+
+            }
+            else
+            {
+                node.activated = EditorGUILayout.Foldout(node.activated, node.Title);
+                for (int i = 0; i < node.Children.Count; i++)
+                {
+                    TraverseDrawing(node.Children[i]);
+                }
             }
 
-            EditorGUILayout.EndFadeGroup();
-            
-            EditorGUI.indentLevel++;
-            
-            for (int i = 0; i < node.Children.Count; i++)
-            {
-                TraverseDrawing(node.Children[i]);
-            }
-                
-            
         }
 
         public SearchTreeNode CreateSearchTree()
@@ -191,12 +206,15 @@ namespace Editor
             private NodeType? _nodeType;
             public List<SearchTreeNode> Children { get; private set; } = new List<SearchTreeNode>();
             public SearchTreeNode Parent { get; private set; }
+            public bool activated;
+
 
             public SearchTreeNode(string title, NodeType? nodeType, SearchTreeNode parent)
             {
                 Title = title;
                 _nodeType = nodeType;
                 Parent = parent;
+                activated = false;
             }
 
             public void AddChildren(SearchTreeNode children)
