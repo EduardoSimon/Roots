@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization.Configuration;
 using BT;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
@@ -26,11 +27,12 @@ namespace Editor
                 DrawerType = drawerType;
             }
         }
-        
-        AnimBool m_ShowExtraFields;
+
+        static AnimBool m_ShowExtraFields;
         private string searchString = "";
         private GUISkin _skin;
         private Type[] _types;
+        private SearchTreeNode _tree;
         [FormerlySerializedAs("_avaliableTasks")] public  Dictionary<string[],NodeType> _avaliableTasksDictionary = new Dictionary<string[], NodeType>();
 
         public BTEditor parentWindow;
@@ -41,7 +43,8 @@ namespace Editor
             this.wantsMouseEnterLeaveWindow = true;
             
             GetTypes();
-
+            _tree = CreateSearchTree();
+            
             m_ShowExtraFields = new AnimBool(true);
             m_ShowExtraFields.speed = 10f;
             m_ShowExtraFields.valueChanged.AddListener(Repaint);
@@ -79,6 +82,7 @@ namespace Editor
 
         void OnGUI()
         {
+            /*
             if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Escape && EditorWindow.focusedWindow == this)
             {
                 parentWindow.Focus();
@@ -90,7 +94,7 @@ namespace Editor
                 parentWindow.Focus();
                 this.Close();
                 parentWindow.SearchableTaskWindow = null;
-            }
+            }*/
 
             GUI.skin = _skin;
             GUILayout.BeginVertical("Task Finder", EditorStyles.toolbarButton);
@@ -106,44 +110,7 @@ namespace Editor
             GUILayout.Space(30);
 
             GUILayout.BeginVertical();
-
-            List<string> foldouts = new List<string>();
-            
-            foreach (var avaliableTask in _avaliableTasksDictionary.Keys)
-            {
-                if (!foldouts.Contains(avaliableTask[0]))
-                {
-                    m_ShowExtraFields.target = EditorGUILayout.Foldout(m_ShowExtraFields.target,avaliableTask[0],EditorStyles.foldout);
-
-                    //Extra block that can be toggled on and off.
-                    if (EditorGUILayout.BeginFadeGroup(m_ShowExtraFields.faded))
-                    {
-                        EditorGUI.indentLevel++;
-                        //draw all inside 
-
-                        foreach (var key in _avaliableTasksDictionary.Keys)
-                        {
-                            if (key[0] == avaliableTask[0])
-                            {
-                                if (key.Length > 1)
-                                    GUILayout.Button(key[1],EditorStyles.miniButton);
-                                else
-                                {
-                                    GUILayout.Button(key[0],EditorStyles.miniButton);
-                                }
-                            }
-                        }
-                        
-                        EditorGUI.indentLevel--;
-                    }
-
-                    EditorGUILayout.EndFadeGroup();
-                }
-                    
-            }
-            
-           
-            
+            TraverseDrawing(_tree);
             GUILayout.EndVertical();
         }
 
@@ -168,85 +135,119 @@ namespace Editor
             }
 
         }
+        
+        public void TraverseDrawing(SearchTreeNode node)
+        {
+            m_ShowExtraFields.target = EditorGUILayout.Foldout(m_ShowExtraFields.target,node.Title,EditorStyles.foldout);
+                
+            if (EditorGUILayout.BeginFadeGroup(m_ShowExtraFields.faded))
+            {
+                EditorGUI.indentLevel++;
+                //draw all inside 
+
+                EditorGUI.indentLevel--;
+            }
+
+            EditorGUILayout.EndFadeGroup();
+            
+            EditorGUI.indentLevel++;
+            
+            for (int i = 0; i < node.Children.Count; i++)
+            {
+                TraverseDrawing(node.Children[i]);
+            }
+                
+            
+        }
 
         public SearchTreeNode CreateSearchTree()
         {
-            SearchTreeNode root = new SearchTreeNode("Tasks", null,null);
+            SearchTreeNode root = new SearchTreeNode("Root", null,null);
             
             foreach (var key in _avaliableTasksDictionary.Keys)
             {
-                if(root.IsStringContainedInChildren(key[0]))
-                    root.AddChildren(new SearchTreeNode(_avaliableTasksDictionary[key].taskType.Name,_avaliableTasksDictionary[key],root));
+                var currentRoot = root;
                 
                 for (int i = 0; i < key.Length; i++)
                 {
-                    
+                    var children = currentRoot.GetChildrenByTitle(key[i]);
+
+                    if (children == null)
+                    {
+                        SearchTreeNode newNode = new SearchTreeNode(key[i],_avaliableTasksDictionary[key], root);
+                        currentRoot.AddChildren(newNode);
+                        currentRoot = newNode;
+
+                    }      
                 }
 
             }
 
-            for (int i = 0; i < _avaliableTasksDictionary.Keys.Count; i++)
-            {
-                if(root.IsStringContainedInChildren(key[i],i))
-            }
+            return root;
         }
         public class SearchTreeNode
         {
-            private string _title;
+            public string Title { get; private set; }
             private NodeType? _nodeType;
-            private List<SearchTreeNode> _children = new List<SearchTreeNode>();
+            public List<SearchTreeNode> Children { get; private set; } = new List<SearchTreeNode>();
             public SearchTreeNode Parent { get; private set; }
 
             public SearchTreeNode(string title, NodeType? nodeType, SearchTreeNode parent)
             {
-                _title = title;
+                Title = title;
                 _nodeType = nodeType;
                 Parent = parent;
             }
 
             public void AddChildren(SearchTreeNode children)
             {
-                if (!_children.Contains(children))
+                if (!Children.Contains(children))
                 {
-                    _children.Add(children);
+                    Children.Add(children);
                     children.Parent = this;
                 }
                 else
                     Debug.LogError("Cant the same node twice as a children.");
             }
             
-            public bool IsStringContainedInChildren(string s, int maxDepth)
+            public SearchTreeNode GetChildrenByTitle(string s)
             {
-                for (int i = 0; i < _children.Count; i++)
+                for (int i = 0; i < Children.Count; i++)
                 {
-                    if (_children[i]._title == s)
-                        return true;
+                    if (Children[i].Title == s)
+                        return Children[i];
                 }
 
-                return false;
+                return null;
+            }
+
+            public void Traverse()
+            {
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    Children[i].Traverse();
+                }
+                
+                Debug.Log("Node with title " + Title + "with parent " + Parent.Title);
             }
             
-            public bool IsStringContainedInChildren(string s)
-            {
-                for (int i = 0; i < _children.Count; i++)
-                {
-                    if (_children[i]._title == s)
-                        return true;
-                }
+            
 
-                return false;
+            public bool HasChildren()
+            {
+                return Children.Count != 0;
             }
 
-            public void Traverse(int maxDepth, ref int depth)
+            public void TraverseWithMaxDepth(int maxDepth, ref int depth)
             {
                 depth++;
 
                 if (depth >= maxDepth)
                     return;
                 
-                for (int i = 0; i < _children.Count; i++)
+                for (int i = 0; i < Children.Count; i++)
                 {
-                    _children[i].Traverse(maxDepth,ref depth);
+                    Children[i].TraverseWithMaxDepth(maxDepth,ref depth);
                 }
             }
         }
