@@ -79,7 +79,9 @@ namespace Editor
 
         void OnGUI()
         {
+            //this crashes on mac mojave version 2018.3.6f
             
+            /*
             if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Escape && EditorWindow.focusedWindow == this)
             {
                 parentWindow.Focus();
@@ -91,7 +93,7 @@ namespace Editor
                 parentWindow.Focus();
                 this.Close();
                 parentWindow.SearchableTaskWindow = null;
-            }
+            }*/
 
             GUI.skin = _skin;
             GUILayout.BeginVertical("Task Finder", EditorStyles.toolbarButton);
@@ -142,7 +144,11 @@ namespace Editor
                     if (!node.HasChildren())
                     {
                         EditorGUI.indentLevel++;
-                        EditorGUILayout.SelectableLabel(node.Title);
+                        EditorGUILayout.DropdownButton(new GUIContent(node.Title), FocusType.Passive,EditorStyles.miniButtonRight,new GUILayoutOption[]
+                        {
+                            GUILayout.Width(120)
+                        });
+                        
                         EditorGUI.indentLevel--;
                     }
                     else
@@ -192,8 +198,11 @@ namespace Editor
                         SearchTreeNode newNode = new SearchTreeNode(key[i],_avaliableTasksDictionary[key], root);
                         currentRoot.AddChildren(newNode);
                         currentRoot = newNode;
-
-                    }      
+                    }
+                    else
+                    {
+                        currentRoot = children;
+                    }
                 }
 
             }
