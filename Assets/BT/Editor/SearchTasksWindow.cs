@@ -78,17 +78,21 @@ namespace Editor
 
         void OnGUI()
         {
-            //this crashes on mac mojave version 2018.3.6f
-            if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Escape && EditorWindow.focusedWindow == this)
+            //this crashes on mac mojave version 2018.3.6f when using the MouseLeaveWindow evet
+           
+            #if UNITY_EDITOR_WIN
+            if (Event.current.type == EventType.MouseLeaveWindow)
             {
                 parentWindow.Focus();
-                this.Close();
+                Close();
                 parentWindow.SearchableTaskWindow = null;
             }
-            else if (Event.current.type == EventType.MouseLeaveWindow)
+            #endif
+            
+            if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Escape && focusedWindow == this  || Event.current.type == EventType.MouseLeaveWindow)
             {
                 parentWindow.Focus();
-                this.Close();
+                Close();
                 parentWindow.SearchableTaskWindow = null;
             }
 

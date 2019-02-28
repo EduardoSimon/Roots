@@ -15,7 +15,7 @@ namespace BT
         private Vector2 _drag;
         private Vector2 _mousePosition;
         private static BTEditor _editor;
-        private static float _zoom;
+        private static float _zoom = 1;
         private static Rect _zoomArea;
         private bool showWindows = true;
         public static BehaviorTreeGraph CurrentTree;
@@ -46,10 +46,8 @@ namespace BT
             ProcessNodeEvents(Event.current);
             
             Vector2 mouseScreenPos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
-            
-            //EditorZoomArea.Begin(zoom, zoomArea);
-
-            //EditorZoomArea.End();
+            _zoom = GUILayout.HorizontalSlider(_zoom, 1, 2);
+            EditorZoomArea.Begin(_zoom, position);
 
             DrawGlobalGuiControls();
 
@@ -57,7 +55,8 @@ namespace BT
             {
                 DrawWindows();
             }
-
+            
+            EditorZoomArea.End();
 
             if(GUI.changed) Repaint();
         }
@@ -210,7 +209,7 @@ namespace BT
                         
                 
                 case EventType.ScrollWheel:
-                    //_zoom = e.delta.y;
+                    _zoom = e.delta.y;
                     GUI.changed = true;
                     break;
                 
