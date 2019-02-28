@@ -14,13 +14,10 @@ namespace BT
         Aborted
     }
     
-    [CreateAssetMenu(menuName = "BT/Behavior Tree")]
+    //[CreateAssetMenu(menuName = "BT/Behavior Tree")]
     public class BehaviorTree : ScriptableObject
     {
-        #if UNITY_EDITOR
-        public Dictionary<BaseNodeView,BaseNodeView.NodeData> savedData = new Dictionary<BaseNodeView, BaseNodeView.NodeData>();
-        #endif
-        
+
         public ATask RootNode { get; private set; }
 
         public TaskStatus Tick()

@@ -10,6 +10,8 @@ namespace BT
         public Rect windowRect;
         public string windowTitle;
 
+        public bool isSelected { get; private set; }
+
         public virtual void DrawWindow()
         {
             GUILayout.Label( "Hi I am a " + task.GetType().Name);
@@ -45,7 +47,7 @@ namespace BT
                         if (windowRect.Contains(e.mousePosition))
                         {
                             GUI.changed = true;
-                            BTEditor.SelectedNode = this;
+                            isSelected = true;
                         }
                         else
                         {
@@ -56,7 +58,7 @@ namespace BT
                     break;
 
                 case EventType.MouseUp:
-                    BTEditor.SelectedNode = null;
+                    isSelected = false;
                     break;
 
             }
