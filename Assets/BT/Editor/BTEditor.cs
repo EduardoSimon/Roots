@@ -171,7 +171,7 @@ namespace BT
             Handles.BeginGUI();
             Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
  
-            _offset += _drag * 0.5f;
+            _offset += _drag;
             Vector3 newOffset = new Vector3(_offset.x % gridSpacing, _offset.y % gridSpacing, 0);
  
             for (int i = 0; i < widthDivs; i++)
@@ -269,13 +269,14 @@ namespace BT
         
         private void DragEverything(Event e)
         {
-            _drag = e.delta;
+            _drag = e.delta * (1/_currentZoom);
 
             foreach (var nodeView in _nodeViews)
             {
                 nodeView.Drag(_drag);
             }
 
+            _drag = e.delta * (0.27f/_currentZoom);
             GUI.changed = true;
         }
 
@@ -286,7 +287,7 @@ namespace BT
                 if (nodeView.isSelected)
                 {
                     _drag = Vector2.zero;
-                    nodeView.Drag(e.delta);
+                    nodeView.Drag(e.delta * (1/_currentZoom));
                     GUI.changed = true;
                     return true;
                 }
