@@ -4,58 +4,64 @@ using BT.Editor;
 using Editor;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = System.Object;
 
 namespace BT
 {
-    public class BTEditor : EditorWindow
+    public class BtEditor : EditorWindow
     {
         private static List<BaseNodeView> _nodeViews = new List<BaseNodeView>();
         private Vector2 _offset;
         private Vector2 _drag;
         private Vector2 _mousePosition;
-        private static BTEditor _editor;
-        private static float _zoom = 1;
+        private static BtEditor _editor;
         private static Rect _zoomArea;
-        private bool showWindows = true;
+        private bool _showWindows = true;
+        private float _currentZoom = 1;
         public static BehaviorTreeGraph CurrentTree;
 
-        public SearchTasksWindow SearchableTaskWindow;
-        private BaseNodeView SelectedNode;
+        [FormerlySerializedAs("SearchableTaskWindow")] public SearchTasksWindow searchableTaskWindow;
+        private BaseNodeView _selectedNode;
+
+        private const float MAX_ZOOM_DISTANCE = 10f;
+        private const float MIN_ZOOM_DISTANCE = 0.5f;
+        private const float ZOOM_STEP = 0.01f;
+
 
         [MenuItem("BT/Editor")]
         private static void Init()
         {
-            _editor = (BTEditor) EditorWindow.CreateInstance<BTEditor>();
+            _editor = (BtEditor) EditorWindow.CreateInstance<BtEditor>();
             _editor.titleContent = new GUIContent("BT Editor",Resources.Load<Texture>("star"),"A behavior tree visual editor for everyone");
             _editor.minSize = new Vector2(800,600);
             _editor.Show();
  
             _editor.wantsMouseMove = true;
             _nodeViews = new List<BaseNodeView>();
-            //zoom = 1f;
             //zoomArea = _editor.position;
         }
         
         private void OnGUI()
         {
             _mousePosition = Event.current.mousePosition;
+         
             DrawBackgroundGrid(20,0.2f,Color.grey);
             DrawBackgroundGrid(100,0.4f,Color.grey);
+            
             ProccessEvents(Event.current);
-            ProcessNodeEvents(Event.current);
             
             Vector2 mouseScreenPos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
-            _zoom = GUILayout.HorizontalSlider(_zoom, 1, 2);
-            EditorZoomArea.Begin(_zoom, position);
 
-            DrawGlobalGuiControls();
-
-            if (showWindows)
-            {
-                DrawWindows();
-            }
+            Rect controlsArea = DrawGlobalGuiControls();
             
+            EditorZoomArea.Begin(_currentZoom, new Rect(controlsArea.x,controlsArea.y + controlsArea.height,position.width,position.height - controlsArea.height));
+            
+            if (_showWindows)
+                DrawWindows();
+            
+            ProcessNodeEvents(Event.current);
+
             EditorZoomArea.End();
 
             if(GUI.changed) Repaint();
@@ -75,23 +81,25 @@ namespace BT
         private void ShowSearchTaskWindow(Event e)
         {
             //TODO refactor this method to show the window with correct measurements.
-            if (SearchableTaskWindow == null)
+            if (searchableTaskWindow == null)
             {
-                SearchableTaskWindow = CreateInstance<SearchTasksWindow>();
+                searchableTaskWindow = CreateInstance<SearchTasksWindow>();
                 Vector2 mouseScreenPos = GUIUtility.GUIToScreenPoint(e.mousePosition);
-                SearchableTaskWindow.parentWindow = this;
-                SearchableTaskWindow.position = new Rect(mouseScreenPos.x - position.width / 10,
+                searchableTaskWindow.parentWindow = this;
+                searchableTaskWindow.position = new Rect(mouseScreenPos.x - position.width / 10,
                     mouseScreenPos.y - position.height / 10, 300, 300);
-                SearchableTaskWindow.ShowPopup();
-                SearchableTaskWindow.Focus();
+                searchableTaskWindow.ShowPopup();
+                searchableTaskWindow.Focus();
             }
         }
         #endregion
 
         #region Drawing Methods
 
-        private void DrawGlobalGuiControls()
+        private Rect DrawGlobalGuiControls()
         {
+            Rect controlsArea = new Rect(0, 0, position.width, 30);
+            GUILayout.BeginArea(controlsArea);
             GUILayout.BeginHorizontal();
             
             EditorGUI.BeginChangeCheck();
@@ -106,8 +114,11 @@ namespace BT
                 SaveGraphData();
             
             if (GUILayout.Button("Show window"))
-                showWindows = !showWindows;
+                _showWindows = !_showWindows;
 
+            if (GUILayout.Button("Reset zoom"))
+                _currentZoom = 1;
+            
             if (GUILayout.Button("Clear Windows"))
             {
                 if (_nodeViews.Count > 0)
@@ -120,9 +131,14 @@ namespace BT
                     _nodeViews.Clear();
                 }
             }
-            
-            
             GUILayout.EndHorizontal();
+            
+            //GUILayout.BeginVertical();
+            //_zoom = GUILayout.HorizontalSlider(_zoom, 0, 6);
+            //GUILayout.EndVertical();
+
+            GUILayout.EndArea();
+            return controlsArea;
         }
         
 
@@ -190,7 +206,7 @@ namespace BT
                     {
                         if (DragWindowIfSelected(e)) return;
 
-                        DragEverything(e);
+                        DragEverything(e);                            
                     }
                     
                     break;
@@ -209,7 +225,16 @@ namespace BT
                         
                 
                 case EventType.ScrollWheel:
-                    _zoom = e.delta.y;
+                    if (e.delta.y > 0 && _currentZoom < MAX_ZOOM_DISTANCE)
+                    {
+                        _currentZoom += e.delta.y * ZOOM_STEP;
+                    }
+                    else if (e.delta.y < 0 && _currentZoom > MIN_ZOOM_DISTANCE)
+                    {
+                        //when zooming out delta is negative, thats why we add it.
+                        _currentZoom += e.delta.y * ZOOM_STEP;
+                    }
+                    
                     GUI.changed = true;
                     break;
                 
@@ -235,7 +260,7 @@ namespace BT
         public void OnSearchedTaskClicked(SearchTasksWindow.NodeType nodeType)
         {
             CreateNodeView(nodeType,
-                new Rect(SearchableTaskWindow.position.x + position.width/1000, _mousePosition.y, 200, 150),
+                new Rect(_mousePosition.x, _mousePosition.y, 200, 150),
                 nodeType.taskType.ToString());
             //without the type.fullname it does not work
 

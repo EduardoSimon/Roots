@@ -34,7 +34,7 @@ namespace Editor
         private SearchTreeNode _tree;
         [FormerlySerializedAs("_avaliableTasks")] public  Dictionary<string[],NodeType> _avaliableTasksDictionary = new Dictionary<string[], NodeType>();
 
-        public BTEditor parentWindow;
+        public BtEditor parentWindow;
                 
         private void OnEnable()
         {
@@ -85,7 +85,7 @@ namespace Editor
             {
                 parentWindow.Focus();
                 Close();
-                parentWindow.SearchableTaskWindow = null;
+                parentWindow.searchableTaskWindow = null;
             }
             #endif
             
@@ -93,7 +93,7 @@ namespace Editor
             {
                 parentWindow.Focus();
                 Close();
-                parentWindow.SearchableTaskWindow = null;
+                parentWindow.searchableTaskWindow = null;
             }
 
             GUI.skin = _skin;

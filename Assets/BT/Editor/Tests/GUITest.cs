@@ -14,7 +14,7 @@ namespace GUITests
         [UnityPlatform(RuntimePlatform.WindowsEditor)]
         public void Window_is_not_null()
         {
-            BTEditor editor = ScriptableObject.CreateInstance<BTEditor>();
+            BtEditor editor = ScriptableObject.CreateInstance<BtEditor>();
             editor.Show(true);
             Assert.IsNotNull(editor);      
         }
@@ -22,7 +22,7 @@ namespace GUITests
         [Test]
         public void Window_is_null_when_destroyed()
         {
-            BTEditor editor = ScriptableObject.CreateInstance<BTEditor>();
+            BtEditor editor = ScriptableObject.CreateInstance<BtEditor>();
             editor.Show(true);
             editor.Close();
             Assert.That(editor == null);

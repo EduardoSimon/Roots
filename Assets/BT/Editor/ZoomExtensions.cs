@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
  
 // Helper Rect extension methods
 public static class RectExtensions
@@ -53,7 +54,7 @@ public class EditorZoomArea
     {
         GUI.EndGroup();        // End the group Unity begins automatically for an EditorWindow to clip out the window tab. This allows us to draw outside of the size of the EditorWindow.
  
-        Rect clippedArea = screenCoordsArea.ScaleSizeBy(1.0f / zoomScale, new Vector2(screenCoordsArea.width/2, screenCoordsArea.height/2));
+        Rect clippedArea = screenCoordsArea.ScaleSizeBy(1.0f / zoomScale, screenCoordsArea.TopLeft());
         clippedArea.y += kEditorWindowTabHeight;
         GUI.BeginGroup(clippedArea);
  

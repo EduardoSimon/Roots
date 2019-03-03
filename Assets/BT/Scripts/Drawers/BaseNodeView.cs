@@ -14,7 +14,7 @@ namespace BT
 
         public virtual void DrawWindow()
         {
-            GUILayout.Label( "Hi I am a " + task.GetType().Name);
+            GUI.Label(new Rect(0,20,100,20),  "Hi I am a " + task.GetType().Name);
         }
 
         public virtual void DrawConnections()
@@ -46,6 +46,7 @@ namespace BT
                     {
                         if (windowRect.Contains(e.mousePosition))
                         {
+                            Debug.Log("Contained");
                             GUI.changed = true;
                             isSelected = true;
                         }
