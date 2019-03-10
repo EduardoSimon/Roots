@@ -39,7 +39,6 @@ namespace BT
  
             _editor.wantsMouseMove = true;
             _nodeViews = new List<BaseNodeView>();
-            //zoomArea = _editor.position;
         }
         
         private void OnGUI()
