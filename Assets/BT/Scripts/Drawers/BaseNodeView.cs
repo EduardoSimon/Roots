@@ -4,6 +4,7 @@ using UnityEngine;
 using BT;
 using TMPro;
 using BT.Editor;
+using BT.Scripts.Drawers;
 using Object = UnityEngine.Object;
 
 namespace BT
@@ -18,8 +19,6 @@ namespace BT
         public string windowTitle;
         public NodeSocket EntrySocket;
         public NodeSocket ExitSocket;
-        public event Action<NodeSocket> OnSocketClicked;
-        public event Action<NodeSocket> OnSocketHooked; 
         public bool isSelected { get; private set; }
 
         public virtual void Init()
@@ -59,16 +58,25 @@ namespace BT
 
         private void OnClickEntrySocket(NodeSocket socket)
         {
-            socket.isSocketClicked = !socket.isSocketClicked;
+            NodeSocket prevSocket;
             
-            if(socket.isSocketClicked)
-                OnSocketClicked?.Invoke(socket);
+            if (NodeSocket.ClickedSocket != null)
+            {
+                prevSocket = NodeSocket.ClickedSocket;
+                NodeSocket.ClickedSocket = null;
+
+                Vector2 initialPos = prevSocket.Position;
+                Vector2 endPos = socket.Position;
                 
-                
+                prevSocket._connections.Add(new NodeConnection(initialPos,endPos,Color.red));
+            }
+            
+            
         }
 
         public void OnClickExitSocket(NodeSocket socket)
         {
+            NodeSocket.ClickedSocket = socket;
         }
         
         public bool ProcessEvents(Event e)

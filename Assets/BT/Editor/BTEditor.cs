@@ -75,11 +75,10 @@ namespace BT
             instance.windowRect = windowRect;    
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
-            instance.OnSocketClicked += OnNodeSocketClicked;
             instance.Init();
         }
 
-        private void OnNodeSocketClicked(BaseNodeView.NodeSocket socket)
+        private void OnNodeSocketClicked(NodeSocket socket)
         {
         }
 
@@ -130,7 +129,6 @@ namespace BT
                 {
                     foreach (var view in _nodeViews)
                     {
-                        view.OnSocketClicked -= OnNodeSocketClicked;
                         DestroyImmediate(view);
                     }
     
@@ -155,7 +153,7 @@ namespace BT
 
             for (var index = 0; index < _nodeViews.Count; index++)
             {
-                _nodeViews[index].DrawConnections();
+                _nodeViews[index].DrawConnections(_drag);
 
                 _nodeViews[index].windowRect = GUI.Window(index, _nodeViews[index].windowRect, DrawNodeWindowCallback,_nodeViews[index].windowTitle);
 
@@ -227,6 +225,8 @@ namespace BT
                     {
                         ShowSearchTaskWindow(e);
                     }
+                    else if (e.keyCode == KeyCode.Escape && NodeSocket.ClickedSocket != null)
+                        NodeSocket.ClickedSocket = null;
                     break;
                         
                 
@@ -280,6 +280,11 @@ namespace BT
             foreach (var nodeView in _nodeViews)
             {
                 nodeView.Drag(_drag);
+                
+                foreach (var connection in nodeView.ExitSocket._connections)
+                {
+                    connection.Drag(_drag);
+                }
             }
 
             _drag = e.delta * (0.27f/_currentZoom);
