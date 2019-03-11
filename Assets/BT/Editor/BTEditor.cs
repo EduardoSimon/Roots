@@ -75,8 +75,14 @@ namespace BT
             instance.windowRect = windowRect;    
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
+            instance.OnSocketClicked += OnNodeSocketClicked;
+            instance.Init();
         }
-        
+
+        private void OnNodeSocketClicked(BaseNodeView.NodeSocket socket)
+        {
+        }
+
         private void ShowSearchTaskWindow(Event e)
         {
             //TODO refactor this method to show the window with correct measurements.
@@ -124,6 +130,7 @@ namespace BT
                 {
                     foreach (var view in _nodeViews)
                     {
+                        view.OnSocketClicked -= OnNodeSocketClicked;
                         DestroyImmediate(view);
                     }
     
