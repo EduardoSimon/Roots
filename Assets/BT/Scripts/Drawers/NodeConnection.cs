@@ -27,5 +27,11 @@ namespace BT.Scripts.Drawers
             _startPoint += drag;
             _endPoint += drag;
         }
+
+        public void Drag(Vector2 p1Drag, Vector2 p2Drag)
+        {
+            _startPoint += p1Drag;
+            _endPoint += p2Drag;
+        }
     }
 }

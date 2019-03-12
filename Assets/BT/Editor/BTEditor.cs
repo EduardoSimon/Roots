@@ -153,7 +153,7 @@ namespace BT
 
             for (var index = 0; index < _nodeViews.Count; index++)
             {
-                _nodeViews[index].DrawConnections(_drag);
+                _nodeViews[index].DrawConnections();
 
                 _nodeViews[index].windowRect = GUI.Window(index, _nodeViews[index].windowRect, DrawNodeWindowCallback,_nodeViews[index].windowTitle);
 
@@ -281,7 +281,15 @@ namespace BT
             {
                 nodeView.Drag(_drag);
                 
-                foreach (var connection in nodeView.ExitSocket._connections)
+                //the connection are stored in the exit socket
+                //TODO should I sotre the connection in the entrysocket aswell?
+                
+                foreach (var connection in nodeView.OutgoingConnections)
+                {
+                    connection.Drag(_drag);
+                }
+                
+                foreach (var connection in nodeView.IncomingConnections)
                 {
                     connection.Drag(_drag);
                 }
@@ -300,6 +308,16 @@ namespace BT
                     _drag = Vector2.zero;
                     nodeView.Drag(e.delta * (1/_currentZoom));
                     GUI.changed = true;
+
+                    foreach (var connection in nodeView.OutgoingConnections)
+                    {
+                        connection.Drag(e.delta * (1/_currentZoom),Vector2.zero);
+                    }
+
+                    foreach (var connection in nodeView.IncomingConnections)
+                    {
+                        connection.Drag(Vector2.zero,e.delta * (1/_currentZoom));
+                    }
                     return true;
                 }
             }

@@ -19,26 +19,25 @@ namespace BT
         
         private Rect _socketRect;
         private System.Action<NodeSocket> _onSocketClicked;
-        public List<NodeConnection> _connections = new List<NodeConnection>();
         
         private readonly NodeSocketType _socketType;
-        private readonly BaseNodeView _node;
-        
+        public BaseNodeView Node { get; }
+
 
         public NodeSocket(Rect socketRect, NodeSocketType type, BaseNodeView node,
             System.Action<NodeSocket> onSocketClicked)
         {
             _socketRect = socketRect;
             _socketType = type;
-            _node = node;
+            Node = node;
             _onSocketClicked = onSocketClicked;
 
         }
         
         public void Draw()
         {
-            _socketRect.x = _node.windowRect.xMin + _node.windowRect.width / 4;
-            _socketRect.y = _socketType == NodeSocketType.In ? _node.windowRect.yMin - BaseNodeView.SOCKET_HEIGHT + 10 : _node.windowRect.yMax - 10;
+            _socketRect.x = Node.windowRect.xMin + Node.windowRect.width / 4;
+            _socketRect.y = _socketType == NodeSocketType.In ? Node.windowRect.yMin - BaseNodeView.SOCKET_HEIGHT + 10 : Node.windowRect.yMax - 10;
 
             //TODO create custom style
             if (ClickedSocket == null || ClickedSocket != this)
@@ -62,8 +61,6 @@ namespace BT
                 GUI.changed = true;
             }
             
-            foreach (var connection in _connections)
-                connection.Draw();
         }
     }
 }

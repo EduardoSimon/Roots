@@ -1,9 +1,6 @@
-using System;
-using UnityEditor;
+
+using System.Collections.Generic;
 using UnityEngine;
-using BT;
-using TMPro;
-using BT.Editor;
 using BT.Scripts.Drawers;
 using Object = UnityEngine.Object;
 
@@ -19,6 +16,8 @@ namespace BT
         public string windowTitle;
         public NodeSocket EntrySocket;
         public NodeSocket ExitSocket;
+        public List<NodeConnection> IncomingConnections = new List<NodeConnection>();
+        public List<NodeConnection> OutgoingConnections = new List<NodeConnection>();
         public bool isSelected { get; private set; }
 
         public virtual void Init()
@@ -37,6 +36,16 @@ namespace BT
 
         public virtual void DrawConnections()
         {
+            for (int i = 0; i < IncomingConnections.Count; i++)
+            {
+                IncomingConnections[i].Draw();
+            }
+            
+            for (int i = 0; i < OutgoingConnections.Count; i++)
+            {
+                OutgoingConnections[i].Draw();
+            }
+            
             EntrySocket?.Draw();
             ExitSocket?.Draw();
         }
@@ -67,8 +76,9 @@ namespace BT
 
                 Vector2 initialPos = prevSocket.Position;
                 Vector2 endPos = socket.Position;
-                
-                prevSocket._connections.Add(new NodeConnection(initialPos,endPos,Color.red));
+
+                prevSocket.Node.OutgoingConnections.Add(new NodeConnection(initialPos, endPos, Color.yellow));
+                IncomingConnections.Add(new NodeConnection(initialPos,endPos,Color.red));
             }
             
             

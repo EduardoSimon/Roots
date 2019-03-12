@@ -39,7 +39,10 @@ namespace Editor
         private void OnEnable()
         {
             _skin = Resources.Load<GUISkin>("BTSkin");
+            
+            #if UNITY_EDITOR_WIN
             this.wantsMouseEnterLeaveWindow = true;
+            #endif
             
             GetTypes();
             _tree = CreateSearchTree();
@@ -89,7 +92,7 @@ namespace Editor
             }
             #endif
             
-            if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Escape && focusedWindow == this  || Event.current.type == EventType.MouseLeaveWindow)
+            if ((Event.current.type == EventType.KeyDown && !position.Contains(Event.current.mousePosition)) || (Event.current.keyCode == KeyCode.Escape && focusedWindow == this) || Event.current.keyCode == KeyCode.Escape  || Event.current.type == EventType.MouseLeaveWindow)
             {
                 parentWindow.Focus();
                 Close();
@@ -132,6 +135,10 @@ namespace Editor
                             Debug.Log("Creating a " + s + " task node.");
 
                             parentWindow.OnSearchedTaskClicked(_avaliableTasksDictionary[key]);
+                            
+                            parentWindow.Focus();
+                            Close();
+                            parentWindow.searchableTaskWindow = null;
                         }
                     }
                 }
