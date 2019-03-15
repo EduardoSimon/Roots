@@ -13,51 +13,50 @@ namespace BT
             Out,
         }
 
-        public static NodeSocket ClickedSocket = null;
+        public static NodeSocket CurrentClickedSocket = null;
 
-        public Vector2 Position => new Vector2(_socketRect.x,_socketRect.y);
+        public Vector2 Position => new Vector2(_socketRect.x + _socketRect.width/2,_socketRect.y);
         
         private Rect _socketRect;
-        private System.Action<NodeSocket> _onSocketClicked;
-        
-        private readonly NodeSocketType _socketType;
+        public static System.Action<NodeSocket> OnSocketClicked;
+
+        public NodeSocketType SocketType { get; }
         public BaseNodeView Node { get; }
+        public bool IsHooked { get; set; }
 
 
-        public NodeSocket(Rect socketRect, NodeSocketType type, BaseNodeView node,
-            System.Action<NodeSocket> onSocketClicked)
+        public NodeSocket(Rect socketRect, NodeSocketType type, BaseNodeView node)
         {
             _socketRect = socketRect;
-            _socketType = type;
+            SocketType = type;
             Node = node;
-            _onSocketClicked = onSocketClicked;
-
+            IsHooked = false;
         }
         
         public void Draw()
         {
             _socketRect.x = Node.windowRect.xMin + Node.windowRect.width / 4;
-            _socketRect.y = _socketType == NodeSocketType.In ? Node.windowRect.yMin - BaseNodeView.SOCKET_HEIGHT + 10 : Node.windowRect.yMax - 10;
+            _socketRect.y = SocketType == NodeSocketType.In ? Node.windowRect.yMin - BaseNodeView.SOCKET_HEIGHT + 10 : Node.windowRect.yMax - 10;
 
             //TODO create custom style
-            if (ClickedSocket == null || ClickedSocket != this)
+            if (CurrentClickedSocket == null || CurrentClickedSocket != this)
             {
                 if (GUI.Button(_socketRect, ""))
                 {
-                    _onSocketClicked?.Invoke(this);
+                    OnSocketClicked?.Invoke(this);
                 }
             }
-            else if(ClickedSocket == this)
+            else if(CurrentClickedSocket == this)
             {
                 if (GUI.Button(_socketRect, "", EditorStyles.radioButton))
                 {
-                    _onSocketClicked?.Invoke(this);
+                    OnSocketClicked?.Invoke(this);
                 }
             }
 
-            if (ClickedSocket != null)
+            if (CurrentClickedSocket != null)
             {
-                Handles.DrawLine(ClickedSocket.Position,Event.current.mousePosition);
+                Handles.DrawLine(CurrentClickedSocket.Position,Event.current.mousePosition);
                 GUI.changed = true;
             }
             

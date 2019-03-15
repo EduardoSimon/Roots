@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using BT.Scripts.Drawers;
@@ -16,15 +17,13 @@ namespace BT
         public string windowTitle;
         public NodeSocket EntrySocket;
         public NodeSocket ExitSocket;
-        public List<NodeConnection> IncomingConnections = new List<NodeConnection>();
-        public List<NodeConnection> OutgoingConnections = new List<NodeConnection>();
         public bool isSelected { get; private set; }
 
         public virtual void Init()
         {
             windowTitle = task.GetType().Name;
-            EntrySocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.In,this,OnClickEntrySocket);
-            ExitSocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.Out,this,OnClickExitSocket);
+            EntrySocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.In,this);
+            ExitSocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.Out,this);
         }
         
         public virtual void DrawWindow()
@@ -35,17 +34,8 @@ namespace BT
         }
 
         public virtual void DrawConnections()
-        {
-            for (int i = 0; i < IncomingConnections.Count; i++)
-            {
-                IncomingConnections[i].Draw();
-            }
-            
-            for (int i = 0; i < OutgoingConnections.Count; i++)
-            {
-                OutgoingConnections[i].Draw();
-            }
-            
+        {   
+            //the draw method takes into account the drag of the Node
             EntrySocket?.Draw();
             ExitSocket?.Draw();
         }
@@ -63,30 +53,6 @@ namespace BT
         public void Drag(Vector2 delta)
         {
             windowRect.position += delta;
-        }
-
-        private void OnClickEntrySocket(NodeSocket socket)
-        {
-            NodeSocket prevSocket;
-            
-            if (NodeSocket.ClickedSocket != null)
-            {
-                prevSocket = NodeSocket.ClickedSocket;
-                NodeSocket.ClickedSocket = null;
-
-                Vector2 initialPos = prevSocket.Position;
-                Vector2 endPos = socket.Position;
-
-                prevSocket.Node.OutgoingConnections.Add(new NodeConnection(initialPos, endPos, Color.yellow));
-                IncomingConnections.Add(new NodeConnection(initialPos,endPos,Color.red));
-            }
-            
-            
-        }
-
-        public void OnClickExitSocket(NodeSocket socket)
-        {
-            NodeSocket.ClickedSocket = socket;
         }
         
         public bool ProcessEvents(Event e)

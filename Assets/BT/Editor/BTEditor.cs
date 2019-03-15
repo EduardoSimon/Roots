@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using BT.Editor;
+using BT.Scripts.Drawers;
 using Editor;
 using UnityEditor;
+using UnityEditor.Graphs;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Object = System.Object;
@@ -12,6 +15,7 @@ namespace BT
     public class BtEditor : EditorWindow
     {
         private static List<BaseNodeView> _nodeViews = new List<BaseNodeView>();
+        private static List<NodeConnection> _connections = new List<NodeConnection>();
         private Vector2 _offset;
         private Vector2 _drag;
         private Vector2 _mousePosition;
@@ -19,15 +23,15 @@ namespace BT
         private static Rect _zoomArea;
         private bool _showWindows = true;
         private float _currentZoom = 1;
-        public static BehaviorTreeGraph CurrentTree;
-
-        [FormerlySerializedAs("SearchableTaskWindow")] public SearchTasksWindow searchableTaskWindow;
         private BaseNodeView _selectedNode;
+        
+        public SearchTasksWindow searchableTaskWindow;
 
         private const float MAX_ZOOM_DISTANCE = 10f;
         private const float MIN_ZOOM_DISTANCE = 0.5f;
         private const float ZOOM_STEP = 0.01f;
 
+        public static BehaviorTreeGraph CurrentTree;
 
         [MenuItem("BT/Editor")]
         private static void Init()
@@ -39,6 +43,9 @@ namespace BT
  
             _editor.wantsMouseMove = true;
             _nodeViews = new List<BaseNodeView>();
+            _connections = new List<NodeConnection>();
+            
+            NodeSocket.OnSocketClicked += OnNodeSocketClicked;
         }
         
         private void OnGUI()
@@ -55,6 +62,11 @@ namespace BT
             Rect controlsArea = DrawGlobalGuiControls();
             
             EditorZoomArea.Begin(_currentZoom, new Rect(controlsArea.x,controlsArea.y + controlsArea.height,position.width,position.height - controlsArea.height));
+
+            foreach (var connection in _connections)
+            {
+                connection.Draw();
+            }
             
             if (_showWindows)
                 DrawWindows();
@@ -71,6 +83,10 @@ namespace BT
         {
             BaseNodeView instance = ScriptableObject.CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
             System.Diagnostics.Debug.Assert(instance != null, nameof(instance) + " != null");
+
+            if(NodeSocket.OnSocketClicked == null)
+                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
+
             instance.task = CreateInstance(nodeType.taskType.FullName) as ATask;
             instance.windowRect = windowRect;    
             instance.windowTitle = windowTitle;
@@ -78,8 +94,25 @@ namespace BT
             instance.Init();
         }
 
-        private void OnNodeSocketClicked(NodeSocket socket)
+        private static void OnNodeSocketClicked(NodeSocket socket)
         {
+            Debug.Log("Invoked on clicked socket event");
+            if (socket.SocketType == NodeSocket.NodeSocketType.In)
+            {
+                if (NodeSocket.CurrentClickedSocket != null && !socket.IsHooked)
+                {
+                    var clickedSocket = NodeSocket.CurrentClickedSocket;
+                    _connections.Add(new NodeConnection(clickedSocket,socket,Color.white));
+                    clickedSocket.IsHooked = true;
+                    socket.IsHooked = true;
+                    
+                    NodeSocket.CurrentClickedSocket = null;
+                }
+            }
+            else if(socket.SocketType == NodeSocket.NodeSocketType.Out && !socket.IsHooked)
+            {
+                NodeSocket.CurrentClickedSocket = socket;
+            }
         }
 
         private void ShowSearchTaskWindow(Event e)
@@ -123,7 +156,7 @@ namespace BT
             if (GUILayout.Button("Reset zoom"))
                 _currentZoom = 1;
             
-            if (GUILayout.Button("Clear Windows"))
+            if (GUILayout.Button("Clear Board"))
             {
                 if (_nodeViews.Count > 0)
                 {
@@ -134,6 +167,8 @@ namespace BT
     
                     _nodeViews.Clear();
                 }
+
+                _connections.Clear();
             }
             GUILayout.EndHorizontal();
             
@@ -225,8 +260,8 @@ namespace BT
                     {
                         ShowSearchTaskWindow(e);
                     }
-                    else if (e.keyCode == KeyCode.Escape && NodeSocket.ClickedSocket != null)
-                        NodeSocket.ClickedSocket = null;
+                    else if (e.keyCode == KeyCode.Escape && NodeSocket.CurrentClickedSocket != null)
+                        NodeSocket.CurrentClickedSocket = null;
                     break;
                         
                 
@@ -280,19 +315,6 @@ namespace BT
             foreach (var nodeView in _nodeViews)
             {
                 nodeView.Drag(_drag);
-                
-                //the connection are stored in the exit socket
-                //TODO should I sotre the connection in the entrysocket aswell?
-                
-                foreach (var connection in nodeView.OutgoingConnections)
-                {
-                    connection.Drag(_drag);
-                }
-                
-                foreach (var connection in nodeView.IncomingConnections)
-                {
-                    connection.Drag(_drag);
-                }
             }
 
             _drag = e.delta * (0.27f/_currentZoom);
@@ -309,15 +331,6 @@ namespace BT
                     nodeView.Drag(e.delta * (1/_currentZoom));
                     GUI.changed = true;
 
-                    foreach (var connection in nodeView.OutgoingConnections)
-                    {
-                        connection.Drag(e.delta * (1/_currentZoom),Vector2.zero);
-                    }
-
-                    foreach (var connection in nodeView.IncomingConnections)
-                    {
-                        connection.Drag(Vector2.zero,e.delta * (1/_currentZoom));
-                    }
                     return true;
                 }
             }

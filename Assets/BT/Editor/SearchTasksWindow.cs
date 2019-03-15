@@ -92,7 +92,7 @@ namespace Editor
             }
             #endif
             
-            if ((Event.current.type == EventType.KeyDown && !position.Contains(Event.current.mousePosition)) || (Event.current.keyCode == KeyCode.Escape && focusedWindow == this) || Event.current.keyCode == KeyCode.Escape  || Event.current.type == EventType.MouseLeaveWindow)
+            if (!position.Contains(GUIUtility.GUIToScreenPoint(Event.current.mousePosition)) || (Event.current.keyCode == KeyCode.Escape && focusedWindow == this) || Event.current.keyCode == KeyCode.Escape  || Event.current.type == EventType.MouseLeaveWindow)
             {
                 parentWindow.Focus();
                 Close();
@@ -157,6 +157,10 @@ namespace Editor
                         if (GUILayout.Button(node.Title, EditorStyles.miniButton))
                         {
                             parentWindow.OnSearchedTaskClicked(node.NodeType);
+                            
+                            parentWindow.Focus();
+                            Close();
+                            parentWindow.searchableTaskWindow = null;
                         }
                         EditorGUI.indentLevel--;
                     }
