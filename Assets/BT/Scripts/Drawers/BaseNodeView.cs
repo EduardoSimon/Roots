@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace BT
 {
-    public abstract partial class BaseNodeView : ScriptableObject
+    public abstract class BaseNodeView : ScriptableObject
     {
         public const int SOCKET_WIDTH = 100;
         public const int SOCKET_HEIGHT = 20;
@@ -40,7 +40,7 @@ namespace BT
             ExitSocket?.Draw();
         }
 
-        public virtual NodeData SaveData()
+        public virtual NodeData Save()
         {
             return new NodeData()
             {
@@ -91,9 +91,6 @@ namespace BT
             public ATask task;
             public Rect windowRect;
             public string windowTitle;
-            public Object[] optionalParams;
         }
     }
-    
-    
 }

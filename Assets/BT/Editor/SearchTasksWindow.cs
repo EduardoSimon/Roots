@@ -114,37 +114,35 @@ namespace Editor
 
             GUILayout.BeginVertical();
                 if(!string.IsNullOrEmpty(searchString))
-                    SearchTasks();
+                    TraverseSearching(_tree,searchString);
                 else
                     TraverseDrawing(_tree);
             GUILayout.EndVertical();
         }
 
-
-
-        private void SearchTasks()
+        public void TraverseSearching(SearchTreeNode root, string searchedWord)
         {
-            foreach (var key in _avaliableTasksDictionary.Keys)
+            if (!root.HasChildren() && root.Title.ToLower().Contains(searchedWord.ToLower())) // it is a leaf
             {
-                foreach (var s in key)
+                if (GUILayout.Button(root.Title, EditorStyles.miniButton))
                 {
-                    if (s.ToLower().Contains(searchString.ToLower()))
-                    {
-                        if (GUILayout.Button(s, EditorStyles.miniButton))
-                        {
-                            Debug.Log("Creating a " + s + " task node.");
+                    Debug.Log("Creating a " + root.Title + " task node.");
 
-                            parentWindow.OnSearchedTaskClicked(_avaliableTasksDictionary[key]);
+                    parentWindow.OnSearchedTaskClicked(root.NodeType);
                             
-                            parentWindow.Focus();
-                            Close();
-                            parentWindow.searchableTaskWindow = null;
-                        }
-                    }
+                    parentWindow.Focus();
+                    Close();
+                    parentWindow.searchableTaskWindow = null;
+                }
+            }
+            else
+            {
+                foreach (var child in root.Children)
+                {
+                    TraverseSearching(child,searchedWord);
                 }
             }
         }
-        
         public void TraverseDrawing(SearchTreeNode node)
         {
             if (node.Parent != null)

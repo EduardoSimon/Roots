@@ -24,6 +24,7 @@ namespace BT
         private bool _showWindows = true;
         private float _currentZoom = 1;
         private BaseNodeView _selectedNode;
+        private static bool _autoSave = true;
         
         public SearchTasksWindow searchableTaskWindow;
 
@@ -92,6 +93,9 @@ namespace BT
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
             instance.Init();
+            
+            if(_autoSave)
+                SaveGraphData();
         }
 
         private static void OnNodeSocketClicked(NodeSocket socket)
@@ -107,6 +111,7 @@ namespace BT
                     socket.IsHooked = true;
                     
                     NodeSocket.CurrentClickedSocket = null;
+                        
                 }
             }
             else if(socket.SocketType == NodeSocket.NodeSocketType.Out && !socket.IsHooked)
@@ -141,12 +146,19 @@ namespace BT
             
             EditorGUI.BeginChangeCheck();
             CurrentTree = EditorGUILayout.ObjectField(CurrentTree,typeof(BehaviorTreeGraph),false) as BehaviorTreeGraph;
+            if (EditorGUI.EndChangeCheck())
+            {
+                GUI.FocusControl(null);
+                if(CurrentTree != null)
+                    LoadTreeGraph();
+            }
+
+            UnityEditor.EditorGUILayout.Separator();
+            EditorGUI.BeginChangeCheck();
+            _autoSave = EditorGUILayout.Toggle("Autosave Enabled", _autoSave);
             if(EditorGUI.EndChangeCheck())
                 GUI.FocusControl(null);
-
-            if (GUILayout.Button("Load Graph Data"))
-                LoadTreeGraph();
-
+            
             if (GUILayout.Button("Save Graph Data"))
                 SaveGraphData();
             
@@ -363,19 +375,27 @@ namespace BT
         #region Saving System
         private void SaveGraphData()
         {
-            if (CurrentTree.savedData.Count != 0)
+            if (CurrentTree != null)
             {
-                CurrentTree.savedData.Clear();
-                Debug.Log("Overriding the data");
+                if (CurrentTree.SavedNodes.Count != 0 || CurrentTree.SavedConnections.Count != 0)
+                {
+                    CurrentTree.SavedNodes.Clear();
+                    CurrentTree.SavedConnections.Clear();
+                    Debug.Log("Overriding the data");
+                }
+            
+                foreach (var nodeView in _nodeViews)
+                {
+                    CurrentTree.SavedNodes[nodeView] = nodeView.Save();
+                }
+
+                foreach (var connection in _connections)
+                {
+                    CurrentTree.SavedConnections[connection] = connection.Save();
+                }
+            
+                Debug.Log("Saved " + CurrentTree.SavedNodes.Count + " nodes.");
             }
-            
-            foreach (var nodeView in _nodeViews)
-            {
-                CurrentTree.savedData[nodeView] = nodeView.SaveData();
-            }
-            
-            Debug.Log("Saved " + CurrentTree.savedData.Count + " nodes.");
-            
         }
 
         private void LoadTreeGraph()
@@ -387,16 +407,23 @@ namespace BT
             else
             {
                 _nodeViews.Clear();
+                _connections.Clear();
                 
-                foreach (var savedDataKey in CurrentTree.savedData.Keys)
+                foreach (var savedDataKey in CurrentTree.SavedNodes.Keys)
                 {
-                    BaseNodeView.NodeData data = CurrentTree.savedData[savedDataKey];
+                    BaseNodeView.NodeData data = CurrentTree.SavedNodes[savedDataKey];
                     SearchTasksWindow.NodeType type = new SearchTasksWindow.NodeType(data.task.GetType(), typeof(DefaultNodeView));
                     CreateNodeView(type,data.windowRect,data.windowTitle);
                 }
                 
-                Debug.Log("Loaded " + _nodeViews.Count + "nodes");
+                foreach (var savedConnection in CurrentTree.SavedConnections.Keys)
+                {
+                    NodeConnection.ConnectionData data = CurrentTree.SavedConnections[savedConnection];
+                    NodeConnection connection = new NodeConnection(data.StartSocket,data.EndSocket,data.ConnectionColor);
+                    _connections.Add(connection);
+                }
 
+                GUI.changed = true;
             }
         }
         
