@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace BT
 {
+    [System.Serializable]
     public class NodeSocket
     {
         public enum NodeSocketType
@@ -21,7 +22,13 @@ namespace BT
         public static System.Action<NodeSocket> OnSocketClicked;
 
         public NodeSocketType SocketType { get; }
-        public BaseNodeView Node { get; }
+
+
+        private BaseNodeView _node;
+        public BaseNodeView Node
+        {
+            get { return _node; }
+        }
         public bool IsHooked { get; set; }
 
 
@@ -29,7 +36,7 @@ namespace BT
         {
             _socketRect = socketRect;
             SocketType = type;
-            Node = node;
+            _node = node;
             IsHooked = false;
         }
         

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BT.Editor;
 using BT.Scripts.Drawers;
 using Editor;
@@ -7,6 +8,7 @@ using UnityEditor;
 using UnityEditor.Graphs;
 using UnityEditor.MemoryProfiler;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Object = System.Object;
 
@@ -24,7 +26,10 @@ namespace BT
         private bool _showWindows = true;
         private float _currentZoom = 1;
         private BaseNodeView _selectedNode;
-        private static bool _autoSave = true;
+        private bool _autoSave = false;
+        private BaseNodeView _rightClickedNode = null;
+        private GUISkin _skin;
+        private TooltipWindow _tooltipWindow;
         
         public SearchTasksWindow searchableTaskWindow;
 
@@ -39,18 +44,37 @@ namespace BT
         {
             _editor = (BtEditor) EditorWindow.CreateInstance<BtEditor>();
             _editor.titleContent = new GUIContent("BT Editor",Resources.Load<Texture>("star"),"A behavior tree visual editor for everyone");
-            _editor.minSize = new Vector2(800,600);
+            _editor.minSize = new Vector2(200,200);
             _editor.Show();
  
             _editor.wantsMouseMove = true;
             _nodeViews = new List<BaseNodeView>();
             _connections = new List<NodeConnection>();
-            
-            NodeSocket.OnSocketClicked += OnNodeSocketClicked;
         }
-        
+
+        private void OnEnable()
+        {
+            _skin = Resources.Load<GUISkin>("BTSkin");
+            
+            if(NodeSocket.OnSocketClicked == null)
+                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
+            
+            BaseNodeView.OnNodeRightClicked += view =>  _rightClickedNode = view ;
+            
+            _nodeViews = new List<BaseNodeView>();
+            _connections = new List<NodeConnection>();
+            
+            if(CurrentTree != null)
+                LoadTreeGraph();
+
+            _tooltipWindow = null;
+        }
+
         private void OnGUI()
         {
+            if(CurrentTree == null)
+                this.ShowNotification(new GUIContent("Please Select a Graph before you start using the tool",Resources.Load<Texture>("tree_icon")));
+
             _mousePosition = Event.current.mousePosition;
          
             DrawBackgroundGrid(20,0.2f,Color.grey);
@@ -85,39 +109,16 @@ namespace BT
             BaseNodeView instance = ScriptableObject.CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
             System.Diagnostics.Debug.Assert(instance != null, nameof(instance) + " != null");
 
-            if(NodeSocket.OnSocketClicked == null)
-                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
-
             instance.task = CreateInstance(nodeType.taskType.FullName) as ATask;
             instance.windowRect = windowRect;    
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
             instance.Init();
             
+            instance.OnClickedNode += OnClickedNode;
+
             if(_autoSave)
                 SaveGraphData();
-        }
-
-        private static void OnNodeSocketClicked(NodeSocket socket)
-        {
-            Debug.Log("Invoked on clicked socket event");
-            if (socket.SocketType == NodeSocket.NodeSocketType.In)
-            {
-                if (NodeSocket.CurrentClickedSocket != null && !socket.IsHooked)
-                {
-                    var clickedSocket = NodeSocket.CurrentClickedSocket;
-                    _connections.Add(new NodeConnection(clickedSocket,socket,Color.white));
-                    clickedSocket.IsHooked = true;
-                    socket.IsHooked = true;
-                    
-                    NodeSocket.CurrentClickedSocket = null;
-                        
-                }
-            }
-            else if(socket.SocketType == NodeSocket.NodeSocketType.Out && !socket.IsHooked)
-            {
-                NodeSocket.CurrentClickedSocket = socket;
-            }
         }
 
         private void ShowSearchTaskWindow(Event e)
@@ -143,14 +144,17 @@ namespace BT
             Rect controlsArea = new Rect(0, 0, position.width, 30);
             GUILayout.BeginArea(controlsArea);
             GUILayout.BeginHorizontal();
-            
+
             EditorGUI.BeginChangeCheck();
             CurrentTree = EditorGUILayout.ObjectField(CurrentTree,typeof(BehaviorTreeGraph),false) as BehaviorTreeGraph;
             if (EditorGUI.EndChangeCheck())
             {
                 GUI.FocusControl(null);
-                if(CurrentTree != null)
+                if (CurrentTree != null)
+                {
+                    this.RemoveNotification();
                     LoadTreeGraph();
+                }
             }
 
             UnityEditor.EditorGUILayout.Separator();
@@ -168,20 +172,7 @@ namespace BT
             if (GUILayout.Button("Reset zoom"))
                 _currentZoom = 1;
             
-            if (GUILayout.Button("Clear Board"))
-            {
-                if (_nodeViews.Count > 0)
-                {
-                    foreach (var view in _nodeViews)
-                    {
-                        DestroyImmediate(view);
-                    }
-    
-                    _nodeViews.Clear();
-                }
-
-                _connections.Clear();
-            }
+            
             GUILayout.EndHorizontal();
             
             //GUILayout.BeginVertical();
@@ -203,7 +194,6 @@ namespace BT
                 _nodeViews[index].DrawConnections();
 
                 _nodeViews[index].windowRect = GUI.Window(index, _nodeViews[index].windowRect, DrawNodeWindowCallback,_nodeViews[index].windowTitle);
-
             }
             
             EndWindows(); 
@@ -245,6 +235,7 @@ namespace BT
         
         private void ProccessEvents(Event e)
         {
+
             _drag = Vector2.zero;
             switch (e.type)
             {
@@ -263,7 +254,7 @@ namespace BT
                     break;
 
                 case EventType.ContextClick:
-                    ProcessRightClickEvent();
+                    ProcessRightClickEvent(e);
                     break;
                 
                 case EventType.KeyUp:
@@ -350,25 +341,95 @@ namespace BT
             return false;
         }
 
-        private void ProcessRightClickEvent()
+        private void ProcessRightClickEvent(Event e)
         {
             Debug.Log("Right Clicked the window");
             GenericMenu genericMenu = new GenericMenu();
-            genericMenu.AddItem(new GUIContent("Add Task", "Add a built-in task or a custom made one."), false, () =>
+
+            if (_rightClickedNode)
             {
+                genericMenu.AddItem(new GUIContent("Delete Node", "Delete the following node."),false, () =>
+                {
+                    List<int> connectionsToRemove = new List<int>();
+                    
+                    foreach (var connection in _connections)
+                    {
+                        if (connection.EndSocket == _rightClickedNode.EntrySocket ||
+                            connection.StartSocket == _rightClickedNode.ExitSocket)
+                        {
+                            connectionsToRemove.Add(_connections.IndexOf(connection));
+                        }
+                    }
 
-
-               
-            });
+                    for (int i = 0; i < connectionsToRemove.Count; i++)
+                    {
+                        _connections.RemoveAt(connectionsToRemove[i]);
+                    }
+                    
+                    _nodeViews.Remove(_rightClickedNode);
+                    _rightClickedNode = null;
+                    
+                    SaveGraphData();
+                    });
+            }
+            else
+            {
+                genericMenu.AddItem(new GUIContent("Add Task", "Add a built-in task or a custom made one."), false, () =>
+                {
+                    ShowSearchTaskWindow(e);
+                });
+                genericMenu.AddSeparator("");
+                genericMenu.AddItem(new GUIContent("About", "about the library"), false, () =>
+                {
+                    Debug.Log("Author's name is Eduardo Simon Picon.");
+                    Application.OpenURL("https://www.eduardosimonpicon.com");
+                });
+            }
             
-            genericMenu.AddSeparator("");
-            genericMenu.AddItem(new GUIContent("About", "about the library"), false, () =>
-            {
-                
-                Debug.Log("Author's name is Eduardo Simon Picon.");
-            });
-
             genericMenu.ShowAsContext();
+        }
+        
+        
+        private void OnNodeSocketClicked(NodeSocket socket)
+        {
+            Debug.Log("Invoked on clicked socket event");
+            if (socket.SocketType == NodeSocket.NodeSocketType.In)
+            {
+                if (NodeSocket.CurrentClickedSocket != null && !socket.IsHooked)
+                {
+                    var clickedSocket = NodeSocket.CurrentClickedSocket;
+                    _connections.Add(new NodeConnection(clickedSocket,socket,Color.white));
+                    clickedSocket.IsHooked = true;
+                    socket.IsHooked = true;
+                    
+                    NodeSocket.CurrentClickedSocket = null;
+                        
+                }
+            }
+            else if(socket.SocketType == NodeSocket.NodeSocketType.Out && !socket.IsHooked)
+            {
+                NodeSocket.CurrentClickedSocket = socket;
+            }
+        }
+        
+        private void OnClickedNode(BaseNodeView node)
+        {
+            TaskTooltipAttribute[] attributes = (TaskTooltipAttribute[]) node.task.GetType().GetCustomAttributes(typeof(TaskTooltipAttribute), true);
+
+            if (attributes.Length > 0)
+            {
+                TaskTooltipAttribute attribute = (TaskTooltipAttribute) attributes.First();
+
+                if (attribute != null)
+                {
+                    _tooltipWindow = _tooltipWindow == null ? CreateInstance<TooltipWindow>() : GetWindow<TooltipWindow>();
+                            
+                    _tooltipWindow.position = new Rect(_editor.position.xMin + 20,_editor.position.yMax - 100,200,80);
+                    _tooltipWindow.Tooltip = attribute.Tooltip;
+                    _tooltipWindow.ShowPopup();
+                }
+                    
+            }
         }
         #endregion
         
@@ -386,12 +447,12 @@ namespace BT
             
                 foreach (var nodeView in _nodeViews)
                 {
-                    CurrentTree.SavedNodes[nodeView] = nodeView.Save();
+                    CurrentTree.SavedNodes.Add(nodeView);
                 }
 
                 foreach (var connection in _connections)
                 {
-                    CurrentTree.SavedConnections[connection] = connection.Save();
+                    CurrentTree.SavedConnections.Add(connection);
                 }
             
                 Debug.Log("Saved " + CurrentTree.SavedNodes.Count + " nodes.");
@@ -408,19 +469,15 @@ namespace BT
             {
                 _nodeViews.Clear();
                 _connections.Clear();
-                
-                foreach (var savedDataKey in CurrentTree.SavedNodes.Keys)
+
+                for (int i = 0; i < CurrentTree.SavedNodes.Count; i++)
                 {
-                    BaseNodeView.NodeData data = CurrentTree.SavedNodes[savedDataKey];
-                    SearchTasksWindow.NodeType type = new SearchTasksWindow.NodeType(data.task.GetType(), typeof(DefaultNodeView));
-                    CreateNodeView(type,data.windowRect,data.windowTitle);
+                    _nodeViews.Add(CurrentTree.SavedNodes[i]);
                 }
                 
-                foreach (var savedConnection in CurrentTree.SavedConnections.Keys)
+                foreach (var savedConnection in CurrentTree.SavedConnections)
                 {
-                    NodeConnection.ConnectionData data = CurrentTree.SavedConnections[savedConnection];
-                    NodeConnection connection = new NodeConnection(data.StartSocket,data.EndSocket,data.ConnectionColor);
-                    _connections.Add(connection);
+                    _connections.Add(savedConnection);
                 }
 
                 GUI.changed = true;

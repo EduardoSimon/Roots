@@ -4,6 +4,7 @@ using System.Linq;
 namespace BT
 {
     [SearchMenu("Composites/Selector")]
+    [TaskTooltip("A selector is bla bla bla")]
     public class Selector : ATask, IComposite
     {
         public List<ATask> Children { get; private set; }

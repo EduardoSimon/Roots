@@ -17,12 +17,14 @@
               <e p="MockAction.cs" t="Include" />
               <e p="MockTask.cs" t="Include" />
             </e>
+            <e p="TooltipWindow.cs" t="Include" />
             <e p="ZoomExtensions.cs" t="Include" />
           </e>
           <e p="Scripts" t="Include">
             <e p="Attributes" t="Include">
               <e p="CustomNodeDrawerAttribute.cs" t="Include" />
               <e p="SearchMenuAttribute.cs" t="Include" />
+              <e p="TaskTooltipAttribute.cs" t="Include" />
             </e>
             <e p="BehaviorTree.cs" t="Include" />
             <e p="BehaviorTreeGraph.cs" t="Include" />
@@ -81,9 +83,7 @@
       <e p="Library" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
-      <e p="Temp" t="ExcludeRecursive">
-        <e p="bin" t="ExcludeRecursive" />
-      </e>
+      <e p="Temp/bin" t="ExcludeRecursive" />
       <e p="TFG.sln" t="IncludeFlat" />
     </e>
   </component>

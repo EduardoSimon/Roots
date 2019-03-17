@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace BT
 {
     [CustomNodeDrawer(typeof(SequenceView))]
     [SearchMenu("Composites/Sequence")]
-    public class Sequence : AAction, IComposite
+    [TaskTooltip("BALABABAB sequence")]
+    public class Sequence : ATask, IComposite
     {
         public List<ATask> Children { get; private set; }
 
@@ -15,6 +17,11 @@ namespace BT
             Children = children != null ? children.ToList() : new List<ATask>();
 
             Status = TaskStatus.NonInitialized;
+        }
+
+        protected override void OnInitialize()
+        {
+            throw new System.NotImplementedException();
         }
 
         protected override TaskStatus Update()
@@ -37,6 +44,11 @@ namespace BT
 
             //if it exits the previous loop something went wrong.
             return TaskStatus.Invalid;
+        }
+
+        protected override void OnTerminate(TaskStatus status)
+        {
+            throw new System.NotImplementedException();
         }
 
         public override string ToString()

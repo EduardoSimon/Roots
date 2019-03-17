@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using BT.Scripts.Drawers;
 using Object = UnityEngine.Object;
@@ -17,10 +18,17 @@ namespace BT
         public string windowTitle;
         public NodeSocket EntrySocket;
         public NodeSocket ExitSocket;
+        public bool tooltipShown = false;
         public bool isSelected { get; private set; }
+        
+        public static event Action<BaseNodeView> OnNodeRightClicked;
+        public event Action<BaseNodeView> OnClickedNode;
 
+        private GUISkin _skin;
+            
         public virtual void Init()
         {
+            _skin = Resources.Load<GUISkin>("BTSkin");
             windowTitle = task.GetType().Name;
             EntrySocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.In,this);
             ExitSocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.Out,this);
@@ -40,16 +48,6 @@ namespace BT
             ExitSocket?.Draw();
         }
 
-        public virtual NodeData Save()
-        {
-            return new NodeData()
-            {
-                task = task,
-                windowRect = windowRect,
-                windowTitle = windowTitle
-            };
-        }
-
         public void Drag(Vector2 delta)
         {
             windowRect.position += delta;
@@ -60,17 +58,25 @@ namespace BT
             switch (e.type)
             {
                 case EventType.MouseDown:
-                    if (e.button == 0)
+                    switch (e.button)
                     {
-                        if (windowRect.Contains(e.mousePosition))
-                        {
-                            Debug.Log("Contained");
-                            GUI.changed = true;
+                        case 0 when windowRect.Contains(e.mousePosition):
                             isSelected = true;
-                        }
-                        else
-                        {
+
+                             OnClickedNode?.Invoke(this);
+
+                            
                             GUI.changed = true;
+                            break;
+                        
+                        case 0:
+                            GUI.changed = true;
+                            break;
+                        case 1:
+                        {
+                            if(windowRect.Contains(e.mousePosition))
+                                OnNodeRightClicked?.Invoke(this);
+                            break;
                         }
                     }
 
@@ -79,18 +85,11 @@ namespace BT
                 case EventType.MouseUp:
                     isSelected = false;
                     break;
-
+               
             }
 
             return false;
 
-        }
-
-        public struct NodeData
-        {
-            public ATask task;
-            public Rect windowRect;
-            public string windowTitle;
         }
     }
 }
