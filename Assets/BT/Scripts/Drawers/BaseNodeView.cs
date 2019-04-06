@@ -4,20 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using BT.Scripts.Drawers;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 namespace BT
 {
     public abstract class BaseNodeView : ScriptableObject
     {
-        public const int SOCKET_WIDTH = 100;
-        public const int SOCKET_HEIGHT = 20;
+        private const int SocketWidth = 100;
+        public const int SocketHeight = 40;
         
         public ATask task;
         public Rect windowRect;
         public string windowTitle;
-        public NodeSocket EntrySocket;
-        public NodeSocket ExitSocket;
+        public NodeSocket entrySocket;
+        public NodeSocket exitSocket;
         public bool tooltipShown = false;
         public bool isSelected { get; private set; }
         
@@ -25,13 +26,24 @@ namespace BT
         public event Action<BaseNodeView> OnClickedNode;
 
         private GUISkin _skin;
-            
-        public virtual void Init()
+        private Guid? _guid;
+
+        public Guid? GUID
+        {
+            get { return _guid; }
+        }
+
+        public virtual void Init(Guid? guid)
         {
             _skin = Resources.Load<GUISkin>("BTSkin");
             windowTitle = task.GetType().Name;
-            EntrySocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.In,this);
-            ExitSocket = new NodeSocket(new Rect(0,0,SOCKET_WIDTH,SOCKET_HEIGHT),NodeSocket.NodeSocketType.Out,this);
+            entrySocket = new NodeSocket(new Rect(0,0,SocketWidth,SocketHeight),NodeSocket.NodeSocketType.In,this);
+            exitSocket = new NodeSocket(new Rect(0,0,SocketWidth,SocketHeight),NodeSocket.NodeSocketType.Out,this);
+
+            if (guid == null)
+                _guid = Guid.NewGuid();
+            else
+                _guid = guid;
         }
         
         public virtual void DrawWindow()
@@ -44,8 +56,10 @@ namespace BT
         public virtual void DrawConnections()
         {   
             //the draw method takes into account the drag of the Node
-            EntrySocket?.Draw();
-            ExitSocket?.Draw();
+            entrySocket?.ProcessEvent(Event.current);
+            entrySocket?.Draw();
+            exitSocket?.ProcessEvent(Event.current);
+            exitSocket?.Draw();
         }
 
         public void Drag(Vector2 delta)
@@ -65,7 +79,6 @@ namespace BT
 
                              OnClickedNode?.Invoke(this);
 
-                            
                             GUI.changed = true;
                             break;
                         
@@ -90,6 +103,18 @@ namespace BT
 
             return false;
 
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object other)
+        {
+            BaseNodeView node = other as BaseNodeView;
+
+            return node != null && node._guid == this._guid;
         }
     }
 }

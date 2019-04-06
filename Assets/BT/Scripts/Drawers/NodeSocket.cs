@@ -43,7 +43,7 @@ namespace BT
         public void Draw()
         {
             _socketRect.x = Node.windowRect.xMin + Node.windowRect.width / 4;
-            _socketRect.y = SocketType == NodeSocketType.In ? Node.windowRect.yMin - BaseNodeView.SOCKET_HEIGHT + 10 : Node.windowRect.yMax - 10;
+            _socketRect.y = SocketType == NodeSocketType.In ? Node.windowRect.yMin - BaseNodeView.SocketHeight + 10 : Node.windowRect.yMax - 10;
 
             //TODO create custom style
             if (CurrentClickedSocket == null || CurrentClickedSocket != this)
@@ -55,7 +55,7 @@ namespace BT
             }
             else if(CurrentClickedSocket == this)
             {
-                if (GUI.Button(_socketRect, "", EditorStyles.radioButton))
+                if (GUI.Button(_socketRect, "", EditorStyles.miniButtonMid))
                 {
                     OnSocketClicked?.Invoke(this);
                 }
@@ -67,6 +67,26 @@ namespace BT
                 GUI.changed = true;
             }
             
+        }
+
+        public void ProcessEvent(Event e)
+        {
+            switch (e.type)
+            {
+                case EventType.MouseDown:
+                    if (e.button == 0)
+                    {
+                        if (!_socketRect.Contains(e.mousePosition))
+                        {
+                            //CurrentClickedSocket = null;
+                            Debug.Log("Clicked socket");
+                            GUI.changed = true;
+                        }
+
+                    }
+
+                    break;
+            }
         }
     }
 }
