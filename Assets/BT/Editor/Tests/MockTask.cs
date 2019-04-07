@@ -9,7 +9,6 @@ namespace BT
 
         protected override void OnInitialize()
         {
-
         }
 
         protected override TaskStatus Update()
@@ -17,10 +16,9 @@ namespace BT
             //hacer el update del nodo
             return Status;
         }
-    
+
         protected override void OnTerminate(TaskStatus taskStatus)
         {
-            
         }
     }
 }

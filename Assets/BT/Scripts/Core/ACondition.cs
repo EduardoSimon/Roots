@@ -1,12 +1,16 @@
-
 namespace BT
 {
     public abstract class ACondition : ATask
-    {   
-        public enum ConditionCheckMode { Instant, Monitoring}
+    {
+        public enum ConditionCheckMode
+        {
+            Instant,
+            Monitoring
+        }
+
+        protected readonly ConditionCheckMode _checkMode = ConditionCheckMode.Instant;
 
         protected readonly bool negateCondition = false;
-        protected readonly ConditionCheckMode _checkMode = ConditionCheckMode.Instant;
 
         protected override void OnInitialize()
         {
@@ -17,10 +21,10 @@ namespace BT
         {
             if (_checkMode == ConditionCheckMode.Instant)
             {
-                if(negateCondition)
+                if (negateCondition)
                     return isConditionSatisfied() ? TaskStatus.Failed : TaskStatus.Succeeded;
-                
-                return isConditionSatisfied() ? TaskStatus.Succeeded : TaskStatus.Failed; 
+
+                return isConditionSatisfied() ? TaskStatus.Succeeded : TaskStatus.Failed;
             }
 
             if (_checkMode == ConditionCheckMode.Monitoring)
@@ -28,19 +32,13 @@ namespace BT
                 if (negateCondition)
                 {
                     //do nothing until we fail
-                    while (!isConditionSatisfied())
-                    {
-                        return TaskStatus.Running;
-                    }
+                    while (!isConditionSatisfied()) return TaskStatus.Running;
 
                     return TaskStatus.Failed;
                 }
-                
+
                 //do nothing until we fail
-                while (isConditionSatisfied())
-                {
-                    return TaskStatus.Running;
-                }
+                while (isConditionSatisfied()) return TaskStatus.Running;
 
                 return TaskStatus.Failed;
             }
@@ -50,10 +48,8 @@ namespace BT
 
         protected override void OnTerminate(TaskStatus status)
         {
-            return;
         }
+
         protected abstract bool isConditionSatisfied();
-
-
     }
 }

@@ -9,13 +9,12 @@ namespace BT
         public enum Policy
         {
             RequireOne,
-            RequireAll,
+            RequireAll
         }
 
-        protected Policy _successPolicy;
         protected Policy _failurePolicy;
-        
-        public List<ATask> Children { get; private set; }
+
+        protected Policy _successPolicy;
 
 
         public Parallel(Policy successPolicy, Policy failurePolicy)
@@ -24,8 +23,9 @@ namespace BT
             _failurePolicy = failurePolicy;
             Children = new List<ATask>();
             Status = TaskStatus.NonInitialized;
-
         }
+
+        public List<ATask> Children { get; }
 
         protected override void OnInitialize()
         {
@@ -36,16 +36,16 @@ namespace BT
         {
             int successCounter = 0, failureCounter = 0;
 
-            for (int i = 0; i < Children.Count; i++)
+            for (var i = 0; i < Children.Count; i++)
             {
-                TaskStatus childrenStatus = Children[i].Tick();
+                var childrenStatus = Children[i].Tick();
 
                 if (childrenStatus == TaskStatus.Succeeded)
                 {
                     successCounter++;
-                    
+
                     //The children succeeded and the policy only required one to success.
-                    if (_successPolicy == Policy.RequireOne) return TaskStatus.Succeeded;   
+                    if (_successPolicy == Policy.RequireOne) return TaskStatus.Succeeded;
                 }
                 else if (childrenStatus == TaskStatus.Failed)
                 {
@@ -54,7 +54,7 @@ namespace BT
                     if (_failurePolicy == Policy.RequireOne) return TaskStatus.Failed;
                 }
             }
-            
+
             //if the policy was require all we have to check if the counters equal the size of the list of tasks.
             if (_failurePolicy == Policy.RequireAll && failureCounter == Children.Count)
                 return TaskStatus.Failed;
@@ -67,41 +67,39 @@ namespace BT
 
         protected override void OnTerminate(TaskStatus status)
         {
-            for (int i = 0; i < Children.Count; i++)
+            for (var i = 0; i < Children.Count; i++)
             {
-                TaskStatus childrenStatus = Children[i].Tick();
-                
-                if(childrenStatus == TaskStatus.Running)
+                var childrenStatus = Children[i].Tick();
+
+                if (childrenStatus == TaskStatus.Running)
                     Children[i].Abort();
             }
         }
 
         #region HelperMethods
 
-            public void AddChild(ATask task)
-            {
-                if (!Children.Contains(task))
-                    Children.Add(task);
-                else
-                    Debug.LogError("Trying to the same task twice in a Parallel task.");
-    
-            }
-    
-            public void RemoveChildren(ATask task)
-            {
-                if (!Children.Contains(task))
-                    Children.Remove(task);
-                else
-                    Debug.LogError(
-                        "The Parallel task does not contain the specified child task, thus it could not be removed");
-            }
-    
-            public void ClearChildren()
-            {
-                Children.Clear();
-            }
+        public void AddChild(ATask task)
+        {
+            if (!Children.Contains(task))
+                Children.Add(task);
+            else
+                Debug.LogError("Trying to the same task twice in a Parallel task.");
+        }
+
+        public void RemoveChildren(ATask task)
+        {
+            if (!Children.Contains(task))
+                Children.Remove(task);
+            else
+                Debug.LogError(
+                    "The Parallel task does not contain the specified child task, thus it could not be removed");
+        }
+
+        public void ClearChildren()
+        {
+            Children.Clear();
+        }
 
         #endregion
-  
     }
 }

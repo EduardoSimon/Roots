@@ -27,6 +27,7 @@
               <e p="TaskTooltipAttribute.cs" t="Include" />
             </e>
             <e p="BehaviorTree.cs" t="Include" />
+            <e p="BehaviorTreeController.cs" t="Include" />
             <e p="BehaviorTreeGraph.cs" t="Include" />
             <e p="BlackBoard.cs" t="Include" />
             <e p="Core" t="Include">
@@ -47,6 +48,7 @@
               <e p="ActionView.cs" t="Include" />
               <e p="BaseNodeView.cs" t="Include" />
               <e p="DefaultNodeView.cs" t="Include" />
+              <e p="EntryNodeView.cs" t="Include" />
               <e p="NodeConnection.cs" t="Include" />
               <e p="NodeSocket.cs" t="Include" />
               <e p="PatrolNodeView.cs" t="Include" />

@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using UnityEngine;
 
 namespace BT
 {
@@ -10,18 +9,33 @@ namespace BT
     [TaskTooltip("BALABABAB sequence")]
     public class Sequence : ATask, IComposite
     {
-        public List<ATask> Children { get; private set; }
-
-        public Sequence(ATask[] children = null) : base()
+        public Sequence(ATask[] children = null)
         {
             Children = children != null ? children.ToList() : new List<ATask>();
 
             Status = TaskStatus.NonInitialized;
         }
 
+        public List<ATask> Children { get; }
+
+        public void AddChild(ATask action)
+        {
+            Children.Add(action);
+        }
+
+        public void RemoveChildren(ATask action)
+        {
+            Children.Remove(action);
+        }
+
+        public void ClearChildren()
+        {
+            Children.Clear();
+        }
+
         protected override void OnInitialize()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         protected override TaskStatus Update()
@@ -29,10 +43,10 @@ namespace BT
             //if the sequence is empty we return a failed result
             if (Children.Count == 0)
                 return TaskStatus.Failed;
-            
-            for (int i = 0; i < Children.Count; i++)
+
+            for (var i = 0; i < Children.Count; i++)
             {
-                TaskStatus status = Children[i].Tick();
+                var status = Children[i].Tick();
 
                 if (status != TaskStatus.Succeeded)
                     return status;
@@ -48,27 +62,12 @@ namespace BT
 
         protected override void OnTerminate(TaskStatus status)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override string ToString()
         {
-            return "Updating the sequence with" +  Children.Count + " children.";
-        }
-
-        public void AddChild(ATask action)
-        {
-            Children.Add(action);
-        }
-
-        public void RemoveChildren(ATask action)
-        {
-            Children.Remove(action);
-        }
-
-        public void ClearChildren()
-        {
-            Children.Clear();
+            return "Updating the sequence with" + Children.Count + " children.";
         }
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using BT.Scripts.Drawers;
-using UnityEditor;
 using UnityEngine;
 
 namespace BT.Editor
@@ -8,8 +7,16 @@ namespace BT.Editor
     [CreateAssetMenu(menuName = "BT/Behavior Tree Graph")]
     public class BehaviorTreeGraph : ScriptableObject
     {
-        public List<BaseNodeView> SavedNodes = new List<BaseNodeView>();
+        public string Name;
+        public EntryNodeView EntryNodeView;
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
+        public List<BaseNodeView> SavedNodes = new List<BaseNodeView>();
 
+        private ATask[] tasks;
+
+        public void OnSave()
+        {
+            
+        }
     }
 }

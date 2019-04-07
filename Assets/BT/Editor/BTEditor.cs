@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using BT.Editor;
 using BT.Scripts.Drawers;
 using Editor;
 using UnityEditor;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
+using UDebug = UnityEngine.Debug;
 
 namespace BT
 {
@@ -20,33 +21,38 @@ namespace BT
         private static BtEditor _editor;
         private static Rect _zoomArea;
 
-        private static BehaviorTreeGraph _currentTree;
+        private static BehaviorTreeGraph _currentGraph;
         private bool _autoSave;
         private float _currentZoom = 1;
         private Vector2 _drag;
         private Vector2 _mousePosition;
         private Vector2 _offset;
         private BaseNodeView _rightClickedNode;
+        private bool _saveOnClose = true;
         private BaseNodeView _selectedNode;
         private bool _showWindows = true;
         private GUISkin _skin;
-        private TooltipWindow _tooltipWindow;
-        private bool _saveOnClose = true;
 
+        private TooltipWindow _tooltipWindow;
         public SearchTasksWindow searchableTaskWindow;
 
         [MenuItem("BT/Editor")]
         private static void Init()
         {
-            _editor = CreateInstance<BtEditor>();
-            _editor.titleContent = new GUIContent("BT Editor", Resources.Load<Texture>("star"),
-                "A behavior tree visual editor for everyone");
+            _editor = GetWindow<BtEditor>("OG", true,new Type[1]
+            {
+                typeof(SceneView)
+            });
+            _editor.titleContent = new GUIContent("BT Editor", Resources.Load<Texture>("star"),"A behavior tree visual editor for everyone");
             _editor.minSize = new Vector2(200, 200);
             _editor.wantsMouseMove = true;
             _editor.Show();
+
+            EditorPrefs.SetBool("ActiveEditor", true);
+            UDebug.Log("Init Called");
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             _skin = Resources.Load<GUISkin>("BTSkin");
 
@@ -58,27 +64,41 @@ namespace BT
             _nodeViews = new List<BaseNodeView>();
             _connections = new List<NodeConnection>();
 
-            if (_currentTree != null)
+            if (_currentGraph != null)
                 LoadTreeGraph();
 
             _tooltipWindow = null;
+            UDebug.Log("Awake Called");
         }
 
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnScriptsReloaded()
+        {
+            if (EditorPrefs.GetBool("ActiveEditor"))
+            {
+                var window = GetWindow<BtEditor>();
+ 
+                window.Close();
+                Init();
+                UDebug.Log("Scripts recompiled! Regenerating window!");
+            }
+        }
 
         private void OnDestroy()
         {
-            if (_tooltipWindow != null) 
+            if (_tooltipWindow != null)
                 _tooltipWindow.Close();
 
-            if(_saveOnClose)
+            if (_saveOnClose)
                 SaveGraphData();
 
-            _currentTree = null;
+            _currentGraph = null;
+            EditorPrefs.SetBool("ActiveEditor", false);
         }
 
         private void OnGUI()
         {
-            if (_currentTree == null)
+            if (_currentGraph == null)
                 ShowNotification(new GUIContent("Please Select a Graph before you start using the tool",
                     Resources.Load<Texture>("tree_icon")));
 
@@ -162,17 +182,25 @@ namespace BT
 
         private Rect DrawGlobalGuiControls()
         {
-            var controlsArea = new Rect(0, 0, position.width, 30);
+            var controlsArea = new Rect(0, 0, position.width, 200);
             GUILayout.BeginArea(controlsArea);
+
+            GUILayout.BeginVertical();
+            EditorGUI.DrawRect();
+            if (_currentGraph != null)
+                GUILayout.Label(_currentGraph.Name, _skin.GetStyle("GraphTitle"));
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
 
             EditorGUI.BeginChangeCheck();
-            _currentTree =
-                EditorGUILayout.ObjectField(_currentTree, typeof(BehaviorTreeGraph), false) as BehaviorTreeGraph;
+            _currentGraph =
+                EditorGUILayout.ObjectField(_currentGraph, typeof(BehaviorTreeGraph), false) as BehaviorTreeGraph;
             if (EditorGUI.EndChangeCheck())
             {
                 GUI.FocusControl(null);
-                if (_currentTree != null)
+                if (_currentGraph != null)
                 {
                     RemoveNotification();
                     LoadTreeGraph();
@@ -201,6 +229,8 @@ namespace BT
 
 
             GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+
 
             //GUILayout.BeginVertical();
             //_zoom = GUILayout.HorizontalSlider(_zoom, 0, 6);
@@ -347,7 +377,7 @@ namespace BT
 
         private void ProcessRightClickEvent(Event e)
         {
-            UnityEngine.Debug.Log("Right Clicked the window");
+            UDebug.Log("Right Clicked the window");
             var genericMenu = new GenericMenu();
 
             if (_rightClickedNode)
@@ -377,7 +407,7 @@ namespace BT
                 genericMenu.AddSeparator("");
                 genericMenu.AddItem(new GUIContent("About", "about the library"), false, () =>
                 {
-                    UnityEngine.Debug.Log("Author's name is Eduardo Simon Picon.");
+                    UDebug.Log("Author's name is Eduardo Simon Picon.");
                     Application.OpenURL("https://www.eduardosimonpicon.com");
                 });
             }
@@ -388,7 +418,7 @@ namespace BT
 
         private void OnNodeSocketClicked(NodeSocket socket)
         {
-            UnityEngine.Debug.Log("Invoked on clicked socket event");
+            UDebug.Log("Invoked on clicked socket event");
             if (socket.SocketType == NodeSocket.NodeSocketType.In)
             {
                 if (NodeSocket.CurrentClickedSocket != null && !socket.IsHooked)
@@ -418,9 +448,7 @@ namespace BT
 
                 if (attribute != null)
                 {
-                    _tooltipWindow = _tooltipWindow == null
-                        ? CreateInstance<TooltipWindow>()
-                        : GetWindow<TooltipWindow>();
+                    _tooltipWindow = GetWindow<TooltipWindow>(true,"Tooltip", false);
 
                     _tooltipWindow.position =
                         new Rect(_editor.position.xMin + 20 + _currentZoom * 10f, _editor.position.yMax - 100, 200, 80);
@@ -436,28 +464,30 @@ namespace BT
 
         private void SaveGraphData()
         {
-            if (_currentTree != null)
+            if (_currentGraph != null)
             {
-                if (_currentTree.SavedNodes.Count != 0 || _currentTree.SavedConnections.Count != 0)
+                if (_currentGraph.SavedNodes.Count != 0 || _currentGraph.SavedConnections.Count != 0)
                 {
-                    _currentTree.SavedNodes.Clear();
-                    _currentTree.SavedConnections.Clear();
-                    UnityEngine.Debug.Log("Overriding the data");
+                    _currentGraph.SavedNodes.Clear();
+                    _currentGraph.SavedConnections.Clear();
+                    UDebug.Log("Overriding the data");
                 }
 
-                foreach (var nodeView in _nodeViews) _currentTree.SavedNodes.Add(nodeView);
+                foreach (var nodeView in _nodeViews) _currentGraph.SavedNodes.Add(nodeView);
 
-                foreach (var connection in _connections) _currentTree.SavedConnections.Add(connection);
+                foreach (var connection in _connections) _currentGraph.SavedConnections.Add(connection);
 
-                UnityEngine.Debug.Log("Saved " + _currentTree.SavedNodes.Count + " nodes.");
+                UDebug.Log("Saved " + _currentGraph.SavedNodes.Count + " nodes.");
+
+                _currentGraph.OnSave();
             }
         }
 
         private void LoadTreeGraph()
         {
-            if (_currentTree == null)
+            if (_currentGraph == null)
             {
-                UnityEngine.Debug.LogError("Select a graph to Load Data From");
+                UDebug.LogError("Select a graph to Load Data From");
             }
             else
             {
@@ -465,11 +495,12 @@ namespace BT
                 _connections.Clear();
 
 
-                foreach (var nodeConnection in _currentTree.SavedConnections)
+                foreach (var nodeConnection in _currentGraph.SavedConnections)
                 {
                     BaseNodeView startNode = null, endNode = null;
 
-                    if (nodeConnection.StartSocket.IsHooked) startNode = CreateNodeView(nodeConnection.StartSocket.Node);
+                    if (nodeConnection.StartSocket.IsHooked)
+                        startNode = CreateNodeView(nodeConnection.StartSocket.Node);
 
                     if (nodeConnection.EndSocket.IsHooked) endNode = CreateNodeView(nodeConnection.EndSocket.Node);
 
@@ -482,18 +513,14 @@ namespace BT
                     }
                     else
                     {
-                        UnityEngine.Debug.LogError(
+                        UDebug.LogError(
                             "Trying to load an invalid connection. One of the connection socket was null");
                     }
                 }
 
-                foreach (var savedNode in _currentTree.SavedNodes)
-                {
+                foreach (var savedNode in _currentGraph.SavedNodes)
                     if (!_nodeViews.Contains(savedNode))
-                    {
                         _nodeViews.Add(CreateNodeView(savedNode));
-                    }
-                }
 
                 GUI.changed = true;
             }

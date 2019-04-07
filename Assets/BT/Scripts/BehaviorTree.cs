@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
@@ -13,11 +12,11 @@ namespace BT
         Invalid,
         Aborted
     }
-    
+
     //[CreateAssetMenu(menuName = "BT/Behavior Tree")]
     public class BehaviorTree : ScriptableObject
     {
-
+        public string Name;
         public ATask RootNode { get; private set; }
 
         public TaskStatus Tick()

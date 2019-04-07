@@ -1,11 +1,10 @@
-
 namespace BT
 {
     [CustomNodeDrawer(typeof(ActionView))]
     public abstract class AAction : ATask
     {
         public BlackBoard board;
-        
+
         public AAction()
         {
             Status = TaskStatus.NonInitialized;
@@ -22,12 +21,10 @@ namespace BT
             //hacer el update del nodo accion
             return Status;
         }
-    
+
         protected override void OnTerminate(TaskStatus taskStatus)
         {
             //close the data needed
         }
-
-
     }
 }

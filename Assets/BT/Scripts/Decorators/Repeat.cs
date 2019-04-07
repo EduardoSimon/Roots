@@ -1,10 +1,12 @@
+using System;
+
 namespace BT.Decorators
 {
     public class Repeat : ADecorator
     {
         private int _counter;
-        private int _repetitionsLimit;
-        
+        private readonly int _repetitionsLimit;
+
         public Repeat(ATask child, int repetitionsLimit) : base(child)
         {
             _counter = 0;
@@ -19,7 +21,7 @@ namespace BT.Decorators
 
         protected override TaskStatus Update()
         {
-            TaskStatus childStatus = _child.Tick();
+            var childStatus = _child.Tick();
 
             if (childStatus == TaskStatus.Running) return TaskStatus.Running;
 
@@ -32,7 +34,7 @@ namespace BT.Decorators
 
         protected override void OnTerminate(TaskStatus status)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

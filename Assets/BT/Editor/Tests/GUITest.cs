@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using BT;
+﻿using BT;
 using NUnit.Framework;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -14,20 +11,18 @@ namespace GUITests
         [UnityPlatform(RuntimePlatform.WindowsEditor)]
         public void Window_is_not_null()
         {
-            BtEditor editor = ScriptableObject.CreateInstance<BtEditor>();
+            var editor = ScriptableObject.CreateInstance<BtEditor>();
             editor.Show(true);
-            Assert.IsNotNull(editor);      
+            Assert.IsNotNull(editor);
         }
 
         [Test]
         public void Window_is_null_when_destroyed()
         {
-            BtEditor editor = ScriptableObject.CreateInstance<BtEditor>();
+            var editor = ScriptableObject.CreateInstance<BtEditor>();
             editor.Show(true);
             editor.Close();
             Assert.That(editor == null);
         }
-        
-        
     }
 }

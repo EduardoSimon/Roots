@@ -10,10 +10,10 @@ namespace BT.Editor
         private void OnGUI()
         {
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Close"))
+            if (GUILayout.Button("Close"))
                 Close();
             GUILayout.EndHorizontal();
-            
+
             GUILayout.BeginVertical();
             GUILayout.Label(Tooltip);
             GUILayout.EndVertical();
