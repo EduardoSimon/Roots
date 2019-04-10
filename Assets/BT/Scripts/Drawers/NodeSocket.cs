@@ -38,6 +38,7 @@ namespace BT
 
         public void Draw()
         {
+            #if UNITY_EDITOR
             _socketRect.x = Node.windowRect.xMin + Node.windowRect.width / 4;
             _socketRect.y = SocketType == NodeSocketType.In
                 ? Node.windowRect.yMin - BaseNodeView.SocketHeight + 10
@@ -58,6 +59,8 @@ namespace BT
                 Handles.DrawLine(CurrentClickedSocket.Position, Event.current.mousePosition);
                 GUI.changed = true;
             }
+            #endif
+
         }
 
         public void ProcessEvent(Event e)

@@ -44,7 +44,7 @@ namespace BT
                 typeof(SceneView)
             });
             _editor.titleContent = new GUIContent("BT Editor", Resources.Load<Texture>("star"),"A behavior tree visual editor for everyone");
-            _editor.minSize = new Vector2(200, 200);
+            _editor.minSize = new Vector2(600, 500);
             _editor.wantsMouseMove = true;
             _editor.Show();
 
@@ -182,13 +182,12 @@ namespace BT
 
         private Rect DrawGlobalGuiControls()
         {
-            var controlsArea = new Rect(0, 0, position.width, 200);
+            var controlsArea = new Rect(0, 0, position.width, position.height/8);
             GUILayout.BeginArea(controlsArea);
 
             GUILayout.BeginVertical();
-            EditorGUI.DrawRect();
             if (_currentGraph != null)
-                GUILayout.Label(_currentGraph.Name, _skin.GetStyle("GraphTitle"));
+                 GUILayout.Label(_currentGraph.Name, _skin.GetStyle("GraphTitle"));
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
@@ -250,7 +249,7 @@ namespace BT
                 _nodeViews[index].DrawConnections();
 
                 _nodeViews[index].windowRect = GUI.Window(index, _nodeViews[index].windowRect, DrawNodeWindowCallback,
-                    _nodeViews[index].windowTitle);
+                    _nodeViews[index].windowTitle,_skin.GetStyle("Node"));
             }
 
             EndWindows();
@@ -258,7 +257,7 @@ namespace BT
 
         private void DrawNodeWindowCallback(int id)
         {
-            _nodeViews[id].DrawWindow();
+            _nodeViews[id].DrawWindow(id);
         }
 
         private void DrawBackgroundGrid(float gridSpacing, float gridOpacity, Color gridColor)
@@ -294,7 +293,7 @@ namespace BT
             switch (e.type)
             {
                 case EventType.MouseDown:
-                    Focus();
+                    //Focus();
                     break;
 
                 case EventType.MouseDrag:

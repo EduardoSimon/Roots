@@ -9,6 +9,7 @@ namespace BT
         public const int SocketHeight = 40;
 
         private GUISkin _skin;
+        private int _id;
         public NodeSocket entrySocket;
         public NodeSocket exitSocket;
 
@@ -36,8 +37,9 @@ namespace BT
                 GUID = guid;
         }
 
-        public virtual void DrawWindow()
+        public virtual void DrawWindow(int id)
         {
+            _id = id;
             GUILayout.BeginVertical();
             GUILayout.Label("Hi I am a " + task.GetType().Name);
             GUILayout.EndVertical();
@@ -67,20 +69,18 @@ namespace BT
                     {
                         case 0 when windowRect.Contains(e.mousePosition):
                             isSelected = true;
-
                             OnClickedNode?.Invoke(this);
+                            GUI.FocusWindow(_id);
 
-                            GUI.changed = true;
-                            break;
 
+                            return true;
                         case 0:
-                            GUI.changed = true;
-                            break;
+                            return true;
                         case 1:
                         {
                             if (windowRect.Contains(e.mousePosition))
                                 OnNodeRightClicked?.Invoke(this);
-                            break;
+                            return true;
                         }
                     }
 
@@ -88,7 +88,8 @@ namespace BT
 
                 case EventType.MouseUp:
                     isSelected = false;
-                    break;
+                    GUI.UnfocusWindow();
+                    return true;
             }
 
             return false;

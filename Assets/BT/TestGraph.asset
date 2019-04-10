@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb08b08fdab4a2d956d0784676a2c88, type: 3}
   m_Name: TestGraph
   m_EditorClassIdentifier: 
-  SavedNodes: []
+  Name: Demo Tree
+  EntryNodeView: {fileID: 0}
   SavedConnections: []
+  SavedNodes:
+  - {fileID: 0}

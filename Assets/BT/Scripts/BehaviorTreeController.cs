@@ -1,18 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using BT;
+using BT.Editor;
 using UnityEngine;
+using UnityEngine.SpatialTracking;
 
 public class BehaviorTreeController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum EUpdateType
     {
-        
+        Update, LateUpdate, FixedUpdate, Manual
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public BehaviorTreeGraph BehaviorTree;
+
+    [TextArea]
+    [SerializeField] private string BehaviorTreeDescription;
+    [SerializeField] private EUpdateType UpdateType;
+    [SerializeField] private bool StartOnEnable = true;
+    [SerializeField] private bool PauseOnDisabled = false;
+    [SerializeField] private bool RestartOnComplete = false;
+
+
 }
