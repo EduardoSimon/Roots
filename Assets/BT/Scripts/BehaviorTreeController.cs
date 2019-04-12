@@ -5,21 +5,36 @@ using BT.Editor;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
 
-public class BehaviorTreeController : MonoBehaviour
+namespace BT.Runtime
 {
-    public enum EUpdateType
+    [AddComponentMenu("Behavior Tree/BehaviorTree Controller")]
+    [HelpURL("https://www.github.com/EduardoSimon")]
+    public class BehaviorTreeController : MonoBehaviour
     {
-        Update, LateUpdate, FixedUpdate, Manual
+        public enum EUpdateType
+        {
+            Update, LateUpdate, FixedUpdate, Manual
+        }
+    
+        public BehaviorTreeGraph BehaviorTree;
+    
+        [TextArea]
+        [SerializeField] private string BehaviorTreeDescription;
+        [SerializeField] private EUpdateType UpdateType;
+        [SerializeField] private bool StartOnEnable = true;
+        [SerializeField] private bool PauseOnDisabled = false;
+        [SerializeField] private bool RestartOnComplete = false;
+
+        public bool HasRoot => BehaviorTree.EntryNodeView != null;
+
+        private void Start()
+        {
+            
+        }
+
+        public void Init()
+        {
+            throw new System.NotImplementedException();
+        }
     }
-
-    public BehaviorTreeGraph BehaviorTree;
-
-    [TextArea]
-    [SerializeField] private string BehaviorTreeDescription;
-    [SerializeField] private EUpdateType UpdateType;
-    [SerializeField] private bool StartOnEnable = true;
-    [SerializeField] private bool PauseOnDisabled = false;
-    [SerializeField] private bool RestartOnComplete = false;
-
-
 }
