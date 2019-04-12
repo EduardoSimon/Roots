@@ -13,7 +13,7 @@ namespace BT
         Aborted
     }
 
-    public class BehaviorTree : ScriptableObject
+    public class BehaviorTree
     {
         public string Name;
         public ATask RootNode { get; private set; }

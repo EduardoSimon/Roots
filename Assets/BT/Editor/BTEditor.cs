@@ -134,7 +134,7 @@ namespace BT
             var instance = CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
             Debug.Assert(instance != null, nameof(instance) + " != null");
 
-            instance.task = CreateInstance(nodeType.taskType.FullName) as ATask;
+            instance.Task = CreateInstance(nodeType.taskType.FullName) as ATask;
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
@@ -151,7 +151,7 @@ namespace BT
             var instance = CreateInstance(baseNode.GetType().FullName) as BaseNodeView;
             Debug.Assert(instance != null, nameof(instance) + " != null");
 
-            instance.task = CreateInstance(baseNode.task.GetType().FullName) as ATask;
+            instance.Task = CreateInstance(baseNode.Task.GetType().FullName) as ATask;
             instance.windowRect = baseNode.windowRect;
             instance.windowTitle = baseNode.windowTitle;
             instance.Init(baseNode.GUID);
@@ -439,7 +439,7 @@ namespace BT
         private void OnClickedNode(BaseNodeView node)
         {
             var attributes =
-                (TaskTooltipAttribute[]) node.task.GetType().GetCustomAttributes(typeof(TaskTooltipAttribute), true);
+                (TaskTooltipAttribute[]) node.Task.GetType().GetCustomAttributes(typeof(TaskTooltipAttribute), true);
 
             if (attributes.Length > 0)
             {

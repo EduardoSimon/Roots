@@ -10,7 +10,7 @@ namespace BT
             base.DrawWindow(id);
             #if UNITY_EDITOR
             EditorGUI.BeginChangeCheck();
-            var aAction = (AAction) task;
+            var aAction = (AAction) Task;
             aAction.board = EditorGUILayout.ObjectField(aAction.board, typeof(BlackBoard), false) as BlackBoard;
             if (EditorGUI.EndChangeCheck()) GUI.FocusControl(null);
             #endif

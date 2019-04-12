@@ -13,16 +13,24 @@ namespace BT
         public NodeSocket entrySocket;
         public NodeSocket exitSocket;
 
-        public ATask task;
+        private ATask task;
         public bool tooltipShown;
         public Rect windowRect;
         public string windowTitle;
+
         public bool isSelected { get; private set; }
 
         public Guid? GUID { get; private set; }
 
+        public virtual ATask Task
+        {
+            get { return task; }
+            set { task = value; }
+        }
+
         public static event Action<BaseNodeView> OnNodeRightClicked;
         public event Action<BaseNodeView> OnClickedNode;
+
 
         public virtual void Init(Guid? guid)
         {
