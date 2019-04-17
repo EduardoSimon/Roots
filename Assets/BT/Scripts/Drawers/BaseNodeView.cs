@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using BT.Scripts.Drawers;
 using UnityEngine;
 
 namespace BT
@@ -17,10 +19,15 @@ namespace BT
         public bool tooltipShown;
         public Rect windowRect;
         public string windowTitle;
+        public bool IsParentView { get; private set; }
+        public bool IsEntryView { get; private set; }
 
         public bool isSelected { get; private set; }
 
         public Guid? GUID { get; private set; }
+
+        //serialize this
+        public List<BaseNodeView> children; 
 
         public virtual ATask Task
         {
@@ -32,17 +39,42 @@ namespace BT
         public event Action<BaseNodeView> OnClickedNode;
 
 
-        public virtual void Init(Guid? guid)
+        public virtual void Init(Guid? guid, bool isEntryView, bool isParentView)
         {
-            _skin = Resources.Load<GUISkin>("BTSkin");
+            if (isEntryView)
+            {
+                _skin = Resources.Load<GUISkin>("BTSkin");
+                exitSocket = new NodeSocket(new Rect(0, 0, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
+                
+                if (guid == null)
+                {
+                    GUID = Guid.NewGuid();
+                    children = new List<BaseNodeView>();
+                }
+                else
+                    GUID = guid;
+
+                IsEntryView = isEntryView;
+                IsParentView = isParentView;
+
+                return;
+
+            }
+                
             windowTitle = task.GetType().Name;
             entrySocket = new NodeSocket(new Rect(0, 0, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.In, this);
             exitSocket = new NodeSocket(new Rect(0, 0, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
 
             if (guid == null)
+            {
                 GUID = Guid.NewGuid();
+                children = new List<BaseNodeView>();
+            }
             else
                 GUID = guid;
+
+            IsEntryView = isEntryView;
+            IsParentView = isParentView;
         }
 
         public virtual void DrawWindow(int id)

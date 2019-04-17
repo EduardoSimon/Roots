@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestGraph
   m_EditorClassIdentifier: 
   Name: Demo Tree
-  EntryNodeView: {fileID: 0}
   SavedConnections: []
-  SavedNodes:
-  - {fileID: 0}
+  SavedNodes: []
+  EntryView: {fileID: 0}
+  RootView: {fileID: 0}

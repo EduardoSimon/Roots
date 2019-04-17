@@ -35,6 +35,7 @@ namespace BT
 
         private TooltipWindow _tooltipWindow;
         public SearchTasksWindow searchableTaskWindow;
+        private BaseNodeView _entryView;
 
         [MenuItem("BT/Editor")]
         private static void Init()
@@ -69,6 +70,15 @@ namespace BT
 
             _tooltipWindow = null;
             UDebug.Log("Awake Called");
+
+            if (_nodeViews.Count == 0)
+            {
+                _entryView = CreateInstance<EntryNodeView>();
+                _entryView.windowRect = new Rect(position.x + position.width/2, position.y + position.height/2, 100, 100);
+                _entryView.windowTitle = "Entry View";
+                _entryView.Init(null,true,true);
+            }
+                
         }
 
         [UnityEditor.Callbacks.DidReloadScripts]
@@ -99,8 +109,12 @@ namespace BT
         private void OnGUI()
         {
             if (_currentGraph == null)
+            {
                 ShowNotification(new GUIContent("Please Select a Graph before you start using the tool",
                     Resources.Load<Texture>("tree_icon")));
+               
+                
+            }
 
             _mousePosition = Event.current.mousePosition;
 
@@ -138,15 +152,26 @@ namespace BT
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
-            instance.Init(null);
+
+            IComposite cast = (IComposite) instance.Task;
+            
+            if(cast != null)
+                instance.Init(null, false, true); // if we pass null to the guid a new one will be created
+            else
+                instance.Init(null, false, false);
 
             instance.OnClickedNode += OnClickedNode;
 
+            //todo serialize this
+            if (_currentGraph.SavedNodes.Count == 0)
+                _currentGraph.RootView = instance;
+            
+            //todo fix this
             if (_autoSave)
                 SaveGraphData();
         }
 
-        private BaseNodeView CreateNodeView(BaseNodeView baseNode)
+        private BaseNodeView CopyNodeView(BaseNodeView baseNode)
         {
             var instance = CreateInstance(baseNode.GetType().FullName) as BaseNodeView;
             Debug.Assert(instance != null, nameof(instance) + " != null");
@@ -154,7 +179,13 @@ namespace BT
             instance.Task = CreateInstance(baseNode.Task.GetType().FullName) as ATask;
             instance.windowRect = baseNode.windowRect;
             instance.windowTitle = baseNode.windowTitle;
-            instance.Init(baseNode.GUID);
+            
+            IComposite cast = (IComposite) instance.Task;
+            
+            if(cast != null)
+                instance.Init(baseNode.GUID, false, true); // if we pass null to the guid a new one will be created
+            else
+                instance.Init(baseNode.GUID, false, false);
 
             instance.OnClickedNode += OnClickedNode;
 
@@ -244,12 +275,16 @@ namespace BT
         {
             BeginWindows();
 
-            for (var index = 0; index < _nodeViews.Count; index++)
+            if (_entryView != null)
+                _entryView.windowRect = GUI.Window(0, _entryView.windowRect, (id) => _entryView.DrawWindow(id),
+                    _entryView.windowTitle);
+            
+            for (var index = 1; index < _nodeViews.Count; index++)
             {
                 _nodeViews[index].DrawConnections();
 
                 _nodeViews[index].windowRect = GUI.Window(index, _nodeViews[index].windowRect, DrawNodeWindowCallback,
-                    _nodeViews[index].windowTitle,_skin.GetStyle("Node"));
+                    _nodeViews[index].windowTitle);
             }
 
             EndWindows();
@@ -354,6 +389,8 @@ namespace BT
             _drag = e.delta * (1 / _currentZoom);
 
             foreach (var nodeView in _nodeViews) nodeView.Drag(_drag);
+            
+            _entryView.Drag(_drag);
 
             _drag = e.delta * (0.27f / _currentZoom);
             GUI.changed = true;
@@ -426,6 +463,7 @@ namespace BT
                     _connections.Add(new NodeConnection(clickedSocket, socket, Color.white));
                     clickedSocket.IsHooked = true;
                     socket.IsHooked = true;
+                    NodeSocket.CurrentClickedSocket.Node.children.Add(socket.Node);
 
                     NodeSocket.CurrentClickedSocket = null;
                 }
@@ -472,11 +510,22 @@ namespace BT
                     UDebug.Log("Overriding the data");
                 }
 
-                foreach (var nodeView in _nodeViews) _currentGraph.SavedNodes.Add(nodeView);
+                foreach (var nodeView in _nodeViews)
+                {
+                    _currentGraph.SavedNodes.Add(nodeView);
+
+                    foreach (var child in nodeView.children)
+                    {
+                        UDebug.Log(child.Task);
+                    }
+                }
+                
 
                 foreach (var connection in _connections) _currentGraph.SavedConnections.Add(connection);
 
                 UDebug.Log("Saved " + _currentGraph.SavedNodes.Count + " nodes.");
+
+                //_currentGraph.RootView = _entryView.children[0];
 
                 _currentGraph.OnSave();
             }
@@ -499,9 +548,9 @@ namespace BT
                     BaseNodeView startNode = null, endNode = null;
 
                     if (nodeConnection.StartSocket.IsHooked)
-                        startNode = CreateNodeView(nodeConnection.StartSocket.Node);
+                        startNode = CopyNodeView(nodeConnection.StartSocket.Node);
 
-                    if (nodeConnection.EndSocket.IsHooked) endNode = CreateNodeView(nodeConnection.EndSocket.Node);
+                    if (nodeConnection.EndSocket.IsHooked) endNode = CopyNodeView(nodeConnection.EndSocket.Node);
 
                     if (startNode != null && endNode != null)
                     {
@@ -519,7 +568,7 @@ namespace BT
 
                 foreach (var savedNode in _currentGraph.SavedNodes)
                     if (!_nodeViews.Contains(savedNode))
-                        _nodeViews.Add(CreateNodeView(savedNode));
+                        _nodeViews.Add(CopyNodeView(savedNode));
 
                 GUI.changed = true;
             }

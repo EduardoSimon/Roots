@@ -15,7 +15,6 @@ namespace BT
 
     public class BehaviorTree
     {
-        public string Name;
         public ATask RootNode { get; private set; }
 
         public TaskStatus Tick()
@@ -23,9 +22,11 @@ namespace BT
             return RootNode.Tick();
         }
 
-        public void AddRoot(ATask action)
+        public void AddRoot(ATask task)
         {
-            RootNode = action ? action : throw new NoNullAllowedException("Cant add a null root node.");
+            RootNode = task ? task : throw new NoNullAllowedException("Cant add a null root node.");
         }
+        
+        
     }
 }

@@ -18,9 +18,14 @@ namespace BT
 
         public List<ATask> Children { get; }
 
-        public void AddChild(ATask action)
+        public void AddChild(ATask task)
         {
-            Children.Add(action);
+            Children.Add(task);
+        }
+        
+        public void AddChildren(List<ATask> children)
+        {
+            Children.AddRange(children);
         }
 
         public void RemoveChildren(ATask action)

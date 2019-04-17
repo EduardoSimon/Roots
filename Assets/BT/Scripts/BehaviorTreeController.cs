@@ -25,7 +25,6 @@ namespace BT.Runtime
         [SerializeField] private bool PauseOnDisabled = false;
         [SerializeField] private bool RestartOnComplete = false;
 
-        public bool HasRoot => BehaviorTree.EntryNodeView != null;
 
         private void Start()
         {

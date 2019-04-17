@@ -27,6 +27,7 @@ namespace BT.Runtime
 
             for (int i = 0; i < _behaviorTreeControllers.Length; i++)
             {
+                /*
                 if (!_behaviorTreeControllers[i].HasRoot)
                 {
                     Debug.Log("There is no root in the BT controlled attached.", _behaviorTreeControllers[i].gameObject);
@@ -34,7 +35,7 @@ namespace BT.Runtime
                 else
                 {
                     _behaviorTreeControllers[i].Init();
-                }
+                }*/
             }
         }
 
