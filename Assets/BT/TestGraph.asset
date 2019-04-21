@@ -10,10 +10,57 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acb08b08fdab4a2d956d0784676a2c88, type: 3}
-  m_Name: TestGraph
+  m_Name: 
   m_EditorClassIdentifier: 
-  Name: Demo Tree
-  SavedConnections: []
-  SavedNodes: []
+  Name: 
+  SavedConnections:
+  - IsEntryConnection: 0
+    StartSocket:
+      SocketType: 1
+      Node: {fileID: 0}
+      IsHooked: 1
+    EndSocket:
+      SocketType: 0
+      Node: {fileID: 0}
+      IsHooked: 1
+    ConnectionColor: {r: 1, g: 1, b: 1, a: 1}
+  SavedNodes:
+  - {fileID: 0}
+  - {fileID: 0}
   EntryView: {fileID: 0}
   RootView: {fileID: 0}
+  data:
+  - task:
+      Status: 0
+    windowRect:
+      serializedVersion: 2
+      x: 607.441
+      y: 209.87567
+      width: 100
+      height: 100
+    windowTitle: Sequence
+    isParentNode: 1
+    isEntryNode: 0
+  - task:
+      Status: 0
+    windowRect:
+      serializedVersion: 2
+      x: 612.99744
+      y: 403.31674
+      width: 100
+      height: 100
+    windowTitle: Sequence
+    isParentNode: 1
+    isEntryNode: 0
+  entryConnection:
+    IsEntryConnection: 1
+    StartSocket:
+      SocketType: 1
+      Node: {fileID: 0}
+      IsHooked: 1
+    EndSocket:
+      SocketType: 0
+      Node: {fileID: 0}
+      IsHooked: 1
+    ConnectionColor: {r: 1, g: 1, b: 1, a: 1}
+  RootNode: {fileID: 0}

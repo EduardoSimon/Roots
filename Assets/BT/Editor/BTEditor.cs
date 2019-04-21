@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using BT.Editor;
 using BT.Scripts.Drawers;
 using Editor;
@@ -30,13 +31,15 @@ namespace BT
         private BaseNodeView _rightClickedNode;
         private bool _saveOnClose = true;
         private BaseNodeView _selectedNode;
-        private bool _showWindows = true;
         private GUISkin _skin;
 
         private TooltipWindow _tooltipWindow;
         public SearchTasksWindow searchableTaskWindow;
         private BaseNodeView _entryView;
 
+        public bool DebugMode = true;
+        
+        //Called only when created the window.
         [MenuItem("BT/Editor")]
         private static void Init()
         {
@@ -53,6 +56,7 @@ namespace BT
             UDebug.Log("Init Called");
         }
 
+        //Called every time the editor is enabled.
         private void Awake()
         {
             _skin = Resources.Load<GUISkin>("BTSkin");
@@ -72,13 +76,20 @@ namespace BT
             UDebug.Log("Awake Called");
 
             if (_nodeViews.Count == 0)
-            {
-                _entryView = CreateInstance<EntryNodeView>();
-                _entryView.windowRect = new Rect(position.x + position.width/2, position.y + position.height/2, 100, 100);
-                _entryView.windowTitle = "Entry View";
-                _entryView.Init(null,true,true);
-            }
+                CreateEntryView();
                 
+        }
+
+        private void OnDisable()
+        {
+            Application.quitting -= OnApplicationQuit;
+            UDebug.Log("Unsubscribed from Application.quitting");
+        }
+
+        private void OnEnable()
+        {
+            Application.quitting += OnApplicationQuit;
+            UDebug.Log("Subscribed from Application.quitting");
         }
 
         [UnityEditor.Callbacks.DidReloadScripts]
@@ -92,6 +103,11 @@ namespace BT
                 Init();
                 UDebug.Log("Scripts recompiled! Regenerating window!");
             }
+        }
+        
+        private void OnApplicationQuit()
+        {
+            EditorUtility.SetDirty(_currentGraph);
         }
 
         private void OnDestroy()
@@ -112,18 +128,22 @@ namespace BT
             {
                 ShowNotification(new GUIContent("Please Select a Graph before you start using the tool",
                     Resources.Load<Texture>("tree_icon")));
-               
-                
             }
 
             _mousePosition = Event.current.mousePosition;
 
-            DrawBackgroundGrid(20, 0.2f, Color.grey);
-            DrawBackgroundGrid(100, 0.4f, Color.grey);
+            //DrawBackgroundGrid(20, 0.2f, Color.grey);
+            //DrawBackgroundGrid(100, 0.4f, Color.grey);
 
             ProcessEvents(Event.current);
 
             var controlsArea = DrawGlobalGuiControls();
+
+            if (_currentGraph == null)
+            {
+                if(GUI.changed) Repaint();
+                return;
+            }
 
             EditorZoomArea.Begin(_currentZoom,
                 new Rect(controlsArea.x, controlsArea.y + controlsArea.height, position.width,
@@ -131,7 +151,7 @@ namespace BT
 
             foreach (var connection in _connections) connection.Draw();
 
-            if (_showWindows)
+            //if (_currentGraph != null)
                 DrawWindows();
 
             ProcessNodeEvents(Event.current);
@@ -143,12 +163,25 @@ namespace BT
 
         #region Creation Methods
 
+        
+        private void CreateEntryView()
+        {
+            if(_entryView != null)
+                DestroyImmediate(_entryView);
+            
+            _entryView = CreateInstance<EntryNodeView>();
+            _entryView.windowRect = new Rect(position.x + position.width / 2, position.y + position.height / 2,
+                BaseNodeView.kNodeWidht, BaseNodeView.kNodeHeight);
+            _entryView.windowTitle = "Entry View";
+            _entryView.Init(null, true, true);
+        }
+        
         private void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
         {
             var instance = CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
             Debug.Assert(instance != null, nameof(instance) + " != null");
 
-            instance.Task = CreateInstance(nodeType.taskType.FullName) as ATask;
+            instance.Task = Activator.CreateInstance(nodeType.taskType) as ATask;
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
@@ -176,7 +209,9 @@ namespace BT
             var instance = CreateInstance(baseNode.GetType().FullName) as BaseNodeView;
             Debug.Assert(instance != null, nameof(instance) + " != null");
 
-            instance.Task = CreateInstance(baseNode.Task.GetType().FullName) as ATask;
+            //instance.Task = CreateInstance(baseNode.Task.GetType().FullName) as ATask;            
+            instance.Task = Activator.CreateInstance(baseNode.Task.GetType()) as ATask;
+
             instance.windowRect = baseNode.windowRect;
             instance.windowTitle = baseNode.windowTitle;
             
@@ -251,12 +286,21 @@ namespace BT
             if (GUILayout.Button("Save Graph Data"))
                 SaveGraphData();
 
+            /*
             if (GUILayout.Button("Show window"))
-                _showWindows = !_showWindows;
+                _showWindows = !_showWindows;*/
 
             if (GUILayout.Button("Reset zoom"))
                 _currentZoom = 1;
 
+            if(DebugMode)
+                if (_entryView != null)
+                {
+                    GUILayout.Label("entry X:" + _entryView.windowRect.xMin + " Y:" + _entryView.windowRect.yMin);
+                    //GUILayout.Label("editor X:" + position.xMax + " Y:" + position.yMax);
+                    if(_entryView.children != null && _entryView.children.Count > 0)
+                        GUILayout.Label(_entryView.children[0].windowTitle);
+                }
 
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -276,17 +320,22 @@ namespace BT
             BeginWindows();
 
             if (_entryView != null)
-                _entryView.windowRect = GUI.Window(0, _entryView.windowRect, (id) => _entryView.DrawWindow(id),
-                    _entryView.windowTitle);
-            
-            for (var index = 1; index < _nodeViews.Count; index++)
             {
-                _nodeViews[index].DrawConnections();
+                _entryView.windowRect = GUI.Window(-1, _entryView.windowRect, (id) => _entryView.DrawWindow(id),
+                    _entryView.windowTitle);
+                
+                _entryView.DrawSockets();
+            }
+            
+            for (var index = 0; index < _nodeViews.Count; index++)
+            {
+                _nodeViews[index].DrawSockets();
 
                 _nodeViews[index].windowRect = GUI.Window(index, _nodeViews[index].windowRect, DrawNodeWindowCallback,
                     _nodeViews[index].windowTitle);
             }
 
+            
             EndWindows();
         }
 
@@ -378,7 +427,7 @@ namespace BT
         public void OnSearchedTaskClicked(SearchTasksWindow.NodeType nodeType)
         {
             CreateNodeView(nodeType,
-                new Rect(_mousePosition.x, _mousePosition.y, 200, 150),
+                new Rect(_mousePosition.x, _mousePosition.y, BaseNodeView.kNodeWidht, BaseNodeView.kNodeHeight),
                 nodeType.taskType.ToString());
             //without the type.fullname it does not work
         }
@@ -398,6 +447,15 @@ namespace BT
 
         private bool DragWindowIfSelected(Event e)
         {
+            if (_entryView.isSelected)
+            {
+                _drag = Vector2.zero;
+                _entryView.Drag(e.delta * (1 / _currentZoom));
+                GUI.changed = true;
+                
+                return true;
+            }
+            
             foreach (var nodeView in _nodeViews)
                 if (nodeView.isSelected)
                 {
@@ -435,6 +493,30 @@ namespace BT
 
                     SaveGraphData();
                 });
+                
+                genericMenu.AddItem(new GUIContent("Make Root Node", "Make the selected node the entry point of the tree."), false,
+                    () =>
+                    {
+                        var connectionsToRemove = new List<NodeConnection>();
+                        
+                        foreach (var connection in _connections)
+                        {
+                            if (connection.IsEntryConnection)
+                                connectionsToRemove.Add(connection);
+                            else if(connection.EndSocket == _rightClickedNode.entrySocket)
+                                connectionsToRemove.Add(connection);
+                        }
+
+                        foreach (var toRemove in connectionsToRemove)
+                        {
+                            _connections.Remove(toRemove);
+                        }
+
+                        _entryView.exitSocket.IsHooked = true;
+                        _rightClickedNode.entrySocket.IsHooked = true;
+                        
+                        _connections.Add(new NodeConnection(_entryView.exitSocket,_rightClickedNode.entrySocket, Color.white, true));
+                    });
             }
             else
             {
@@ -454,23 +536,29 @@ namespace BT
 
         private void OnNodeSocketClicked(NodeSocket socket)
         {
-            UDebug.Log("Invoked on clicked socket event");
-            if (socket.SocketType == NodeSocket.NodeSocketType.In)
+            switch (socket.SocketType)
             {
-                if (NodeSocket.CurrentClickedSocket != null && !socket.IsHooked)
+                case NodeSocket.NodeSocketType.In when NodeSocket.CurrentClickedSocket == null || socket.IsHooked:
+                    return;
+                
+                case NodeSocket.NodeSocketType.In:
                 {
                     var clickedSocket = NodeSocket.CurrentClickedSocket;
-                    _connections.Add(new NodeConnection(clickedSocket, socket, Color.white));
+
+                    _connections.Add(NodeSocket.CurrentClickedSocket.Node is EntryNodeView
+                        ? new NodeConnection(clickedSocket, socket, Color.white, true)
+                        : new NodeConnection(clickedSocket, socket, Color.white, false));
                     clickedSocket.IsHooked = true;
                     socket.IsHooked = true;
                     NodeSocket.CurrentClickedSocket.Node.children.Add(socket.Node);
 
                     NodeSocket.CurrentClickedSocket = null;
+                    break;
                 }
-            }
-            else if (socket.SocketType == NodeSocket.NodeSocketType.Out && !socket.IsHooked)
-            {
-                NodeSocket.CurrentClickedSocket = socket;
+                
+                case NodeSocket.NodeSocketType.Out when !socket.IsHooked:
+                    NodeSocket.CurrentClickedSocket = socket;
+                    break;
             }
         }
 
@@ -510,24 +598,49 @@ namespace BT
                     UDebug.Log("Overriding the data");
                 }
 
+                _currentGraph.EntryView = _entryView;
+                
                 foreach (var nodeView in _nodeViews)
                 {
                     _currentGraph.SavedNodes.Add(nodeView);
+                    
+                     //TODO redo task serialization with this method
+                    _currentGraph.data.Add(new BaseNodeView.NodeData(nodeView.Task,nodeView.windowRect,nodeView.windowTitle,nodeView.GUID,nodeView.IsParentView,nodeView.IsEntryView));
 
+                    /*
                     foreach (var child in nodeView.children)
                     {
                         UDebug.Log(child.Task);
+                    }*/
+                }
+
+
+                foreach (var connection in _connections)
+                {
+                    if (!connection.IsEntryConnection)
+                        _currentGraph.SavedConnections.Add(connection);
+                    else
+                    {
+                        _currentGraph.entryConnection = connection;
+                        _currentGraph.RootNode = connection.EndSocket.Node;
                     }
                 }
-                
 
-                foreach (var connection in _connections) _currentGraph.SavedConnections.Add(connection);
-
+               
                 UDebug.Log("Saved " + _currentGraph.SavedNodes.Count + " nodes.");
 
                 //_currentGraph.RootView = _entryView.children[0];
 
+                
+                foreach (var node in _currentGraph.SavedNodes)
+                {
+                    EditorUtility.SetDirty(node);
+                }
+                
                 _currentGraph.OnSave();
+
+
+                EditorUtility.SetDirty(_currentGraph);
             }
         }
 
@@ -542,7 +655,20 @@ namespace BT
                 _nodeViews.Clear();
                 _connections.Clear();
 
+                BaseNodeView RootNode = null;
+                
+                if(_currentGraph.EntryView != null && _currentGraph.EntryView.exitSocket.IsHooked)
+                    CreateEntryView();
 
+                if (_currentGraph.RootNode != null && _currentGraph.RootNode.entrySocket.IsHooked)
+                    RootNode = CopyNodeView(_currentGraph.RootNode);
+
+                if (_entryView != null && RootNode != null)
+                {
+                    _nodeViews.Add(RootNode);
+                    _connections.Add(new NodeConnection(_entryView.exitSocket, RootNode.entrySocket,_currentGraph.entryConnection.ConnectionColor,true));
+                }
+                
                 foreach (var nodeConnection in _currentGraph.SavedConnections)
                 {
                     BaseNodeView startNode = null, endNode = null;
@@ -552,10 +678,10 @@ namespace BT
 
                     if (nodeConnection.EndSocket.IsHooked) endNode = CopyNodeView(nodeConnection.EndSocket.Node);
 
-                    if (startNode != null && endNode != null)
+                    if (startNode != null && endNode != null  && startNode != _entryView)
                     {
                         _connections.Add(new NodeConnection(startNode.exitSocket, endNode.entrySocket,
-                            nodeConnection.ConnectionColor));
+                            nodeConnection.ConnectionColor,false));
                         _nodeViews.Add(startNode);
                         _nodeViews.Add(endNode);
                     }
@@ -564,8 +690,10 @@ namespace BT
                         UDebug.LogError(
                             "Trying to load an invalid connection. One of the connection socket was null");
                     }
+                        
                 }
 
+              
                 foreach (var savedNode in _currentGraph.SavedNodes)
                     if (!_nodeViews.Contains(savedNode))
                         _nodeViews.Add(CopyNodeView(savedNode));

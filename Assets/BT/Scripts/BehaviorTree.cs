@@ -24,7 +24,8 @@ namespace BT
 
         public void AddRoot(ATask task)
         {
-            RootNode = task ? task : throw new NoNullAllowedException("Cant add a null root node.");
+            if (task != null)
+                RootNode = task;
         }
         
         

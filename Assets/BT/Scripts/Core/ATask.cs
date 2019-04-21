@@ -1,14 +1,21 @@
+using System;
 using UnityEngine;
 
 namespace BT
 {
-    public abstract class ATask : ScriptableObject
+    [Serializable]
+    public class ATask
     {
-        protected TaskStatus Status;
+        public TaskStatus Status;
 
-        protected abstract void OnInitialize();
-        protected abstract TaskStatus Update();
-        protected abstract void OnTerminate(TaskStatus status);
+        protected virtual void OnInitialize() {}
+
+        protected virtual TaskStatus Update()
+        {
+            return TaskStatus.Invalid;
+        }
+        
+        protected virtual void OnTerminate(TaskStatus status) {}
 
         public TaskStatus Tick()
         {

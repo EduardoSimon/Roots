@@ -30,19 +30,19 @@ namespace BT
 
         public Vector2 Position => new Vector2(_socketRect.x + _socketRect.width / 2, _socketRect.y);
 
-        public NodeSocketType SocketType { get; }
+        public NodeSocketType SocketType;
 
-        public BaseNodeView Node { get; }
+        public BaseNodeView Node;
 
-        public bool IsHooked { get; set; }
+        public bool IsHooked;
 
         public void Draw()
         {
             #if UNITY_EDITOR
-            _socketRect.x = Node.windowRect.xMin + Node.windowRect.width / 4;
+            _socketRect.x = Node.windowRect.xMin + BaseNodeView.kNodeWidht / 8;
             _socketRect.y = SocketType == NodeSocketType.In
-                ? Node.windowRect.yMin - BaseNodeView.SocketHeight + 10
-                : Node.windowRect.yMax - 10;
+                ? Node.windowRect.yMin - BaseNodeView.SocketHeight + 5
+                : Node.windowRect.yMax - 5;
 
             //TODO create custom style
             if (CurrentClickedSocket == null || CurrentClickedSocket != this)
@@ -72,7 +72,7 @@ namespace BT
                     {
                         //TODO not working
                         //CurrentClickedSocket = null;
-                        Debug.Log("Clicked socket");
+                        //Debug.Log("Clicked socket");
                         GUI.changed = true;
                     }
 

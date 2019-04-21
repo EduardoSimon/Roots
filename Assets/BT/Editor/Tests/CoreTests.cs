@@ -22,7 +22,7 @@ namespace BT_Tests
             public void Tree_Returns_Status_Not_Null()
             {
                 var tree = new BehaviorTree();
-                tree.AddRoot(ScriptableObject.CreateInstance<MockAction>());
+                tree.AddRoot(new MockAction());
                 var status = tree.Tick();
 
                 Assert.IsNotNull(status);
@@ -33,7 +33,7 @@ namespace BT_Tests
             public void Tree_Returns_Status(TaskStatus status)
             {
                 var tree = new BehaviorTree();
-                tree.AddRoot(ScriptableObject.CreateInstance<MockAction>());
+                tree.AddRoot(new MockAction());
                 var returnedStatus = tree.Tick();
 
                 Assert.That(returnedStatus == status);
@@ -45,7 +45,7 @@ namespace BT_Tests
             {
                 var tree = new BehaviorTree();
 
-                tree.AddRoot(ScriptableObject.CreateInstance<MockAction>());
+                tree.AddRoot(new MockAction());
 
                 Assert.That(tree.RootNode != null);
             }
@@ -60,8 +60,8 @@ namespace BT_Tests
 
                 tree.AddRoot(new Sequence(new[]
                 {
-                    ScriptableObject.CreateInstance<MockAction>(),
-                    ScriptableObject.CreateInstance<MockAction>()
+                    new MockAction(),
+                    new MockAction()
                 }));
 
                 var returnedStatus = tree.Tick();
@@ -149,8 +149,8 @@ namespace BT_Tests
 
                 tree.AddRoot(new Selector(new[]
                 {
-                    ScriptableObject.CreateInstance<MockAction>(),
-                    ScriptableObject.CreateInstance<MockAction>()
+                    new MockAction(),
+                    new MockAction()
                 }));
 
                 var returnedStatus = tree.Tick();

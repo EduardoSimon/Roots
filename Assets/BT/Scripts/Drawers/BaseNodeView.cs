@@ -7,8 +7,12 @@ namespace BT
 {
     public abstract class BaseNodeView : ScriptableObject
     {
-        private const int SocketWidth = 100;
-        public const int SocketHeight = 40;
+        
+        public const float kNodeWidht = 100;
+        public const float kNodeHeight = 100;
+        
+        private const int SocketWidth = (int)kNodeWidht - 20;
+        public const int SocketHeight = (int)kNodeHeight / 6;
 
         private GUISkin _skin;
         private int _id;
@@ -16,7 +20,6 @@ namespace BT
         public NodeSocket exitSocket;
 
         private ATask task;
-        public bool tooltipShown;
         public Rect windowRect;
         public string windowTitle;
         public bool IsParentView { get; private set; }
@@ -44,7 +47,7 @@ namespace BT
             if (isEntryView)
             {
                 _skin = Resources.Load<GUISkin>("BTSkin");
-                exitSocket = new NodeSocket(new Rect(0, 0, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
+                exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
                 
                 if (guid == null)
                 {
@@ -62,8 +65,8 @@ namespace BT
             }
                 
             windowTitle = task.GetType().Name;
-            entrySocket = new NodeSocket(new Rect(0, 0, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.In, this);
-            exitSocket = new NodeSocket(new Rect(0, 0, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
+            entrySocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.In, this);
+            exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
 
             if (guid == null)
             {
@@ -80,12 +83,9 @@ namespace BT
         public virtual void DrawWindow(int id)
         {
             _id = id;
-            GUILayout.BeginVertical();
-            GUILayout.Label("Hi I am a " + task.GetType().Name);
-            GUILayout.EndVertical();
         }
 
-        public virtual void DrawConnections()
+        public virtual void DrawSockets()
         {
             //the draw method takes into account the drag of the Node
             entrySocket?.Draw();
@@ -145,6 +145,27 @@ namespace BT
             var node = other as BaseNodeView;
 
             return node != null && node.GUID == GUID;
+        }
+        
+        [System.Serializable]
+        public class NodeData
+        {
+            public NodeData(ATask task, Rect windowRect, string windowTitle, Guid? id, bool isParentNode, bool isEntryNode)
+            {
+                this.task = task;
+                this.windowRect = windowRect;
+                this.windowTitle = windowTitle;
+                this.id = id;
+                this.isParentNode = isParentNode;
+                this.isEntryNode = isEntryNode;
+            }
+
+            public ATask task;
+            public Rect windowRect;
+            public string windowTitle;
+            public Guid? id;
+            public bool isParentNode;
+            public bool isEntryNode;
         }
     }
 }

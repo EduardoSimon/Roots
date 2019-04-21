@@ -15,8 +15,16 @@ namespace BT.Editor
 
         [HideInInspector] public BaseNodeView EntryView;
         [HideInInspector] public BaseNodeView RootView;
-        
+        public List<BaseNodeView.NodeData> data;
+        public NodeConnection entryConnection;
+        public BaseNodeView RootNode;
         private BehaviorTree _tree;
+
+        private void OnEnable()
+        {
+            if(data == null)
+                data = new List<BaseNodeView.NodeData>();
+        }
 
         public void OnSave()
         {

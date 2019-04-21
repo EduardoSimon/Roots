@@ -645,6 +645,7 @@
             <e p="TooltipWindow.cs" t="Include" />
             <e p="ZoomExtensions.cs" t="Include" />
           </e>
+          <e p="GraphCustomInspector.cs" t="Include" />
           <e p="Scripts" t="Include">
             <e p="Attributes" t="Include">
               <e p="CustomNodeDrawerAttribute.cs" t="Include" />

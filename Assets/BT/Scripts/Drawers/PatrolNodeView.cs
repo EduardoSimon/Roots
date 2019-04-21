@@ -6,10 +6,5 @@ namespace BT.Editor
         {
             base.DrawWindow(id);
         }
-
-        public override void DrawConnections()
-        {
-            base.DrawConnections();
-        }
     }
 }

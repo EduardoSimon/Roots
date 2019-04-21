@@ -4,11 +4,14 @@ using System.Linq;
 
 namespace BT
 {
+    [Serializable]
     [CustomNodeDrawer(typeof(SequenceView))]
     [SearchMenu("Composites/Sequence")]
     [TaskTooltip("BALABABAB sequence")]
     public class Sequence : ATask, IComposite
     {
+        public Sequence(){}
+        
         public Sequence(ATask[] children = null)
         {
             Children = children != null ? children.ToList() : new List<ATask>();
