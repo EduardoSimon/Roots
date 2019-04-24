@@ -5,9 +5,8 @@ using UnityEngine;
 
 namespace BT
 {
-    public abstract class BaseNodeView : ScriptableObject
+    public class BaseNodeView : ScriptableObject
     {
-        
         public const float kNodeWidht = 100;
         public const float kNodeHeight = 100;
         
@@ -19,7 +18,7 @@ namespace BT
         public NodeSocket entrySocket;
         public NodeSocket exitSocket;
 
-        private ATask task;
+        [SerializeField]private ATask task;
         public Rect windowRect;
         public string windowTitle;
         public bool IsParentView { get; private set; }
@@ -41,6 +40,10 @@ namespace BT
         public static event Action<BaseNodeView> OnNodeRightClicked;
         public event Action<BaseNodeView> OnClickedNode;
 
+        private void OnEnable()
+        {
+            //hideFlags = HideFlags.HideInHierarchy;
+        }
 
         public virtual void Init(Guid? guid, bool isEntryView, bool isParentView)
         {

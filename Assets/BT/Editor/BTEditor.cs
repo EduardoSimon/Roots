@@ -6,6 +6,7 @@ using BT.Editor;
 using BT.Scripts.Drawers;
 using Editor;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 using UDebug = UnityEngine.Debug;
@@ -179,9 +180,14 @@ namespace BT
         private void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
         {
             var instance = CreateInstance(nodeType.DrawerType.FullName) as BaseNodeView;
+            AssetDatabase.AddObjectToAsset(instance,_currentGraph);
+            AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( _currentGraph ) );
             Debug.Assert(instance != null, nameof(instance) + " != null");
 
-            instance.Task = Activator.CreateInstance(nodeType.taskType) as ATask;
+            instance.Task = CreateInstance(nodeType.taskType) as ATask;
+            AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( _currentGraph) );
+            AssetDatabase.AddObjectToAsset(instance.Task, instance);
+            //AssetDatabase.SetMainObject(_currentGraph, AssetDatabase.GetAssetPath(_currentGraph));
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);
@@ -207,10 +213,14 @@ namespace BT
         private BaseNodeView CopyNodeView(BaseNodeView baseNode)
         {
             var instance = CreateInstance(baseNode.GetType().FullName) as BaseNodeView;
+            AssetDatabase.AddObjectToAsset(instance,_currentGraph);
+            AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( _currentGraph ) );
             Debug.Assert(instance != null, nameof(instance) + " != null");
 
             //instance.Task = CreateInstance(baseNode.Task.GetType().FullName) as ATask;            
-            instance.Task = Activator.CreateInstance(baseNode.Task.GetType()) as ATask;
+            instance.Task = CreateInstance(baseNode.Task.GetType()) as ATask;
+            AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( _currentGraph.GetInstanceID() ) );
+            AssetDatabase.AddObjectToAsset(instance.Task, instance);
 
             instance.windowRect = baseNode.windowRect;
             instance.windowTitle = baseNode.windowTitle;
@@ -489,6 +499,9 @@ namespace BT
                         _connections.RemoveAt(conn);
 
                     _nodeViews.Remove(_rightClickedNode);
+                    AssetDatabase.RemoveObjectFromAsset(_rightClickedNode.Task);
+                    AssetDatabase.RemoveObjectFromAsset(_rightClickedNode);
+                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(_currentGraph));
                     _rightClickedNode = null;
 
                     SaveGraphData();
@@ -603,9 +616,6 @@ namespace BT
                 foreach (var nodeView in _nodeViews)
                 {
                     _currentGraph.SavedNodes.Add(nodeView);
-                    
-                     //TODO redo task serialization with this method
-                    _currentGraph.data.Add(new BaseNodeView.NodeData(nodeView.Task,nodeView.windowRect,nodeView.windowTitle,nodeView.GUID,nodeView.IsParentView,nodeView.IsEntryView));
 
                     /*
                     foreach (var child in nodeView.children)
@@ -656,7 +666,8 @@ namespace BT
                 _connections.Clear();
 
                 BaseNodeView RootNode = null;
-                
+
+                //AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(_currentGraph));
                 if(_currentGraph.EntryView != null && _currentGraph.EntryView.exitSocket.IsHooked)
                     CreateEntryView();
 

@@ -26,6 +26,8 @@ namespace BT
         {
             if (task != null)
                 RootNode = task;
+            else
+                throw new NoNullAllowedException();
         }
         
         

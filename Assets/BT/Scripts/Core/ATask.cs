@@ -4,9 +4,14 @@ using UnityEngine;
 namespace BT
 {
     [Serializable]
-    public class ATask
+    public class ATask : ScriptableObject
     {
         public TaskStatus Status;
+
+        private void OnEnable()
+        {
+            //hideFlags = HideFlags.HideInHierarchy;
+        }
 
         protected virtual void OnInitialize() {}
 
