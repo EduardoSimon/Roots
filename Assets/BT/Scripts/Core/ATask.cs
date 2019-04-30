@@ -10,17 +10,17 @@ namespace BT
 
         private void OnEnable()
         {
-            //hideFlags = HideFlags.HideInHierarchy;
+            hideFlags = HideFlags.HideInHierarchy;
         }
 
-        protected virtual void OnInitialize() {}
+        protected virtual void OnInitialize() { }
 
         protected virtual TaskStatus Update()
         {
             return TaskStatus.Invalid;
         }
-        
-        protected virtual void OnTerminate(TaskStatus status) {}
+
+        protected virtual void OnTerminate(TaskStatus status) { }
 
         public TaskStatus Tick()
         {

@@ -7,15 +7,18 @@ namespace BT
     [TaskTooltip("A selector is bla bla bla")]
     public class Selector : ATask, IComposite
     {
-        public Selector(ATask[] children = null)
+        public List<ATask> Children { get; set; }
+
+        /// <summary>
+        /// This function is called when the object becomes enabled and active.
+        /// </summary>
+        void OnEnable()
         {
-            Children = children != null ? children.ToList() : new List<ATask>();
+            if (Children == null)
+                Children = new List<ATask>();
 
             Status = TaskStatus.NonInitialized;
         }
-
-        public List<ATask> Children { get; }
-
         public void AddChild(ATask action)
         {
             Children.Add(action);
@@ -31,9 +34,7 @@ namespace BT
             Children.Clear();
         }
 
-        protected override void OnInitialize()
-        {
-        }
+        protected override void OnInitialize() { }
 
         protected override TaskStatus Update()
         {
@@ -56,8 +57,6 @@ namespace BT
             return TaskStatus.Invalid;
         }
 
-        protected override void OnTerminate(TaskStatus status)
-        {
-        }
+        protected override void OnTerminate(TaskStatus status) { }
     }
 }

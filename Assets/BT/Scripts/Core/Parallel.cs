@@ -16,7 +16,6 @@ namespace BT
 
         protected Policy _successPolicy;
 
-
         public Parallel(Policy successPolicy, Policy failurePolicy)
         {
             _successPolicy = successPolicy;
@@ -25,7 +24,7 @@ namespace BT
             Status = TaskStatus.NonInitialized;
         }
 
-        public List<ATask> Children { get; }
+        public List<ATask> Children { get; set; }
 
         protected override void OnInitialize()
         {

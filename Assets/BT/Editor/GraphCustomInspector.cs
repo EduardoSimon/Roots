@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(BehaviorTreeGraph))]
-public class GraphCustomInspector : Editor
+public class GraphCustomInspector : UnityEditor.Editor
 {
     private void OnValidate()
     {

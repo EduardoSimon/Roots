@@ -22,35 +22,61 @@ namespace BT.Editor
 
         private void OnEnable()
         {
-            if(data == null)
+            if (data == null)
                 data = new List<BaseNodeView.NodeData>();
         }
 
         public void OnSave()
         {
-            if (RootView == null)
+            if (RootNode == null)
             {
                 Debug.Log("The Tree is empty, there's nothing to build");
                 return;
             }
-            
+
             //todo USE A POOL
             _tree = new BehaviorTree();
-            _tree.AddRoot(RootView.Task);
+            _tree.AddRoot(RootNode.Task);
 
+            ConstructTree(RootNode);
             //BUG not detecting is parent view
-            if (RootView.IsParentView)
+
+            PrintTree(_tree.RootNode);
+        }
+
+        public void ConstructTree(BaseNodeView node)
+        {
+            if (node.IsParentView)
             {
-                IComposite parentRoot = _tree.RootNode as IComposite;
-                                
-                for (int i = 0; i < RootView.children.Count; i++)
+                IComposite compositeTask = node.Task as IComposite;
+
+                if (compositeTask != null)
                 {
-                    parentRoot.AddChild(RootView.children[i].Task);
+                    for (int i = 0; i < node.children.Count; i++)
+                    {
+                        compositeTask.AddChild(node.children[i].Task);
+                        ConstructTree(node.children[i]);
+                    }
                 }
             }
-                
-                
 
+        }
+
+        public void PrintTree(ATask task)
+        {
+            IComposite compositeNode = task as IComposite;
+
+            if (compositeNode != null)
+            {
+                for (int i = 0; i < compositeNode.Children.Count; i++)
+                {
+                    ATask taskNode = (ATask) compositeNode;
+                    //Debug.Log(taskNode.name);
+                    PrintTree(compositeNode.Children[i]);
+                }
+            }
+
+            Debug.Log(task.name);
         }
     }
 }

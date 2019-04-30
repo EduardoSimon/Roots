@@ -9,6 +9,7 @@ namespace BT_Tests
     {
         public class BasicTreeTests
         {
+            /* 
             [Test]
             public void Tree_Is_Not_Null()
             {
@@ -283,6 +284,8 @@ namespace BT_Tests
                 var selector = tree.RootNode as Selector;
                 Assert.That(selector != null && returnedStatus == TaskStatus.Failed);
             }
+
+            */
         }
     }
 }

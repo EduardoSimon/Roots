@@ -9,16 +9,16 @@ namespace BT
     {
         public const float kNodeWidht = 100;
         public const float kNodeHeight = 100;
-        
-        private const int SocketWidth = (int)kNodeWidht - 20;
-        public const int SocketHeight = (int)kNodeHeight / 6;
+
+        private const int SocketWidth = (int) kNodeWidht - 20;
+        public const int SocketHeight = (int) kNodeHeight / 6;
 
         private GUISkin _skin;
         private int _id;
         public NodeSocket entrySocket;
         public NodeSocket exitSocket;
 
-        [SerializeField]private ATask task;
+        public ATask task;
         public Rect windowRect;
         public string windowTitle;
         public bool IsParentView { get; private set; }
@@ -29,7 +29,7 @@ namespace BT
         public Guid? GUID { get; private set; }
 
         //serialize this
-        public List<BaseNodeView> children; 
+        public List<BaseNodeView> children;
 
         public virtual ATask Task
         {
@@ -51,7 +51,7 @@ namespace BT
             {
                 _skin = Resources.Load<GUISkin>("BTSkin");
                 exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
-                
+
                 if (guid == null)
                 {
                     GUID = Guid.NewGuid();
@@ -66,7 +66,7 @@ namespace BT
                 return;
 
             }
-                
+
             windowTitle = task.GetType().Name;
             entrySocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.In, this);
             exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
@@ -115,16 +115,15 @@ namespace BT
                             OnClickedNode?.Invoke(this);
                             GUI.FocusWindow(_id);
 
-
                             return true;
                         case 0:
                             return true;
                         case 1:
-                        {
-                            if (windowRect.Contains(e.mousePosition))
-                                OnNodeRightClicked?.Invoke(this);
-                            return true;
-                        }
+                            {
+                                if (windowRect.Contains(e.mousePosition))
+                                    OnNodeRightClicked?.Invoke(this);
+                                return true;
+                            }
                     }
 
                     break;
@@ -149,7 +148,7 @@ namespace BT
 
             return node != null && node.GUID == GUID;
         }
-        
+
         [System.Serializable]
         public class NodeData
         {

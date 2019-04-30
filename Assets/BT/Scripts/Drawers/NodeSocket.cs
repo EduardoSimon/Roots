@@ -16,9 +16,7 @@ namespace BT
         public static NodeSocket CurrentClickedSocket = null;
         public static Action<NodeSocket> OnSocketClicked;
 
-
         private Rect _socketRect;
-
 
         public NodeSocket(Rect socketRect, NodeSocketType type, BaseNodeView node)
         {
@@ -29,20 +27,18 @@ namespace BT
         }
 
         public Vector2 Position => new Vector2(_socketRect.x + _socketRect.width / 2, _socketRect.y);
-
         public NodeSocketType SocketType;
-
         public BaseNodeView Node;
 
         public bool IsHooked;
 
         public void Draw()
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             _socketRect.x = Node.windowRect.xMin + BaseNodeView.kNodeWidht / 8;
-            _socketRect.y = SocketType == NodeSocketType.In
-                ? Node.windowRect.yMin - BaseNodeView.SocketHeight + 5
-                : Node.windowRect.yMax - 5;
+            _socketRect.y = SocketType == NodeSocketType.In ?
+                Node.windowRect.yMin - BaseNodeView.SocketHeight + 5 :
+                Node.windowRect.yMax - 5;
 
             //TODO create custom style
             if (CurrentClickedSocket == null || CurrentClickedSocket != this)
@@ -59,7 +55,7 @@ namespace BT
                 Handles.DrawLine(CurrentClickedSocket.Position, Event.current.mousePosition);
                 GUI.changed = true;
             }
-            #endif
+#endif
 
         }
 

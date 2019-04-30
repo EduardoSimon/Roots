@@ -9,20 +9,24 @@ namespace BT
     [TaskTooltip("BALABABAB sequence")]
     public class Sequence : ATask, IComposite
     {
-        public Sequence(ATask[] children = null)
+        /// <summary>
+        /// This function is called when the object becomes enabled and active.
+        /// </summary>
+        void OnEnable()
         {
-            Children = children != null ? children.ToList() : new List<ATask>();
+            if (Children == null)
+                Children = new List<ATask>();
 
             Status = TaskStatus.NonInitialized;
         }
 
-        public List<ATask> Children { get; }
+        public List<ATask> Children { get; set; }
 
         public void AddChild(ATask task)
         {
             Children.Add(task);
         }
-        
+
         public void AddChildren(List<ATask> children)
         {
             Children.AddRange(children);
