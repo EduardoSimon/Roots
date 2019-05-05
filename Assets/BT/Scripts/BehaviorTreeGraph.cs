@@ -13,12 +13,12 @@ namespace BT.Editor
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
         public List<BaseNodeView> SavedNodes = new List<BaseNodeView>();
 
-        [HideInInspector] public BaseNodeView EntryView;
-        [HideInInspector] public BaseNodeView RootView;
+        public BaseNodeView EntryView;
         public List<BaseNodeView.NodeData> data;
         public NodeConnection entryConnection;
-        public BaseNodeView RootNode;
-        private BehaviorTree _tree;
+        [FormerlySerializedAs("RootNode")] public BaseNodeView RootView;
+        
+        [SerializeField] public BehaviorTree _tree;
 
         private void OnEnable()
         {
@@ -28,7 +28,7 @@ namespace BT.Editor
 
         public void OnSave()
         {
-            if (RootNode == null)
+            if (RootView == null)
             {
                 Debug.Log("The Tree is empty, there's nothing to build");
                 return;
@@ -36,11 +36,12 @@ namespace BT.Editor
 
             //todo USE A POOL
             _tree = new BehaviorTree();
-            _tree.AddRoot(RootNode.Task);
+            _tree.AddRoot(RootView.Task);
 
-            ConstructTree(RootNode);
+            if(RootView != null)
+                ConstructTree(RootView);
+            
             //BUG not detecting is parent view
-
             PrintTree(_tree.RootNode);
         }
 
@@ -48,14 +49,19 @@ namespace BT.Editor
         {
             if (node.IsParentView)
             {
-                IComposite compositeTask = node.Task as IComposite;
-
-                if (compositeTask != null)
+                if (node.Task is IComposite compositeTask)
                 {
-                    for (int i = 0; i < node.children.Count; i++)
+                    if (node.children == null)
                     {
-                        compositeTask.AddChild(node.children[i].Task);
-                        ConstructTree(node.children[i]);
+                        Debug.LogError("There is an empty composite, please remove it or add a children");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < node.children.Count; i++)
+                        {
+                            compositeTask.AddChild(node.children[i].Task);
+                            ConstructTree(node.children[i]);
+                        }
                     }
                 }
             }
@@ -64,19 +70,16 @@ namespace BT.Editor
 
         public void PrintTree(ATask task)
         {
-            IComposite compositeNode = task as IComposite;
-
-            if (compositeNode != null)
+            if (task is IComposite compositeNode)
             {
                 for (int i = 0; i < compositeNode.Children.Count; i++)
                 {
                     ATask taskNode = (ATask) compositeNode;
-                    //Debug.Log(taskNode.name);
                     PrintTree(compositeNode.Children[i]);
                 }
             }
 
-            Debug.Log(task.name);
+            Debug.Log(task);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace BT.Runtime
             Update, LateUpdate, FixedUpdate, Manual
         }
     
-        public BehaviorTreeGraph BehaviorTree;
+        public BehaviorTreeGraph TreeGraph;
     
         [TextArea]
         [SerializeField] private string BehaviorTreeDescription;
@@ -25,15 +25,24 @@ namespace BT.Runtime
         [SerializeField] private bool PauseOnDisabled = false;
         [SerializeField] private bool RestartOnComplete = false;
 
+        private BehaviorTree _tree;
+
 
         private void Start()
         {
-            
+            Init();
         }
 
         public void Init()
         {
-            throw new System.NotImplementedException();
+            if(TreeGraph != null)
+                _tree = TreeGraph._tree;
+        }
+
+        private void Update()
+        {
+            if(TreeGraph != null)
+                Debug.Log(_tree.Tick());
         }
     }
 }

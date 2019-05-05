@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BT.Scripts.Drawers;
+using UnityEditor;
 using UnityEngine;
 
 namespace BT
@@ -26,7 +27,8 @@ namespace BT
 
         public bool isSelected { get; private set; }
 
-        public Guid? GUID { get; private set; }
+        [SerializeField] private string guid;
+        public string GUID => guid;
 
         //serialize this
         public List<BaseNodeView> children;
@@ -45,20 +47,26 @@ namespace BT
             //hideFlags = HideFlags.HideInHierarchy;
         }
 
-        public virtual void Init(Guid? guid, bool isEntryView, bool isParentView)
+        /// <summary>
+        /// Emulates the constructor of the class. Override this method calling the base one for your custom initialization
+        /// </summary>
+        /// <param name="id"> If the node has been created before and only a copy is need, the GUID parameter MUST BE NULL</param>
+        /// <param name="isEntryView"> Is the entry view of the graph</param>
+        /// <param name="isParentView"> Is allowed to have children</param>
+        public virtual void Init(string id, bool isEntryView, bool isParentView)
         {
             if (isEntryView)
             {
                 _skin = Resources.Load<GUISkin>("BTSkin");
                 exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
 
-                if (guid == null)
+                if (id == null)
                 {
-                    GUID = Guid.NewGuid();
+                    this.guid = Guid.NewGuid().ToString();
                     children = new List<BaseNodeView>();
                 }
                 else
-                    GUID = guid;
+                    this.guid = id;
 
                 IsEntryView = isEntryView;
                 IsParentView = isParentView;
@@ -66,18 +74,18 @@ namespace BT
                 return;
 
             }
-
+            
             windowTitle = task.GetType().Name;
             entrySocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.In, this);
             exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
 
-            if (guid == null)
+            if (id == null)
             {
-                GUID = Guid.NewGuid();
+                this.guid = Guid.NewGuid().ToString();
                 children = new List<BaseNodeView>();
             }
             else
-                GUID = guid;
+                this.guid = id;
 
             IsEntryView = isEntryView;
             IsParentView = isParentView;
@@ -146,13 +154,13 @@ namespace BT
         {
             var node = other as BaseNodeView;
 
-            return node != null && node.GUID == GUID;
+            return node != null && node.guid == guid;
         }
 
         [System.Serializable]
         public class NodeData
         {
-            public NodeData(ATask task, Rect windowRect, string windowTitle, Guid? id, bool isParentNode, bool isEntryNode)
+            public NodeData(ATask task, Rect windowRect, string windowTitle, string id, bool isParentNode, bool isEntryNode)
             {
                 this.task = task;
                 this.windowRect = windowRect;
@@ -165,7 +173,7 @@ namespace BT
             public ATask task;
             public Rect windowRect;
             public string windowTitle;
-            public Guid? id;
+            public string id;
             public bool isParentNode;
             public bool isEntryNode;
         }

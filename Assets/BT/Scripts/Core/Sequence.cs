@@ -44,7 +44,7 @@ namespace BT
 
         protected override void OnInitialize()
         {
-            throw new NotImplementedException();
+            //todo implement
         }
 
         protected override TaskStatus Update()
@@ -76,7 +76,7 @@ namespace BT
 
         public override string ToString()
         {
-            return "Updating the sequence with" + Children.Count + " children.";
+            return "Sequence task with " + Children.Count + " children.";
         }
     }
 }

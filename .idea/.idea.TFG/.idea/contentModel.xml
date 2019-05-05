@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\edu97\.Rider2018.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\edu97\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_TFG.-264873972.00" t="ExcludeRecursive" />
-    <e p="C:\Users\edu97\Repos\TFG" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -637,6 +635,7 @@
         <e p="BT" t="Include">
           <e p="Editor" t="Include">
             <e p="BTEditor.cs" t="Include" />
+            <e p="GraphCustomInspector.cs" t="Include" />
             <e p="SearchTasksWindow.cs" t="Include" />
             <e p="Tests" t="Include">
               <e p="CoreTests.cs" t="Include" />
@@ -647,7 +646,6 @@
             <e p="TooltipWindow.cs" t="Include" />
             <e p="ZoomExtensions.cs" t="Include" />
           </e>
-          <e p="GraphCustomInspector.cs" t="Include" />
           <e p="Scripts" t="Include">
             <e p="Attributes" t="Include">
               <e p="CustomNodeDrawerAttribute.cs" t="Include" />
@@ -665,6 +663,7 @@
               <e p="ADecorator.cs" t="Include" />
               <e p="ATask.cs" t="Include" />
               <e p="IComposite.cs" t="Include" />
+              <e p="Log.cs" t="Include" />
               <e p="Parallel.cs" t="Include" />
               <e p="Patrol.cs" t="Include" />
               <e p="Selector.cs" t="Include" />
@@ -678,6 +677,7 @@
               <e p="BaseNodeView.cs" t="Include" />
               <e p="DefaultNodeView.cs" t="Include" />
               <e p="EntryNodeView.cs" t="Include" />
+              <e p="LogNodeView.cs" t="Include" />
               <e p="NodeConnection.cs" t="Include" />
               <e p="NodeSocket.cs" t="Include" />
               <e p="PatrolNodeView.cs" t="Include" />
@@ -719,5 +719,7 @@
       </e>
       <e p="TFG.sln" t="IncludeFlat" />
     </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/resharper-host/local/Transient/ReSharperHost/v183/SolutionCaches/_TFG.-950486497.00" t="ExcludeRecursive" />
   </component>
 </project>

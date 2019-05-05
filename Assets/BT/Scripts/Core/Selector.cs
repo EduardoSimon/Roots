@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace BT
 {
@@ -58,5 +59,12 @@ namespace BT
         }
 
         protected override void OnTerminate(TaskStatus status) { }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Selector with ").Append(Children.Count).Append(" children.");
+            return sb.ToString();
+        }
     }
 }

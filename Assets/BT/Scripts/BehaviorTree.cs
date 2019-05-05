@@ -13,9 +13,12 @@ namespace BT
         Aborted
     }
 
+    [System.Serializable]
     public class BehaviorTree
     {
-        public ATask RootNode { get; private set; }
+        [SerializeField]private ATask rootNode;
+
+        public ATask RootNode => rootNode;
 
         public TaskStatus Tick()
         {
@@ -25,7 +28,7 @@ namespace BT
         public void AddRoot(ATask task)
         {
             if (task != null)
-                RootNode = task;
+                rootNode = task;
             else
                 throw new NoNullAllowedException();
         }
