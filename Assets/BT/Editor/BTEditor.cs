@@ -249,7 +249,7 @@ namespace BT
             instance.Task.name = instance.windowTitle + " with ID:" + instance.GUID;
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             AssetDatabase.AddObjectToAsset(instance.Task, instance);
-            //AssetDatabase.SetMainObject(_currentGraph, AssetDatabase.GetAssetPath(_currentGraph));
+            //sAssetDatabase.SetMainObject(_currentGraph, AssetDatabase.GetAssetPath(_currentGraph));
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
             _nodeViews.Add(instance);

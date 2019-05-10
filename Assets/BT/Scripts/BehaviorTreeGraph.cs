@@ -57,10 +57,13 @@ namespace BT.Editor
                     }
                     else
                     {
-                        for (int i = 0; i < node.children.Count; i++)
+                        if (compositeTask.Children.Count < node.children.Count)
                         {
-                            compositeTask.AddChild(node.children[i].Task);
-                            ConstructTree(node.children[i]);
+                            for (int i = 0; i < node.children.Count; i++)
+                            {
+                                compositeTask.AddChild(node.children[i].Task);
+                                ConstructTree(node.children[i]);
+                            }                           
                         }
                     }
                 }
