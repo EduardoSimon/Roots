@@ -1,3 +1,4 @@
+using BT.Scripts;
 using BT.Scripts.Drawers;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ namespace BT.Core
     [TaskTooltip("HI IM A LOG")]
     public class Log : AAction
     {
-        public int value;
+        public IntBlackBoardVariable value;
+        
         protected override void OnInitialize()
         {
             base.OnInitialize();

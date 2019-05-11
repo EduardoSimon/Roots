@@ -7,20 +7,21 @@ namespace BT.Scripts.Drawers
 {
     public class LogNodeView : BaseNodeView
     {
-
+        private Texture2D _texture2D;
+        
         public override void Init(string guid, bool isEntryView, bool isParentView)
         {
             base.Init(guid, isEntryView, isParentView);
+
+            _texture2D = Resources.Load<Texture2D>("log_icon");
+
         }
 
         public override void DrawWindow(int id)
         {
             base.DrawWindow(id);
 
-            Log LogTask = (Log) task;
-            LogTask.value = EditorGUI.IntField(
-                new Rect(10, 20, 30 , 20), 
-                LogTask.value);
+            GUI.DrawTexture(new Rect(20,20, kNodeWidht - 30, kNodeHeight - 30), _texture2D );
         }
 
         public override void DrawSockets()

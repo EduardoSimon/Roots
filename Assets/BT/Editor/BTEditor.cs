@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Versioning;
 using BT.Editor;
+using BT.Scripts;
 using BT.Scripts.Drawers;
 using Editor;
 using UnityEditor;
@@ -193,8 +196,45 @@ namespace BT
                 return;
             }
 
+            //todo inspect the current selected node and inspect its properties. Draw them after.
+            Rect inspectorRect = new Rect(0, controlsArea.yMax, position.width / 4,
+                position.height);
+            EditorGUI.DrawRect(inspectorRect, new Color(0.33f, 0.27f, 0.33f, 0.27f));
+            
+            GUILayout.BeginArea(inspectorRect);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Inspector",_skin.GetStyle("GraphTitle"));
+            GUILayout.EndHorizontal();
+            
+            GUILayout.BeginVertical();
+            if (_selectedNode != null)
+            {
+                GUILayout.Label("Selected Node: " + _selectedNode.windowTitle);
+
+                Type type = _selectedNode.GetType();
+
+                FieldInfo taskField = type.GetField("task");
+
+                if (taskField != null)
+                {
+                    var variables = taskField.GetType().GetFields();
+
+                    foreach (var variable in variables)
+                    {
+                        if (variable.GetType() == typeof(IntBlackBoardVariable))
+                            EditorGUILayout.IntField("Int BB variable", (int)variable.GetValue(_selectedNode));
+                    
+                    
+                    }
+                }
+
+            }
+            
+            GUILayout.EndVertical();            
+            GUILayout.EndArea();
+            
             EditorZoomArea.Begin(_currentZoom,
-                new Rect(controlsArea.x, controlsArea.y + controlsArea.height, position.width,
+                new Rect(inspectorRect.xMax, controlsArea.yMax, position.width - inspectorRect.width,
                     position.height - controlsArea.height));
 
             foreach (var connection in _connections) connection.Draw();
@@ -449,6 +489,7 @@ namespace BT
             {
                 case EventType.MouseDown:
                     //Focus();
+
                     break;
 
                 case EventType.MouseDrag:
@@ -643,6 +684,8 @@ namespace BT
 
         private void OnClickedNode(BaseNodeView node)
         {
+            _selectedNode = node;
+            
             var attributes =
                 (TaskTooltipAttribute[]) node.Task.GetType().GetCustomAttributes(typeof(TaskTooltipAttribute), true);
 
