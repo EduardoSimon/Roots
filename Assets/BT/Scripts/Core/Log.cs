@@ -9,7 +9,8 @@ namespace BT.Core
     [TaskTooltip("HI IM A LOG")]
     public class Log : AAction
     {
-        public IntBlackBoardVariable value;
+        public string message;
+        public bool isLogError;
         
         protected override void OnInitialize()
         {
@@ -18,7 +19,11 @@ namespace BT.Core
 
         protected override TaskStatus Update()
         {
-            Debug.Log("Hi Im  logging the value: " + value + "at time: " + Time.time);
+            if(isLogError)
+                Debug.LogError(message);
+            else
+                Debug.Log(message);
+            
             return TaskStatus.Succeeded;
         }
 

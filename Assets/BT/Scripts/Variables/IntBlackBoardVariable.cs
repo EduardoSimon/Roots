@@ -4,8 +4,6 @@ namespace BT.Scripts
 {
     public class IntBlackBoardVariable : BlackBoardVariable
     {
-        public int variable;
-        
-        
+        public int IntVariable;    
     }
 }

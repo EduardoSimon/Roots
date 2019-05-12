@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace BT
 {
@@ -44,6 +45,15 @@ namespace BT
         public void Abort()
         {
             Status = TaskStatus.Aborted;
+        } 
+        
+        public virtual void ConstructTask(TaskConstructionData data) {}
+    }
+
+    public class TaskConstructionData
+    {
+        public TaskConstructionData()
+        {
         }
     }
 }

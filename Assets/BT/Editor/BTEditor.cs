@@ -202,35 +202,18 @@ namespace BT
             EditorGUI.DrawRect(inspectorRect, new Color(0.33f, 0.27f, 0.33f, 0.27f));
             
             GUILayout.BeginArea(inspectorRect);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Inspector",_skin.GetStyle("GraphTitle"));
-            GUILayout.EndHorizontal();
-            
             GUILayout.BeginVertical();
-            if (_selectedNode != null)
+            GUILayout.Label("Inspector",_skin.GetStyle("H1"));
+            
+            if(_selectedNode == null)
+                GUILayout.Label("Selected Node: None" ,_skin.GetStyle("H2"));
+            else
             {
-                GUILayout.Label("Selected Node: " + _selectedNode.windowTitle);
-
-                Type type = _selectedNode.GetType();
-
-                FieldInfo taskField = type.GetField("task");
-
-                if (taskField != null)
-                {
-                    var variables = taskField.GetType().GetFields();
-
-                    foreach (var variable in variables)
-                    {
-                        if (variable.GetType() == typeof(IntBlackBoardVariable))
-                            EditorGUILayout.IntField("Int BB variable", (int)variable.GetValue(_selectedNode));
-                    
-                    
-                    }
-                }
-
+                GUILayout.Label("Selected Node: " + _selectedNode.windowTitle ,_skin.GetStyle("H2"));
+                _selectedNode.DrawInspector();
             }
             
-            GUILayout.EndVertical();            
+            GUILayout.EndVertical();           
             GUILayout.EndArea();
             
             EditorZoomArea.Begin(_currentZoom,
@@ -360,7 +343,7 @@ namespace BT
 
             GUILayout.BeginVertical();
             if (currentGraph != null)
-                GUILayout.Label(currentGraph.Name, _skin.GetStyle("GraphTitle"));
+                GUILayout.Label(currentGraph.Name, _skin.GetStyle("H1"));
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
@@ -722,6 +705,7 @@ namespace BT
 
                 foreach (var nodeView in _nodeViews)
                 {
+                    nodeView.SaveNodeInfo();
                     currentGraph.SavedNodes.Add(nodeView);
                 }
 

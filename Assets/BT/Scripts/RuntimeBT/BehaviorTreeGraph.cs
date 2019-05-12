@@ -14,17 +14,11 @@ namespace BT.Editor
         public List<BaseNodeView> SavedNodes = new List<BaseNodeView>();
 
         public BaseNodeView EntryView;
-        public List<BaseNodeView.NodeData> data;
         public NodeConnection entryConnection;
         [FormerlySerializedAs("RootNode")] public BaseNodeView RootView;
         
         [SerializeField] public BehaviorTree _tree;
 
-        private void OnEnable()
-        {
-            if (data == null)
-                data = new List<BaseNodeView.NodeData>();
-        }
 
         public void OnSave()
         {
@@ -68,7 +62,7 @@ namespace BT.Editor
                     }
                 }
             }
-
+           
         }
 
         public void PrintTree(ATask task)
@@ -84,5 +78,7 @@ namespace BT.Editor
 
             Debug.Log(task);
         }
+        
+        
     }
 }

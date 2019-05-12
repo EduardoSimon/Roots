@@ -22,6 +22,9 @@ namespace BT
         public ATask task;
         public Rect windowRect;
         public string windowTitle;
+        public string nodeComment;
+        
+        
         public bool IsParentView { get; private set; }
         public bool IsEntryView { get; private set; }
 
@@ -106,6 +109,15 @@ namespace BT
             exitSocket?.ProcessEvent(Event.current);
         }
 
+        /// <summary>
+        /// Callback for drawing this node's inspector. Use EditorGUILayout or GUILayout functions for easier positioning.
+        /// </summary>
+        public virtual void DrawInspector()
+        {
+            GUILayout.Label(windowTitle);
+            nodeComment = EditorGUILayout.TextArea("Write your comments here.");
+        }
+
         public void Drag(Vector2 delta)
         {
             windowRect.position += delta;
@@ -156,26 +168,8 @@ namespace BT
 
             return node != null && node.guid == guid;
         }
+        
+        public virtual void SaveNodeInfo(){}
 
-        [System.Serializable]
-        public class NodeData
-        {
-            public NodeData(ATask task, Rect windowRect, string windowTitle, string id, bool isParentNode, bool isEntryNode)
-            {
-                this.task = task;
-                this.windowRect = windowRect;
-                this.windowTitle = windowTitle;
-                this.id = id;
-                this.isParentNode = isParentNode;
-                this.isEntryNode = isEntryNode;
-            }
-
-            public ATask task;
-            public Rect windowRect;
-            public string windowTitle;
-            public string id;
-            public bool isParentNode;
-            public bool isEntryNode;
-        }
     }
 }
