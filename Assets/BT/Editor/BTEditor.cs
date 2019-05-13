@@ -181,6 +181,7 @@ namespace BT
                     Resources.Load<Texture>("tree_icon")));
             }
 
+            UDebug.Log(GUI.GetNameOfFocusedControl());
             _mousePosition = Event.current.mousePosition;
 
             //DrawBackgroundGrid(20, 0.2f, Color.grey);
@@ -491,10 +492,16 @@ namespace BT
 
                 case EventType.KeyUp:
 
-                    if (e.keyCode == KeyCode.Space && position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
+                    if (e.keyCode == KeyCode.Space && position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)) && GUI.GetNameOfFocusedControl() == "")
                         ShowSearchTaskWindow(e);
                     else if (e.keyCode == KeyCode.Escape && NodeSocket.CurrentClickedSocket != null)
                         NodeSocket.CurrentClickedSocket = null;
+                    else if (e.keyCode == KeyCode.Escape)
+                    {
+                        GUI.FocusControl(null);
+                        _selectedNode = null;
+                        Focus();
+                    }
                     break;
 
                 case EventType.ScrollWheel:

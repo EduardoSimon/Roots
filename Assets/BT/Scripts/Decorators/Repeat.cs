@@ -34,7 +34,7 @@ namespace BT.Decorators
 
         protected override void OnTerminate(TaskStatus status)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

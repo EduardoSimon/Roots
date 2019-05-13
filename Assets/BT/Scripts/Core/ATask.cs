@@ -46,14 +46,7 @@ namespace BT
         {
             Status = TaskStatus.Aborted;
         } 
-        
-        public virtual void ConstructTask(TaskConstructionData data) {}
+       
     }
 
-    public class TaskConstructionData
-    {
-        public TaskConstructionData()
-        {
-        }
-    }
 }

@@ -71,7 +71,8 @@ namespace BT
 
         protected override void OnTerminate(TaskStatus status)
         {
-            throw new NotImplementedException();
+            //todo implement
+            //throw new NotImplementedException();
         }
 
         public override string ToString()

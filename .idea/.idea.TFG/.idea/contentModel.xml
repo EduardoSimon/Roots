@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\edu97\.Rider2018.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\edu97\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_TFG.-264873972.00" t="ExcludeRecursive" />
-    <e p="C:\Users\edu97\Repos\TFG" t="IncludeRecursive">
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -663,6 +661,7 @@
               <e p="Log.cs" t="Include" />
               <e p="Parallel.cs" t="Include" />
               <e p="Patrol.cs" t="Include" />
+              <e p="Seek.cs" t="Include" />
               <e p="Selector.cs" t="Include" />
               <e p="Sequence.cs" t="Include" />
             </e>
@@ -678,6 +677,7 @@
               <e p="NodeConnection.cs" t="Include" />
               <e p="NodeSocket.cs" t="Include" />
               <e p="PatrolNodeView.cs" t="Include" />
+              <e p="SeekNodeView.cs" t="Include" />
               <e p="SequenceView.cs" t="Include" />
             </e>
             <e p="RuntimeBT" t="Include">
@@ -685,6 +685,9 @@
               <e p="BehaviorTreeController.cs" t="Include" />
               <e p="BehaviorTreeGraph.cs" t="Include" />
               <e p="BehaviorTreeManager.cs" t="Include" />
+            </e>
+            <e p="Utils" t="Include">
+              <e p="EditorFix.cs" t="Include" />
             </e>
             <e p="Variables" t="Include">
               <e p="BlackBoard.cs" t="Include" />
@@ -732,5 +735,7 @@
       </e>
       <e p="TFG.sln" t="IncludeFlat" />
     </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/resharper-host/local/Transient/ReSharperHost/v183/SolutionCaches/_TFG.-950486497.00" t="ExcludeRecursive" />
   </component>
 </project>

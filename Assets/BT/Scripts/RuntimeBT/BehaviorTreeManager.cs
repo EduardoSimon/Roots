@@ -10,8 +10,16 @@ namespace BT.Runtime
     public class BehaviorTreeManager : MonoBehaviour
     {
         public static BehaviorTreeManager Instance = null;
+        public List<GameObject> gameObjects;
         
         private BehaviorTreeController[] _behaviorTreeControllers;
+
+        private void OnEnable()
+        {
+            if(gameObjects == null)
+                gameObjects = new List<GameObject>();
+                
+        }
 
         private void Awake()
         {

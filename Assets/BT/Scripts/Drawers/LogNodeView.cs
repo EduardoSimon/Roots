@@ -24,22 +24,21 @@ namespace BT.Scripts.Drawers
             base.Init(guid, isEntryView, isParentView);
 
             _texture2D = Resources.Load<Texture2D>("log_icon");
-            CreateVariable(message);
-        }
+            
+            message = CreateInstance<StringBlackBoardVariable>();
+            message.Init(this);
+            message.StringVariable = "Enter your log message here.";
 
-        private void CreateVariable(BlackBoardVariable blackBoardVariable)
-        {
-            blackBoardVariable = CreateInstance(blackBoardVariable.GetType()) as BlackBoardVariable;
-            message.StringVariable = "HI";
-            AssetDatabase.AddObjectToAsset(message, this);
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
+            isLogError = CreateInstance<BoolBlackBoardVariable>();
+            isLogError.Init(this);
+            isLogError.BoolVariable = false;
         }
 
         public override void DrawWindow(int id)
         {
             base.DrawWindow(id);
 
-            GUI.DrawTexture(new Rect(20,20, kNodeWidht - 30, kNodeHeight - 30), _texture2D );
+            GUI.DrawTexture(new Rect(20 ,20, kNodeWidht - 30, kNodeHeight - 30), _texture2D );
         }
 
         public override void DrawSockets()
@@ -50,8 +49,8 @@ namespace BT.Scripts.Drawers
         public override void DrawInspector()
         {
             base.DrawInspector();
-            message.StringVariable = EditorGUILayout.TextArea(message.StringVariable);
-            isLogError.BoolVariable = GUILayout.Toggle(isLogError, "Is Logging an Error?");
+            message.DrawVariableInspector("Log Message");
+            isLogError.DrawVariableInspector("Is Logging an error?");
         }
 
         public override void SaveNodeInfo()

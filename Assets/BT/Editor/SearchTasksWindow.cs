@@ -77,6 +77,7 @@ namespace Editor
                 Event.current.keyCode == KeyCode.Escape && focusedWindow == this ||
                 Event.current.keyCode == KeyCode.Escape || Event.current.type == EventType.MouseLeaveWindow)
             {
+                
                 parentWindow.Focus();
                 Close();
                 parentWindow.searchableTaskWindow = null;
