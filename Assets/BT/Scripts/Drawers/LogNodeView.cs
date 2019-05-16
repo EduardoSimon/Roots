@@ -24,14 +24,15 @@ namespace BT.Scripts.Drawers
             base.Init(guid, isEntryView, isParentView);
 
             _texture2D = Resources.Load<Texture2D>("log_icon");
-            
+
             message = CreateInstance<StringBlackBoardVariable>();
-            message.Init(this);
+            message.Init(null,this);
             message.StringVariable = "Enter your log message here.";
 
             isLogError = CreateInstance<BoolBlackBoardVariable>();
-            isLogError.Init(this);
-            isLogError.BoolVariable = false;
+            isLogError.Init(null,this);
+            isLogError.BoolVariable = false; 
+
         }
 
         public override void DrawWindow(int id)

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using BT.Scripts;
 using UnityEngine;
 
 namespace BT.Runtime
@@ -10,14 +11,14 @@ namespace BT.Runtime
     public class BehaviorTreeManager : MonoBehaviour
     {
         public static BehaviorTreeManager Instance = null;
-        public List<GameObject> gameObjects;
+        public List<GameObjectBlackBoardVariable.ReferenceData> gameObjects;
         
         private BehaviorTreeController[] _behaviorTreeControllers;
 
         private void OnEnable()
         {
             if(gameObjects == null)
-                gameObjects = new List<GameObject>();
+                gameObjects = new List<GameObjectBlackBoardVariable.ReferenceData>();
                 
         }
 

@@ -297,6 +297,10 @@ namespace BT
         private BaseNodeView CopyNodeView(BaseNodeView baseNode)
         {
             var instance = CreateInstance(baseNode.GetType().FullName) as BaseNodeView;
+
+            AssetDatabase.RemoveObjectFromAsset(baseNode);
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+            
             AssetDatabase.AddObjectToAsset(instance, currentGraph);
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             Debug.Assert(instance != null, nameof(instance) + " != null");
@@ -314,6 +318,9 @@ namespace BT
             instance.Init(baseNode.GUID, false, cast);
 
             instance.OnClickedNode += OnClickedNode;
+
+            DestroyImmediate(baseNode);
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
 
             return instance;
         }
@@ -814,7 +821,7 @@ namespace BT
                     }
                 }
 
-                //copy the unconnected nodes
+                //copy the unconnected nodes 
                 foreach (var savedNode in currentGraph.SavedNodes)
                     if (!_nodeViews.Contains(savedNode))
                         _nodeViews.Add(CopyNodeView(savedNode));

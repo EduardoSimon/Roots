@@ -6,7 +6,7 @@ namespace BT.Scripts.Drawers
     
     public class SeekNodeView : BaseNodeView
     {
-        public ObjectBlackBoardVariable target;
+        public GameObjectBlackBoardVariable target;
         
         public override ATask Task
         {
@@ -17,8 +17,17 @@ namespace BT.Scripts.Drawers
         public override void Init(string id, bool isEntryView, bool isParentView)
         {
             base.Init(id, isEntryView, isParentView);
-            target = CreateInstance<ObjectBlackBoardVariable>();
-            target.Init(this);
+
+            if (target == null)
+            {
+                target = CreateInstance<GameObjectBlackBoardVariable>();
+                target.Init(null,this);
+            }
+            else
+            {
+                target.Init(target.Guid,this);
+            }
+
         }
 
         public override void DrawWindow(int id)
@@ -44,7 +53,7 @@ namespace BT.Scripts.Drawers
 
             Seek seekTask = task as Seek;
 
-            seekTask.target = target.ObjectVariable;
+            seekTask.target = target.ObjectVariable.transform;
         }
     }
     
