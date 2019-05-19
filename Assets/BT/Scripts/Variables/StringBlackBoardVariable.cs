@@ -5,7 +5,7 @@ namespace BT.Scripts
 {
     public class StringBlackBoardVariable : BlackBoardVariable
     {
-        public string StringVariable;
+        [SerializeField] public string StringVariable;
         
         public override void DrawVariableInspector(string label)
         {

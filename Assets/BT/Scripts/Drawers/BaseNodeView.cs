@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using BT.Scripts;
 using BT.Scripts.Drawers;
 using UnityEditor;
 using UnityEngine;
 
 namespace BT
 {
+    [SerializeField]
     public class BaseNodeView : ScriptableObject
     {
         public const float kNodeWidht = 100;
@@ -22,13 +24,20 @@ namespace BT
         public ATask task;
         public Rect windowRect;
         public string windowTitle;
-        public string nodeComment;
         
-        
-        public bool IsParentView { get; private set; }
-        public bool IsEntryView { get; private set; }
+        [SerializeField] public List<BlackBoardVariable> variables;
 
-        public bool isSelected { get; private set; }
+        [SerializeField] private bool isParentView;
+        public bool IsParentView => isParentView;
+
+        [SerializeField] private bool isRootView;
+        public bool IsRootView => isRootView;
+
+        [SerializeField] private bool isSelected;
+        public bool IsSelected => isSelected;
+
+        [SerializeField] private bool isEntryPoint;
+        public bool IsEntryPoint => isEntryPoint;
 
         [SerializeField] private string guid;
         public string GUID => guid;
@@ -54,33 +63,26 @@ namespace BT
         /// Emulates the constructor of the class. Override this method calling the base one for your custom initialization
         /// </summary>
         /// <param name="id"> If the node has been created before and only a copy is need, the GUID parameter MUST BE NULL</param>
-        /// <param name="isEntryView"> Is the entry view of the graph</param>
+        /// <param name="isRootView"> Is the entry view of the graph</param>
         /// <param name="isParentView"> Is allowed to have children</param>
-        public virtual void Init(string id, bool isEntryView, bool isParentView)
+        public virtual void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView)
         {
-            if (isEntryView)
+            if(variables == null)
+                variables = new List<BlackBoardVariable>();
+            
+            _skin = Resources.Load<GUISkin>("BTSkin");
+
+            if (isEntryPoint)
             {
-                _skin = Resources.Load<GUISkin>("BTSkin");
                 exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
-
-                if (id == null)
-                {
-                    this.guid = Guid.NewGuid().ToString();
-                    children = new List<BaseNodeView>();
-                }
-                else
-                    this.guid = id;
-
-                IsEntryView = isEntryView;
-                IsParentView = isParentView;
-
-                return;
-
+            }
+            else
+            {
+                entrySocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.In, this);
+                exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
+                windowTitle = task.GetType().Name; //only when its not the entry point has a task associated
             }
             
-            windowTitle = task.GetType().Name;
-            entrySocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.In, this);
-            exitSocket = new NodeSocket(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight), NodeSocket.NodeSocketType.Out, this);
 
             if (id == null)
             {
@@ -90,8 +92,9 @@ namespace BT
             else
                 this.guid = id;
 
-            IsEntryView = isEntryView;
-            IsParentView = isParentView;
+            this.isRootView = isRootView;
+            this.isParentView = isParentView;
+            this.isEntryPoint = isEntryPoint;
         }
 
         public virtual void DrawWindow(int id)
@@ -115,7 +118,6 @@ namespace BT
         public virtual void DrawInspector()
         {
             GUILayout.Label(windowTitle);
-            nodeComment = EditorGUILayout.TextArea("Write your comments here.");
         }
 
         public void Drag(Vector2 delta)
@@ -145,7 +147,6 @@ namespace BT
                                 return true;
                             }
                     }
-
                     break;
 
                 case EventType.MouseUp:
@@ -170,6 +171,7 @@ namespace BT
         }
         
         public virtual void SaveNodeInfo(){}
-
+        
+        public virtual void CopyVariables(List<BlackBoardVariable> previousVariables) {}
     }
 }

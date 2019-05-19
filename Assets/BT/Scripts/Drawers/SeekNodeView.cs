@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using BT.Scripts.Core;
+using UnityEditor;
 using UnityEngine;
 
 namespace BT.Scripts.Drawers
 {
-    
     public class SeekNodeView : BaseNodeView
     {
         public GameObjectBlackBoardVariable target;
@@ -14,30 +15,9 @@ namespace BT.Scripts.Drawers
             set => task = (Seek) value;
         }
 
-        public override void Init(string id, bool isEntryView, bool isParentView)
+        public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView)
         {
-            base.Init(id, isEntryView, isParentView);
-
-            if (target == null)
-            {
-                target = CreateInstance<GameObjectBlackBoardVariable>();
-                target.Init(null,this);
-            }
-            else
-            {
-                target.Init(target.Guid,this);
-            }
-
-        }
-
-        public override void DrawWindow(int id)
-        {
-            base.DrawWindow(id);
-        }
-
-        public override void DrawSockets()
-        {
-            base.DrawSockets();
+            base.Init(id, isEntryPoint, isRootView, isParentView);
         }
 
         public override void DrawInspector()
@@ -52,8 +32,37 @@ namespace BT.Scripts.Drawers
             base.SaveNodeInfo();
 
             Seek seekTask = task as Seek;
+            
+            if(target.gameObjectVariable != null)
+                seekTask.target = target.gameObjectVariable.transform;
+            else
+            {
+                Debug.LogWarning("The seek node has no <b>target</b>. You can add it at runtime or drag it in the editor.");
+            }
+        }
 
-            seekTask.target = target.ObjectVariable.transform;
+        public override void CopyVariables(List<BlackBoardVariable> previousVariables)
+        {
+            var instance = CreateInstance<GameObjectBlackBoardVariable>();
+            AssetDatabase.AddObjectToAsset(instance,this);
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
+            instance.node = this;
+
+            if (previousVariables != null)
+                target = (GameObjectBlackBoardVariable)previousVariables[0];
+            
+            instance.Init(target == null ? null : target.guid);
+
+            
+            if (target != null )
+            {
+                AssetDatabase.RemoveObjectFromAsset(target);
+                instance.gameObjectVariable = target.gameObjectVariable;
+            }
+            
+            target = instance;
+            variables.Add(instance);
+            
         }
     }
     

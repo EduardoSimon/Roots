@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using BT.Scripts;
+using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
 
 namespace BT.Runtime
@@ -11,14 +12,14 @@ namespace BT.Runtime
     public class BehaviorTreeManager : MonoBehaviour
     {
         public static BehaviorTreeManager Instance = null;
-        public List<GameObjectBlackBoardVariable.ReferenceData> gameObjects;
+        public ReferenceDictionary references;
         
         private BehaviorTreeController[] _behaviorTreeControllers;
 
         private void OnEnable()
         {
-            if(gameObjects == null)
-                gameObjects = new List<GameObjectBlackBoardVariable.ReferenceData>();
+            if(references == null)
+                references = new ReferenceDictionary();
                 
         }
 
@@ -48,6 +49,8 @@ namespace BT.Runtime
             }
         }
 
+        [Serializable]
+        public class ReferenceDictionary : SerializableDictionaryBase<string, GameObject>{}
     }
   
 

@@ -9,9 +9,7 @@ namespace BT.Scripts
     [System.Serializable]
     public class  GameObjectBlackBoardVariable : BlackBoardVariable
     {
-        public GameObject ObjectVariable;
-        [SerializeField] private RefIndex ID;
-        [SerializeField] private bool hasBeenReferenced = false;
+        public GameObject gameObjectVariable;
 
         private void OnEnable()
         {
@@ -19,11 +17,10 @@ namespace BT.Scripts
             
             BehaviorTreeManager manager = FindObjectOfType<BehaviorTreeManager>();
 
-            if (manager != null)
+            if (manager != null && manager.references != null && guid != null)
             {
-                if (manager.gameObjects != null && manager.gameObjects.Count > 0)
-                    ObjectVariable = manager.gameObjects[ID.ID].reference;
-
+                if(manager.references.ContainsKey(guid))
+                    gameObjectVariable = manager.references[this.guid];
             }
         }
 
@@ -34,28 +31,26 @@ namespace BT.Scripts
 
         private void OnPlayModeStateChanged(PlayModeStateChange state)
         {
-            BehaviorTreeManager manager;
-            
             switch (state)
             {
                 case PlayModeStateChange.ExitingEditMode:
-                   
+                    BehaviorTreeManager btManager = FindObjectOfType<BehaviorTreeManager>();
                     
-                    break;
-                
-                case PlayModeStateChange.EnteredPlayMode:
-                    manager = FindObjectOfType<BehaviorTreeManager>();
-
-                    if (manager != null)
+                    if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid))
                     {
-                        if (manager.gameObjects != null && manager.gameObjects.Count > 0 && ID != null)
-                            ObjectVariable = manager.gameObjects[ID.ID].reference;
+                        btManager.references[guid] = gameObjectVariable;
                     }
 
                     break;
+                
+                case PlayModeStateChange.EnteredPlayMode:
+                    var manager = FindObjectOfType<BehaviorTreeManager>();
+
+                    if (manager != null && manager.references != null && manager.references.ContainsKey(guid))
+                        gameObjectVariable = manager.references[guid];
+                    break;
                     
                 case PlayModeStateChange.EnteredEditMode:
-
                     break;
             }
         }
@@ -66,79 +61,13 @@ namespace BT.Scripts
             
             GUI.SetNextControlName("ObjectVariable");
             EditorGUI.BeginChangeCheck();
-            ObjectVariable = EditorGUILayout.ObjectField(label,ObjectVariable, typeof(GameObject),true) as GameObject;
+            gameObjectVariable = EditorGUILayout.ObjectField(label,gameObjectVariable, typeof(GameObject),true) as GameObject;
 
             if (EditorGUI.EndChangeCheck())
             {
                 GUI.FocusControl("ObjectVariable");
-                
-                BehaviorTreeManager btManager = FindObjectOfType<BehaviorTreeManager>();
-
-                ReferenceData data = new ReferenceData(this.guid,ObjectVariable);
-                    
-                if (btManager != null && ObjectVariable != null)
-                {
-                    for (int i = 0; i < btManager.gameObjects.Count; i++)
-                    {
-                        if (btManager.gameObjects[i] == data)
-                        {
-                            return;
-                        }
-                    }
-                    
-                    btManager.gameObjects.Add(data);
-                    ID = new RefIndex(btManager.gameObjects.IndexOf(data));
-                    hasBeenReferenced = true;
-                }
-                
             }
         }
 
-        [Serializable]
-        public class ReferenceData
-        {
-            public string guid;
-            public GameObject reference;
-
-            public override bool Equals(object obj)
-            {
-                ReferenceData cast = obj as ReferenceData;
-
-                if (cast == null) return false;
-
-                if (this.guid == cast.guid)
-                    return true;
-
-                return false;
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return (284237 ^ 23743792 ^ guid.GetHashCode());
-                }
-                
-            }
-
-            public ReferenceData(string guid, GameObject reference)
-            {
-                this.guid = guid;
-                this.reference = reference;
-            }
-        }
-
-        [Serializable]
-        public class RefIndex
-        {
-            [SerializeField] private int id;
-            
-            public int ID => id;
-
-            public RefIndex(int id)
-            {
-                this.id = id;
-            }
-        }
     }
 }

@@ -26,7 +26,9 @@ namespace BT
         
         private static List<BaseNodeView> _nodeViews = new List<BaseNodeView>();
         private static List<NodeConnection> _connections = new List<NodeConnection>();
-        //private static BtEditor _editor;
+        private static List<BaseNodeView> _nodesToDestroy = new List<BaseNodeView>();
+        private static List<BlackBoardVariable> _variablesToDestroy = new List<BlackBoardVariable>();
+
         private static Rect _zoomArea;
 
         public BehaviorTreeGraph currentGraph;
@@ -44,9 +46,12 @@ namespace BT
         private TooltipWindow _tooltipWindow;
         public SearchTasksWindow searchableTaskWindow;
         public BaseNodeView _entryView;
+        public BaseNodeView _rootView;
 
         public bool DebugMode = true;
         public int GraphInstanceID;
+
+        private List<int> nodeIds;
 
         //Called only when created the window.
         [MenuItem("BT/Editor")]
@@ -67,26 +72,39 @@ namespace BT
         }
 
         //Called every time the editor is enabled.
-        private void StartEditor()
+        private void StartEditor(bool destroyPreviousData)
         {
+            UDebug.Log("On Enable Called");
+            Application.quitting += OnApplicationQuit;
+            EditorApplication.playModeStateChanged += EditorApplicationOnPlayModeStateChanged;
+            
+            _saveOnPlay = EditorPrefs.GetBool(saveOnPlayKey,false);
+            _saveOnClose = EditorPrefs.GetBool(saveOnCloseKey, false);
+            
             _skin = Resources.Load<GUISkin>("BTSkin");
 
             if (NodeSocket.OnSocketClicked == null)
                 NodeSocket.OnSocketClicked += OnNodeSocketClicked;
 
+            if (nodeIds == null)
+                nodeIds = new List<int>();
+
             BaseNodeView.OnNodeRightClicked += view => _rightClickedNode = view;
 
             _nodeViews = new List<BaseNodeView>();
             _connections = new List<NodeConnection>();
+            _nodesToDestroy = new List<BaseNodeView>();
+            _variablesToDestroy = new List<BlackBoardVariable>();
 
+           
+            CreateEntryView();
+            
             if (currentGraph != null)
-                LoadTreeGraph();
+                LoadTreeGraph(destroyPreviousData);
 
             _tooltipWindow = null;
             UDebug.Log("Awake Called");
 
-            if (_nodeViews.Count == 0 || _entryView == null)
-                CreateEntryView();
         }
 
         private void OnDisable()
@@ -101,26 +119,29 @@ namespace BT
 
         private void OnEnable()
         {
-            UDebug.Log("On Enable Called");
-            Application.quitting += OnApplicationQuit;
-            EditorApplication.playModeStateChanged += EditorApplicationOnPlayModeStateChanged;
-            
-            _saveOnPlay = EditorPrefs.GetBool(saveOnPlayKey,false);
-            _saveOnClose = EditorPrefs.GetBool(saveOnCloseKey, false);
-            
-            StartEditor();
+            StartEditor(false);
         }
 
         private void EditorApplicationOnPlayModeStateChanged(PlayModeStateChange state)
         {
+            
             switch (state)
             {
                 case PlayModeStateChange.ExitingEditMode:
+                    
+                    nodeIds.Clear();
+                    
                     if (currentGraph != null)
                     {
-                        SaveGraphData();
+                        if(_saveOnPlay)
+                            SaveGraphData();
                         GraphInstanceID = currentGraph.GetInstanceID();
                         EditorUtility.SetDirty(currentGraph);
+
+                        foreach (var savedNode in currentGraph.SavedNodes)
+                        {
+                            nodeIds.Add(savedNode.GetInstanceID());
+                        }
                     }
 
                     if (_tooltipWindow != null)
@@ -130,11 +151,16 @@ namespace BT
                 case PlayModeStateChange.EnteredPlayMode:
                     currentGraph = EditorUtility.InstanceIDToObject(GraphInstanceID) as BehaviorTreeGraph;
 
-                    //OnEnable();
-                    
+                    for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
+                    {
+                        currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIds[index]) as BaseNodeView;
+                    }
+                    EditorUtility.SetDirty(currentGraph);
+
+
                     break;
                 case PlayModeStateChange.EnteredEditMode:
-                    OnEnable();
+                    StartEditor(true);
                     break;
                 default:
                     UDebug.Log("Entering :" + state);
@@ -181,7 +207,6 @@ namespace BT
                     Resources.Load<Texture>("tree_icon")));
             }
 
-            UDebug.Log(GUI.GetNameOfFocusedControl());
             _mousePosition = Event.current.mousePosition;
 
             //DrawBackgroundGrid(20, 0.2f, Color.grey);
@@ -240,18 +265,19 @@ namespace BT
             Rect entryViewWindowRect = new Rect(position.x + position.width / 2, position.y + position.height / 2,
                 BaseNodeView.kNodeWidht, BaseNodeView.kNodeHeight);
 
-            if (_entryView != null)
+            /*
+            if (_entryView != null && currentGraph != null)
             {
                 entryViewWindowRect = currentGraph.EntryView.windowRect;
                 AssetDatabase.RemoveObjectFromAsset(currentGraph.EntryView);
                 AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
-            }
+            }*/
 
             _entryView = CreateInstance<EntryNodeView>();
             _entryView.windowRect = entryViewWindowRect;
             _entryView.windowTitle = "Entry View";
-            _entryView.Init(null, true, true);
-
+            _entryView.Init(null, true, false,  false);
+/*
             if (currentGraph != null)
             {
                 AssetDatabase.AddObjectToAsset(_entryView, currentGraph);
@@ -259,7 +285,8 @@ namespace BT
             
                 currentGraph.EntryView = _entryView;
             }
- 
+ */
+           
         }
 
         private void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
@@ -268,60 +295,77 @@ namespace BT
             AssetDatabase.AddObjectToAsset(instance, currentGraph);
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             Debug.Assert(instance != null, nameof(instance) + " != null");
-
+            
             instance.Task = CreateInstance(nodeType.taskType) as ATask;
             instance.Task.name = instance.windowTitle + " with ID:" + instance.GUID;
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
-            AssetDatabase.AddObjectToAsset(instance.Task, instance);
+            AssetDatabase.AddObjectToAsset(instance.Task, currentGraph);
             //sAssetDatabase.SetMainObject(_currentGraph, AssetDatabase.GetAssetPath(_currentGraph));
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
-            _nodeViews.Add(instance);
+            
 
             if (instance.Task is IComposite cast)
-                instance.Init(null, false, true); // if we pass null to the guid a new one will be created
+                instance.Init(null, false, _nodeViews.Count == 0 ? true : false, true); // if we pass null to the guid a new one will be created
             else
-                instance.Init(null, false, false);
+                instance.Init(null, false, _nodeViews.Count == 0 ? true : false,false);
+
+            _nodeViews.Add(instance);
 
             instance.OnClickedNode += OnClickedNode;
 
+            instance.CopyVariables(null);
+            /*
+            if (instance.variables.Count > 0)
+            {
+                for (int i = 0; i < instance.variables.Count; i++)
+                {
+                    AssetDatabase.AddObjectToAsset(instance.variables[i],currentGraph);
+                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+                }
+            }*/
+            
             //todo serialize this
-            if (currentGraph.SavedNodes.Count == 0)
-                currentGraph.RootView = instance;
+
 
             //todo fix this
             if (_autoSave)
                 SaveGraphData();
         }
 
-        private BaseNodeView CopyNodeView(BaseNodeView baseNode)
+        private BaseNodeView CopyNodeView(BaseNodeView baseNode, bool destroyPreviousData)
         {
             var instance = CreateInstance(baseNode.GetType().FullName) as BaseNodeView;
-
-            AssetDatabase.RemoveObjectFromAsset(baseNode);
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             
             AssetDatabase.AddObjectToAsset(instance, currentGraph);
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             Debug.Assert(instance != null, nameof(instance) + " != null");
-
+            
             //instance.Task = CreateInstance(baseNode.Task.GetType().FullName) as ATask;            
             instance.Task = CreateInstance(baseNode.Task.GetType()) as ATask;
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph.GetInstanceID()));
-            AssetDatabase.AddObjectToAsset(instance.Task, instance);
+            AssetDatabase.AddObjectToAsset(instance.Task, currentGraph);
 
             instance.windowRect = baseNode.windowRect;
             instance.windowTitle = baseNode.windowTitle;
 
-            var cast = instance.Task is IComposite;
-
-            instance.Init(baseNode.GUID, false, cast);
+            instance.Init(baseNode.GUID, false, baseNode.IsRootView ? true : false, instance.Task is IComposite);
 
             instance.OnClickedNode += OnClickedNode;
+            
+            instance.CopyVariables(baseNode.variables);
 
-            DestroyImmediate(baseNode);
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+            //todo fix this, basenode cannot be null when coming back to edit mode
+            if (destroyPreviousData)
+            {
+                AssetDatabase.RemoveObjectFromAsset(baseNode.Task);
+                AssetDatabase.RemoveObjectFromAsset(baseNode);
+            
+                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+                DestroyImmediate(baseNode);
+            }
 
+            
             return instance;
         }
 
@@ -366,7 +410,7 @@ namespace BT
                 if (currentGraph != null)
                 {
                     RemoveNotification();
-                    LoadTreeGraph();
+                    LoadTreeGraph(true);
                     GraphInstanceID = currentGraph.GetInstanceID();
                 }
             }
@@ -554,7 +598,7 @@ namespace BT
 
         private bool DragWindowIfSelected(Event e)
         {
-            if (_entryView.isSelected)
+            if (_entryView.IsSelected)
             {
                 _drag = Vector2.zero;
                 _entryView.Drag(e.delta * (1 / _currentZoom));
@@ -564,7 +608,7 @@ namespace BT
             }
 
             foreach (var nodeView in _nodeViews)
-                if (nodeView.isSelected)
+                if (nodeView.IsSelected)
                 {
                     _drag = Vector2.zero;
                     nodeView.Drag(e.delta * (1 / _currentZoom));
@@ -721,6 +765,7 @@ namespace BT
                 {
                     nodeView.SaveNodeInfo();
                     currentGraph.SavedNodes.Add(nodeView);
+                    EditorFix.SetObjectDirty(nodeView);
                 }
 
                 foreach (var connection in _connections)
@@ -730,18 +775,10 @@ namespace BT
                     else
                     {
                         currentGraph.entryConnection = connection;
-                        currentGraph.RootView = connection.EndSocket.Node;
                     }
                 }
 
                 UDebug.Log("Saved " + currentGraph.SavedNodes.Count + " nodes.");
-
-                //_currentGraph.RootView = _entryView.children[0];
-
-                foreach (var node in currentGraph.SavedNodes)
-                {
-                    EditorUtility.SetDirty(node);
-                }
 
                 currentGraph.OnSave();
 
@@ -749,7 +786,7 @@ namespace BT
             }
         }
 
-        private void LoadTreeGraph()
+        private void LoadTreeGraph(bool destroyPreviousData)
         {
             if (currentGraph == null)
             {
@@ -761,36 +798,34 @@ namespace BT
                 
                 _connections.Clear();
 
-                BaseNodeView RootNode = null;
-
                 AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(currentGraph));
-                
-                if (_entryView != null && _entryView.exitSocket.IsHooked)
-                    CreateEntryView();
 
-                if (currentGraph.RootView != null && currentGraph.RootView.entrySocket.IsHooked)
-                    RootNode = CopyNodeView(currentGraph.RootView);
-
-                if (_entryView != null && RootNode != null)
+                foreach (var savedNode in currentGraph.SavedNodes)
                 {
-                    _nodeViews.Add(RootNode);
-                    _connections.Add(new NodeConnection(_entryView.exitSocket, RootNode.entrySocket,
+                    if (savedNode.IsRootView)
+                        _rootView = CopyNodeView(savedNode, destroyPreviousData);
+                }
+                
+                if (_entryView != null && _rootView != null)
+                {
+                    _nodeViews.Add(_rootView);
+                    _connections.Add(new NodeConnection(_entryView.exitSocket, _rootView.entrySocket,
                         currentGraph.entryConnection.ConnectionColor, true));
                 }
 
                 foreach (var nodeConnection in currentGraph.SavedConnections)
                 {
-                    BaseNodeView startNode = null, endNode = null;
                     BaseNodeView copiedStartNode = null, copiedEndNode = null;
 
                     if (nodeConnection.StartSocket.IsHooked)
-                        copiedStartNode = CopyNodeView(nodeConnection.StartSocket.Node);
+                        copiedStartNode = CopyNodeView(nodeConnection.StartSocket.Node, destroyPreviousData);
 
                     if (nodeConnection.EndSocket.IsHooked) 
-                        copiedEndNode = CopyNodeView(nodeConnection.EndSocket.Node);
+                        copiedEndNode = CopyNodeView(nodeConnection.EndSocket.Node, destroyPreviousData);
 
                     if (copiedStartNode != null && copiedEndNode != null && copiedStartNode != _entryView)
                     {
+                        BaseNodeView startNode = null;
                         if (!_nodeViews.Contains(copiedStartNode))
                         {
                             _nodeViews.Add(copiedStartNode);
@@ -801,6 +836,7 @@ namespace BT
                             startNode = _nodeViews[_nodeViews.IndexOf(copiedStartNode)];
                         }
 
+                        BaseNodeView endNode = null;
                         if (!_nodeViews.Contains(copiedEndNode))
                         {
                             _nodeViews.Add(copiedEndNode);
@@ -824,8 +860,24 @@ namespace BT
                 //copy the unconnected nodes 
                 foreach (var savedNode in currentGraph.SavedNodes)
                     if (!_nodeViews.Contains(savedNode))
-                        _nodeViews.Add(CopyNodeView(savedNode));
+                        _nodeViews.Add(CopyNodeView(savedNode, destroyPreviousData));
 
+                /*
+
+                if (_nodesToDestroy.Count > 0)
+                {
+                    foreach (var nodeView in _nodesToDestroy)
+                    {
+                        AssetDatabase.RemoveObjectFromAsset(nodeView);
+                        AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(nodeView));
+                        DestroyImmediate(nodeView);
+                    }
+                    
+                }
+                
+                _nodesToDestroy.Clear();
+                */
+                
                 GUI.changed = true;
             }
         }

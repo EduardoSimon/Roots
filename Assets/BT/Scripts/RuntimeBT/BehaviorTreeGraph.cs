@@ -13,16 +13,27 @@ namespace BT.Editor
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
         public List<BaseNodeView> SavedNodes = new List<BaseNodeView>();
 
-        public BaseNodeView EntryView;
         public NodeConnection entryConnection;
-        [FormerlySerializedAs("RootNode")] public BaseNodeView RootView;
-        
+
+        [SerializeField] private BaseNodeView _rootView;
         [SerializeField] public BehaviorTree _tree;
 
 
         public void OnSave()
         {
-            if (RootView == null)
+            _rootView = null;
+            
+            foreach (var savedNode in SavedNodes)
+            {
+                if (savedNode.IsRootView)
+                {
+                    _rootView = savedNode;
+                    break;
+                }
+                
+            }
+            
+            if (_rootView == null)
             {
                 Debug.Log("The Tree is empty, there's nothing to build");
                 return;
@@ -30,10 +41,9 @@ namespace BT.Editor
 
             //todo USE A POOL
             _tree = new BehaviorTree();
-            _tree.AddRoot(RootView.Task);
+            _tree.AddRoot(_rootView.Task);
 
-            if(RootView != null)
-                ConstructTree(RootView);
+            ConstructTree(_rootView);
             
             //BUG not detecting is parent view
             PrintTree(_tree.RootNode);
