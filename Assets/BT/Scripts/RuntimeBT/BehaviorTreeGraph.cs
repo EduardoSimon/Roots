@@ -39,13 +39,11 @@ namespace BT.Editor
                 return;
             }
 
-            //todo USE A POOL
             _tree = new BehaviorTree();
             _tree.AddRoot(_rootView.Task);
 
             ConstructTree(_rootView);
             
-            //BUG not detecting is parent view
             PrintTree(_tree.RootNode);
         }
 
