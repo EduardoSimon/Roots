@@ -8,7 +8,6 @@ namespace BT
         
         private void Awake()
         {
-            //Todo change sequence icon
             icon = Resources.Load<Texture2D>("sequence_icon");
         }
 
