@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BT.Scripts.Drawers;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,43 +12,47 @@ namespace BT.Editor
     {
         public string Name;
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
-        public List<BaseNodeView> SavedNodes = new List<BaseNodeView>();
+        public List<BaseNode> SavedNodes = new List<BaseNode>();
 
         public NodeConnection entryConnection;
 
-        [SerializeField] private BaseNodeView _rootView;
+        [SerializeField] private BaseNode root;
         [SerializeField] public BehaviorTree _tree;
 
+        private void OnEnable()
+        {
+            hideFlags = HideFlags.DontSave;
+        }
 
         public void OnSave()
         {
-            _rootView = null;
+            root = null;
             
             foreach (var savedNode in SavedNodes)
             {
                 if (savedNode.IsRootView)
                 {
-                    _rootView = savedNode;
+                    root = savedNode;
                     break;
                 }
                 
             }
             
-            if (_rootView == null)
+            if (root == null)
             {
                 Debug.Log("The Tree is empty, there's nothing to build");
                 return;
             }
 
             _tree = new BehaviorTree();
-            _tree.AddRoot(_rootView.Task);
+            _tree.AddRoot(root.Task);
 
-            ConstructTree(_rootView);
+            ConstructTree(root);
             
             PrintTree(_tree.RootNode);
         }
 
-        public void ConstructTree(BaseNodeView node)
+        public void ConstructTree(BaseNode node)
         {
             if (node.IsParentView)
             {
@@ -86,6 +91,8 @@ namespace BT.Editor
 
             Debug.Log(task);
         }
+
+
         
         
     }

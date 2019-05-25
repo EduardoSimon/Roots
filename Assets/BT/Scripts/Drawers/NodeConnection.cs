@@ -22,10 +22,10 @@ namespace BT.Scripts.Drawers
 
         public void Draw()
         {
-            #if UNITY_EDITOR
+            
             Handles.color = ConnectionColor;
             Handles.DrawLine(StartSocket.Position, EndSocket.Position);
-            #endif
+
         }
     }
 }

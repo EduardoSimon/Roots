@@ -55,7 +55,7 @@ namespace Editor
                             new NodeType(type, customNodeDrawerAttributes[0].DrawWindowType);
                     else if (customNodeDrawerAttributes.Length == 0)
                         _avaliableTasksDictionary[searchMenuAttributes[0].GetMenuPathSplit()] =
-                            new NodeType(type, typeof(DefaultNodeView));
+                            new NodeType(type, typeof(DefaultNode));
                 }
             }
         }

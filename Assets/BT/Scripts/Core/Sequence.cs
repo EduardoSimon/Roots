@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BT
 {
-    [CustomNodeDrawer(typeof(SequenceView))]
+    [CustomNodeDrawer(typeof(SequenceNode))]
     [SearchMenu("Composites/Sequence")]
     [TaskTooltip("BALABABAB sequence")]
     public class Sequence : ATask, IComposite

@@ -11,6 +11,7 @@ public class GraphCustomInspector : UnityEditor.Editor
     private void OnValidate()
     {
         Repaint();
-        EditorUtility.SetDirty(target as BehaviorTreeGraph);
+        if(target != null)
+            EditorUtility.SetDirty(target as BehaviorTreeGraph);
     }
 }

@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9014448277948962584
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b378b15cbdab4c0ca5e0776d325332b5, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  entrySocket: {fileID: 0}
+  exitSocket: {fileID: 0}
+  task: {fileID: -619733671799582314}
+  windowRect:
+    serializedVersion: 2
+    x: 77.534584
+    y: 137.53116
+    width: 100
+    height: 100
+  windowTitle: Sequence
+  variables: []
+  isParentView: 1
+  isRootView: 1
+  isSelected: 0
+  isEntryPoint: 0
+  guid: 099f45ff-c248-4598-849d-053b496742c9
+  children: []
+--- !u!114 &-619733671799582314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5795ca095464c13aa0f4e4ff601c7d6, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  Status: 3
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb08b08fdab4a2d956d0784676a2c88, type: 3}
+  m_Name: asdf
+  m_EditorClassIdentifier: 
+  Name: 
+  SavedConnections: []
+  SavedNodes:
+  - {fileID: -9014448277948962584}
+  entryConnection:
+    IsEntryConnection: 1
+    StartSocket: {fileID: 0}
+    EndSocket: {fileID: 0}
+    ConnectionColor: {r: 1, g: 1, b: 1, a: 1}
+  root: {fileID: -9014448277948962584}
+  _tree:
+    rootNode: {fileID: -619733671799582314}
+--- !u!114 &6474873469900570384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5795ca095464c13aa0f4e4ff601c7d6, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  Status: 3
+--- !u!114 &8253090300443325847
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b378b15cbdab4c0ca5e0776d325332b5, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  entrySocket: {fileID: 0}
+  exitSocket: {fileID: 0}
+  task: {fileID: 6474873469900570384}
+  windowRect:
+    serializedVersion: 2
+    x: 224
+    y: 227
+    width: 100
+    height: 100
+  windowTitle: Sequence
+  variables: []
+  isParentView: 1
+  isRootView: 1
+  isSelected: 0
+  isEntryPoint: 0
+  guid: 44d564fe-54a0-484a-9b46-e2b4f1cec397
+  children: []
