@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using BT;
+using BT.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class EntryNode : BaseNode
     public override void DrawWindow(int id)
     {
         base.DrawWindow(id);
-        GUI.DrawTexture(new Rect(10,20, kNodeWidht - 30 , kNodeHeight - 30), iconTexture2D);
+        GUI.DrawTexture(new Rect(10,20, BTConstants.kNodeWidht - 30 , BTConstants.kNodeHeight - 30), iconTexture2D);
     }
 
     

@@ -1,4 +1,5 @@
 using BT.Core;
+using BT.Editor;
 using UnityEngine;
 
 namespace BT.Scripts.Drawers
@@ -48,7 +49,7 @@ namespace BT.Scripts.Drawers
         {
             base.DrawWindow(id);
 
-            GUI.DrawTexture(new Rect(20, 20, kNodeWidht - 30, kNodeHeight - 30), _texture2D);
+            GUI.DrawTexture(new Rect(20, 20, BTConstants.kNodeWidht - 30, BTConstants.kNodeHeight - 30), _texture2D);
         }
 
         public override void DrawSockets()

@@ -5,9 +5,9 @@ using UnityEngine;
 namespace BT.Scripts.Drawers
 {
     [Serializable]
-    public class NodeConnection
+    public class NodeConnection : ScriptableObject
     {
-        public NodeConnection(NodeSocket startSocket, NodeSocket endSocket, Color connectionColor, bool isEntryConnection)
+        public void Init(NodeSocket startSocket, NodeSocket endSocket, Color connectionColor, bool isEntryConnection)
         {
             StartSocket = startSocket;
             EndSocket = endSocket;

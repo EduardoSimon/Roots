@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using BT.Editor;
 using BT.Scripts;
 using BT.Scripts.Drawers;
@@ -69,13 +70,15 @@ namespace BT
         [Serializable]
         private class ConnectionData
         {
-            public int outId;
-            public int inId;
+            public int StartSocketID;
+            public int EndSocketID;
+            public int ConnectionID;
 
-            public ConnectionData(int outId, int inId)
+            public ConnectionData(int startSocketId, int endSocketId, int connectionId)
             {
-                this.outId = outId;
-                this.inId = inId;
+                this.StartSocketID = startSocketId;
+                this.EndSocketID = endSocketId;
+                this.ConnectionID = connectionId;
             }
         }
 
@@ -138,7 +141,7 @@ namespace BT
 
             _tooltipWindow = null;
 
-            BTLog.Log("Started Editor", BTLog.ELogLevel.Verbose);
+            BTLog.Log("Started Editor");
         }
 
         private void RestoreSerializedData()
@@ -151,8 +154,10 @@ namespace BT
             {
                 _nodeViews.Add(currentGraph.SavedNodes[i]);
 
-                _nodeViews[i].Init(_nodeViews[i].GUID, _nodeViews[i].IsEntryPoint, _nodeViews[i].IsRootView,
-                    _nodeViews[i].IsParentView);
+                _nodeViews[i].Init(currentGraph.SavedNodes[i].GUID, currentGraph.SavedNodes[i].IsEntryPoint,
+                    currentGraph.SavedNodes[i].IsRootView,
+                    currentGraph.SavedNodes[i].IsParentView);
+
                 _nodeViews[i].OnClickedNode += OnClickedNode;
 
                 for (int j = 0; j < currentGraph.SavedNodes[i].variables.Count; j++)
@@ -160,45 +165,22 @@ namespace BT
                     _nodeViews[i].variables[j] = currentGraph.SavedNodes[i].variables[j];
                 }
 
-                //todo hacer conexiones por guid para que serialicen por guid, no por referenceia directa.
-
                 if (_nodeViews[i].IsRootView)
                 {
-                    _connections.Add(new NodeConnection(entry.exitSocket, _nodeViews[i].entrySocket, Color.white,
-                        true));
+                    var newExitSocket = CreateInstance<NodeSocket>();
+                    newExitSocket.Init(entry.exitSocket._socketRect,NodeSocket.NodeSocketType.Out, entry);
+                    currentGraph.entryConnection = CreateConnection(currentGraph.entryConnection.StartSocket,
+                        newExitSocket, Color.green);
+                    _connections.Add(currentGraph.entryConnection);
                 }
             }
 
-
-            for (int j = 0; j < currentGraph.SavedConnections.Count; j++)
+            foreach (var connection in currentGraph.SavedConnections)
             {
-                /*
-                if (!currentGraph.SavedConnections[j].IsEntryConnection)
-                {
-                    var newOutNode = EditorUtility.InstanceIDToObject(_connectionsIDs[j].outId) as BaseNode;
-                    var newInNode = EditorUtility.InstanceIDToObject(_connectionsIDs[j].inId) as BaseNode;
+                if (connection.IsEntryConnection) continue;
 
-                    currentGraph.SavedConnections[j].StartSocket.Node = _nodeViews.First(node =>
-                        node.GUID == currentGraph.SavedConnections[j].StartSocket.Node.GUID);
-
-                    currentGraph.SavedConnections[j].StartSocket = new NodeSocket(
-                        currentGraph.SavedConnections[j].StartSocket._socketRect, NodeSocket.NodeSocketType.Out,
-                        newOutNode, newOutNode.GUID);
-                    currentGraph.SavedConnections[j].StartSocket.IsHooked = true;
-
-                    currentGraph.SavedConnections[j].EndSocket.Node = _nodeViews.First(node =>
-                        node.GUID == currentGraph.SavedConnections[j].EndSocket.Node.GUID);
-
-                    var endSocket = new NodeSocket(
-                        currentGraph.SavedConnections[j].EndSocket._socketRect, NodeSocket.NodeSocketType.In,
-                        currentGraph.SavedConnections[j].EndSocket.Node,
-                        currentGraph.SavedConnections[j].EndSocket.Node.GUID);
-                    currentGraph.SavedConnections[j].EndSocket.IsHooked = true;
-
-                    NodeConnection connection = new NodeConnection(currentGraph.SavedConnections[j].StartSocket,
-                        endSocket, Color.red, false);
-                    _connections.Add(currentGraph.SavedConnections[j]);
-                }*/
+                _connections.Add(connection);
+                connection.Init(connection.StartSocket, connection.EndSocket, connection.ConnectionColor, false);
             }
 
             EditorFix.SetObjectDirty(currentGraph);
@@ -218,6 +200,7 @@ namespace BT
         {
             StartEditor(false);
         }
+
 
         private void EditorApplicationOnPlayModeStateChanged(PlayModeStateChange state)
         {
@@ -256,20 +239,14 @@ namespace BT
 
             for (int i = 0; i < currentGraph.SavedConnections.Count; i++)
             {
-                /*
-                var NodeOut = (BaseNode) EditorUtility.InstanceIDToObject(_connectionsIDs[i].outId);
-                currentGraph.SavedConnections[i].StartSocket = new NodeSocket(
-                    currentGraph.SavedConnections[i].StartSocket._socketRect, NodeSocket.NodeSocketType.Out,
-                    NodeOut, NodeOut.GUID);
+                currentGraph.SavedConnections[i].StartSocket =
+                    EditorUtility.InstanceIDToObject(_connectionsIDs[i].StartSocketID) as NodeSocket;
 
-                currentGraph.SavedConnections[i].StartSocket.IsHooked = true;
+                currentGraph.SavedConnections[i].EndSocket =
+                    EditorUtility.InstanceIDToObject(_connectionsIDs[i].EndSocketID) as NodeSocket;
 
-                var NodeIn = (BaseNode) EditorUtility.InstanceIDToObject(_connectionsIDs[i].inId);
-                currentGraph.SavedConnections[i].EndSocket = new NodeSocket(
-                    currentGraph.SavedConnections[i].EndSocket._socketRect, NodeSocket.NodeSocketType.In, NodeIn,
-                    NodeIn.GUID);
-                
-                currentGraph.SavedConnections[i].EndSocket.IsHooked = true;*/
+                currentGraph.SavedConnections[i] =
+                    EditorUtility.InstanceIDToObject(_connectionsIDs[i].ConnectionID) as NodeConnection;
             }
 
             EditorUtility.SetDirty(currentGraph);
@@ -302,8 +279,8 @@ namespace BT
                 foreach (var connection in currentGraph.SavedConnections)
                 {
                     if (!connection.IsEntryConnection)
-                        _connectionsIDs.Add(new ConnectionData(connection.StartSocket.Node.GetInstanceID(),
-                            connection.EndSocket.Node.GetInstanceID()));
+                        _connectionsIDs.Add(new ConnectionData(connection.StartSocket.GetInstanceID(),
+                            connection.EndSocket.GetInstanceID(), connection.GetInstanceID()));
                 }
 
                 EditorUtility.SetDirty(currentGraph);
@@ -420,7 +397,7 @@ namespace BT
         private void CreateEntryView()
         {
             Rect entryViewWindowRect = new Rect(position.x + position.width / 2, position.y + position.height / 2,
-                BaseNode.kNodeWidht, BaseNode.kNodeHeight);
+                BTConstants.kNodeWidht, BTConstants.kNodeHeight);
 
             /*
             if (_entryView != null && currentGraph != null)
@@ -447,32 +424,41 @@ namespace BT
 
         private void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
         {
-            var instance = InitializeNodeView(nodeType, windowRect, windowTitle);
+            var instance = InitializeNode(nodeType, windowRect, windowTitle);
 
             _nodeViews.Add(instance);
 
             instance.OnClickedNode += OnClickedNode;
 
-
             if (_autoSave)
                 SaveGraphData();
         }
 
-        private BaseNode InitializeNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
+        private BaseNode InitializeNode(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
         {
             var instance = CreateInstance(nodeType.DrawerType.FullName) as BaseNode;
             instance.name = nodeType.DrawerType.Name;
             AssetDatabase.AddObjectToAsset(instance, currentGraph);
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
-            Debug.Assert(instance != null, nameof(instance) + " != null");
+            Debug.Assert(instance != null, "Couldn't create the node with name " + nameof(nodeType.DrawerType));
 
+            instance.exitSocket = CreateInstance<NodeSocket>();
+            instance.exitSocket.Init(new Rect(instance.windowRect.xMin, instance.windowRect.yMax, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.Out,instance);
+            instance.exitSocket.name = instance.name + " exitSocket";
+            AssetDatabase.AddObjectToAsset(instance.exitSocket, currentGraph);
+            
+            instance.entrySocket = CreateInstance<NodeSocket>();
+            instance.entrySocket.Init(new Rect(instance.windowRect.xMin, instance.windowRect.yMin, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.In,instance);
+            instance.entrySocket.name = instance.name + " entrySocket";
+            AssetDatabase.AddObjectToAsset(instance.entrySocket, currentGraph);
+            
             instance.Task = CreateInstance(nodeType.taskType) as ATask;
+            Debug.Assert(instance.Task != null, "Couldn't create the task with name " + nameof(nodeType.taskType));
             instance.Task.name = nodeType.taskType.Name;
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             AssetDatabase.AddObjectToAsset(instance.Task, currentGraph);
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
-
+            
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
 
             if (instance.Task is IComposite cast)
                 instance.Init(null, false, _nodeViews.Count == 0 ? true : false,
@@ -495,6 +481,17 @@ namespace BT
             instance.Task = CreateInstance(baseNode.Task.GetType()) as ATask;
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph.GetInstanceID()));
             AssetDatabase.AddObjectToAsset(instance.Task, currentGraph);
+            
+            instance.exitSocket = CreateInstance<NodeSocket>();
+            instance.exitSocket.Init(new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMax, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.Out,instance);
+            instance.exitSocket.name = instance.name + " exitSocket";
+            AssetDatabase.AddObjectToAsset(instance.exitSocket, currentGraph);
+            
+            instance.entrySocket = CreateInstance<NodeSocket>();
+            instance.entrySocket.Init(new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMin, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.In,instance);
+            instance.entrySocket.name = instance.name + " entrySocket";
+            AssetDatabase.AddObjectToAsset(instance.entrySocket, currentGraph);
+
 
             instance.windowRect = baseNode.windowRect;
             instance.windowTitle = baseNode.windowTitle;
@@ -723,7 +720,7 @@ namespace BT
         public void OnSearchedTaskClicked(SearchTasksWindow.NodeType nodeType)
         {
             CreateNodeView(nodeType,
-                new Rect(_mousePosition.x, _mousePosition.y, BaseNode.kNodeWidht, BaseNode.kNodeHeight),
+                new Rect(_mousePosition.x, _mousePosition.y, BTConstants.kNodeWidht, BTConstants.kNodeHeight),
                 nodeType.taskType.ToString());
             //without the type.fullname it does not work
         }
@@ -814,8 +811,8 @@ namespace BT
                         entry.exitSocket.IsHooked = true;
                         _rightClickedNode.entrySocket.IsHooked = true;
 
-                        _connections.Add(new NodeConnection(entry.exitSocket, _rightClickedNode.entrySocket,
-                            Color.white, true));
+                        _connections.Add(CreateConnection(entry.exitSocket, _rightClickedNode.entrySocket,
+                            Color.red));
                     });
             }
             else
@@ -850,11 +847,10 @@ namespace BT
                 {
                     var clickedSocket = NodeSocket.CurrentClickedSocket;
 
-                    _connections.Add(NodeSocket.CurrentClickedSocket.Node is EntryNode
-                        ? new NodeConnection(clickedSocket, socket, Color.white, true)
-                        : new NodeConnection(clickedSocket, socket, Color.white, false));
-                    clickedSocket.IsHooked = true;
-                    socket.IsHooked = true;
+                    var connection = CreateConnection(socket, clickedSocket, Color.red);
+                    _connections.Add(connection);
+
+
                     NodeSocket.CurrentClickedSocket.Node.children.Add(socket.Node);
 
                     NodeSocket.CurrentClickedSocket = null;
@@ -865,6 +861,25 @@ namespace BT
                     NodeSocket.CurrentClickedSocket = socket;
                     break;
             }
+        }
+
+        private NodeConnection CreateConnection(NodeSocket StartSocket, NodeSocket EndSocket, Color color)
+        {
+            NodeConnection connection = null;
+
+            connection = CreateInstance<NodeConnection>();
+            connection.name = "Connection";
+            AssetDatabase.AddObjectToAsset(connection, currentGraph);
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+
+            connection.StartSocket = StartSocket;
+            connection.EndSocket = EndSocket;
+            connection.ConnectionColor = color;
+            connection.IsEntryConnection = false || NodeSocket.CurrentClickedSocket.Node is EntryNode;
+
+            StartSocket.IsHooked = true;
+            EndSocket.IsHooked = true;
+            return connection;
         }
 
         private void OnClickedNode(BaseNode node)
@@ -953,8 +968,7 @@ namespace BT
                 if (entry != null && root != null)
                 {
                     _nodeViews.Add(root);
-                    _connections.Add(new NodeConnection(entry.exitSocket, root.entrySocket,
-                        currentGraph.entryConnection.ConnectionColor, true));
+                    _connections.Add(CreateConnection(entry.exitSocket, root.entrySocket, Color.red));
                 }
 
                 foreach (var nodeConnection in currentGraph.SavedConnections)
@@ -991,8 +1005,7 @@ namespace BT
                             endNode = _nodeViews[_nodeViews.IndexOf(copiedEndNode)];
                         }
 
-                        _connections.Add(new NodeConnection(startNode.exitSocket, endNode.entrySocket,
-                            nodeConnection.ConnectionColor, false));
+                        _connections.Add(CreateConnection(startNode.exitSocket, endNode.entrySocket, Color.red));
                     }
                     else
                     {

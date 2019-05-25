@@ -1,5 +1,6 @@
 using System;
 using System.Net.Sockets;
+using BT.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,9 +43,9 @@ namespace BT
         public void Draw()
         {
 #if UNITY_EDITOR
-            _socketRect.x = Node.windowRect.xMin + BaseNode.kNodeWidht / 8;
+            _socketRect.x = Node.windowRect.xMin + BTConstants.kNodeWidht / 8;
             _socketRect.y = SocketType == NodeSocketType.In ?
-                Node.windowRect.yMin - BaseNode.SocketHeight + 5 :
+                Node.windowRect.yMin - BTConstants.SocketHeight + 5 :
                 Node.windowRect.yMax - 5;
 
             //TODO create custom style

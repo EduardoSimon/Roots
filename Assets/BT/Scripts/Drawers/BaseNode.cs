@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BT.Editor;
 using BT.Scripts;
 using BT.Scripts.Drawers;
 using UnityEditor;
@@ -10,12 +11,6 @@ namespace BT
     [SerializeField]
     public class BaseNode : ScriptableObject
     {
-        public const float kNodeWidht = 100;
-        public const float kNodeHeight = 100;
-
-        private const int SocketWidth = (int) kNodeWidht - 20;
-        public const int SocketHeight = (int) kNodeHeight / 6;
-
         private GUISkin _skin;
         private int _id;
         public NodeSocket entrySocket;
@@ -57,25 +52,6 @@ namespace BT
         private void OnEnable()
         {
             hideFlags = HideFlags.DontSave;
-
-            if (exitSocket == null)
-            {
-                exitSocket = CreateInstance<NodeSocket>();
-                exitSocket.Init(new Rect(windowRect.xMin, windowRect.yMax, SocketWidth, SocketHeight),NodeSocket.NodeSocketType.Out,this);
-            }
-            
-            if (!isEntryPoint)
-            {
-                if (entrySocket == null)
-                {
-                    entrySocket = CreateInstance<NodeSocket>();
-                    entrySocket.Init(new Rect(windowRect.xMin, windowRect.yMin, SocketWidth, SocketHeight),NodeSocket.NodeSocketType.In,this);
-                }
-                
-                windowTitle = task.GetType().Name;
-            }
-
-
         }
 
         /// <summary>
@@ -98,6 +74,24 @@ namespace BT
             }
             else
                 this.guid = id;
+            
+            if (exitSocket == null)
+            {
+                exitSocket = CreateInstance<NodeSocket>();
+                exitSocket.Init(new Rect(windowRect.xMin, windowRect.yMax, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.Out,this);
+            }
+            
+            if (!isEntryPoint)
+            {
+                if (entrySocket == null)
+                {
+                    entrySocket = CreateInstance<NodeSocket>();
+                    entrySocket.Init(new Rect(windowRect.xMin, windowRect.yMin, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.In,this);
+                }
+                
+                windowTitle = task.GetType().Name;
+            }
+
 
             this.isRootView = isRootView;
             this.isParentView = isParentView;

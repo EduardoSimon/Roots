@@ -1,3 +1,4 @@
+using BT.Editor;
 using UnityEngine;
 
 namespace BT
@@ -14,7 +15,7 @@ namespace BT
         public override void DrawWindow(int id)
         {
             base.DrawWindow(id);
-            GUI.DrawTexture(new Rect(10,20, kNodeWidht - 30 , kNodeHeight - 30), icon);
+            GUI.DrawTexture(new Rect(10,20, BTConstants.kNodeWidht - 30 , BTConstants.kNodeHeight - 30), icon);
         }
     }
 }
