@@ -50,11 +50,14 @@ namespace BT
         public BaseNode root;
 
         public bool DebugMode = true;
-        public int GraphInstanceID;
+        public int GraphInstanceID = 0;
 
-        private List<int> nodeIds;
+        //Objects ID data for loading the object when hitting the play button.
+        private List<int> nodeIDs;
         private List<IDsListWrapper> _blackBoardVariablesID;
         private List<ConnectionData> _connectionsIDs;
+        private ConnectionData _entryConnectionID;
+        private int entryID;
 
         [Serializable]
         private class IDsListWrapper
@@ -115,8 +118,8 @@ namespace BT
             if (NodeSocket.OnSocketClicked == null)
                 NodeSocket.OnSocketClicked += OnNodeSocketClicked;
 
-            if (nodeIds == null)
-                nodeIds = new List<int>();
+            if (nodeIDs == null)
+                nodeIDs = new List<int>();
 
             if (_blackBoardVariablesID == null)
                 _blackBoardVariablesID = new List<IDsListWrapper>();
@@ -131,12 +134,10 @@ namespace BT
             _nodesToDestroy = new List<BaseNode>();
             _variablesToDestroy = new List<BlackBoardVariable>();
 
-
-            CreateEntryView();
-
+            //when entering play mode or when entering edit mode, there will be a loading proccess. We get back the references.
             if (hasEnteredEditMode || EditorApplication.isPlayingOrWillChangePlaymode)
                 RestoreSerializedData();
-            else if (currentGraph != null)
+            else
                 CopyTreeGraphData();
 
             _tooltipWindow = null;
@@ -146,10 +147,17 @@ namespace BT
 
         private void RestoreSerializedData()
         {
-            BTLog.Log("Getting node's ids");
+            if(GraphInstanceID != 0)
+                AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(currentGraph));
+
+            BTLog.Log("Getting node's ids", BTLog.ELogLevel.Error);
             _nodeViews.Clear();
             _connections.Clear();
 
+            BaseNode rootNode = null;
+
+            entry = currentGraph.EntryNode;
+            
             for (int i = 0; i < currentGraph.SavedNodes.Count; i++)
             {
                 _nodeViews.Add(currentGraph.SavedNodes[i]);
@@ -166,19 +174,18 @@ namespace BT
                 }
 
                 if (_nodeViews[i].IsRootView)
-                {
-                    var newExitSocket = CreateInstance<NodeSocket>();
-                    newExitSocket.Init(entry.exitSocket._socketRect,NodeSocket.NodeSocketType.Out, entry);
-                    currentGraph.entryConnection = CreateConnection(currentGraph.entryConnection.StartSocket,
-                        newExitSocket, Color.green);
-                    _connections.Add(currentGraph.entryConnection);
-                }
+                    rootNode = _nodeViews[i];
+            }
+
+            if (rootNode != null)
+            {
+                currentGraph.entryConnection.Init(entry.exitSocket,
+                    rootNode.entrySocket, currentGraph.entryConnection.ConnectionColor, true);
+                _connections.Add(currentGraph.entryConnection);
             }
 
             foreach (var connection in currentGraph.SavedConnections)
             {
-                if (connection.IsEntryConnection) continue;
-
                 _connections.Add(connection);
                 connection.Init(connection.StartSocket, connection.EndSocket, connection.ConnectionColor, false);
             }
@@ -224,11 +231,14 @@ namespace BT
 
         private void ConvertIDsToObjects()
         {
-            currentGraph = EditorUtility.InstanceIDToObject(GraphInstanceID) as BehaviorTreeGraph;
+            if(GraphInstanceID != 0)
+                currentGraph = EditorUtility.InstanceIDToObject(GraphInstanceID) as BehaviorTreeGraph;
 
+            entry = EditorUtility.InstanceIDToObject(entryID) as BaseNode;
+            
             for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
             {
-                currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIds[index]) as BaseNode;
+                currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
 
                 for (int i = 0; i < _blackBoardVariablesID[index].ids.Length; i++)
                 {
@@ -236,6 +246,15 @@ namespace BT
                         EditorUtility.InstanceIDToObject(_blackBoardVariablesID[index].ids[i]) as BlackBoardVariable;
                 }
             }
+
+            currentGraph.entryConnection.StartSocket =
+                EditorUtility.InstanceIDToObject(_entryConnectionID.StartSocketID) as NodeSocket;
+
+            currentGraph.entryConnection.EndSocket =
+                EditorUtility.InstanceIDToObject(_entryConnectionID.EndSocketID) as NodeSocket;
+
+            currentGraph.entryConnection =
+                EditorUtility.InstanceIDToObject(_entryConnectionID.ConnectionID) as NodeConnection;
 
             for (int i = 0; i < currentGraph.SavedConnections.Count; i++)
             {
@@ -254,15 +273,21 @@ namespace BT
 
         private void CollectObjectsID()
         {
-            nodeIds.Clear();
+            nodeIDs.Clear();
             _blackBoardVariablesID.Clear();
+            _entryConnectionID = null;
+            _connectionsIDs.Clear();
+            GraphInstanceID = 0;
 
             if (currentGraph != null)
             {
                 if (_saveOnPlay)
                     SaveGraphData();
+                
                 GraphInstanceID = currentGraph.GetInstanceID();
 
+                entryID = entry.GetInstanceID();
+                
                 foreach (var savedNode in currentGraph.SavedNodes)
                 {
                     int[] variablesID = new int[savedNode.variables.Count];
@@ -273,14 +298,17 @@ namespace BT
                     }
 
                     _blackBoardVariablesID.Add(new IDsListWrapper(variablesID));
-                    nodeIds.Add(savedNode.GetInstanceID());
+                    nodeIDs.Add(savedNode.GetInstanceID());
                 }
+
+                _entryConnectionID = new ConnectionData(currentGraph.entryConnection.StartSocket.GetInstanceID(),
+                    currentGraph.entryConnection.EndSocket.GetInstanceID(),
+                    currentGraph.entryConnection.GetInstanceID());
 
                 foreach (var connection in currentGraph.SavedConnections)
                 {
-                    if (!connection.IsEntryConnection)
-                        _connectionsIDs.Add(new ConnectionData(connection.StartSocket.GetInstanceID(),
-                            connection.EndSocket.GetInstanceID(), connection.GetInstanceID()));
+                    _connectionsIDs.Add(new ConnectionData(connection.StartSocket.GetInstanceID(),
+                        connection.EndSocket.GetInstanceID(), connection.GetInstanceID()));
                 }
 
                 EditorUtility.SetDirty(currentGraph);
@@ -394,32 +422,28 @@ namespace BT
 
         #region Creation Methods
 
-        private void CreateEntryView()
+        private void CreateEntryNode()
         {
-            Rect entryViewWindowRect = new Rect(position.x + position.width / 2, position.y + position.height / 2,
+            Rect entryViewWindowRect = new Rect(400, 20,
                 BTConstants.kNodeWidht, BTConstants.kNodeHeight);
-
-            /*
-            if (_entryView != null && currentGraph != null)
-            {
-                entryViewWindowRect = currentGraph.EntryView.windowRect;
-                AssetDatabase.RemoveObjectFromAsset(currentGraph.EntryView);
-                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
-            }*/
 
             entry = CreateInstance<EntryNode>();
             entry.windowRect = entryViewWindowRect;
             entry.windowTitle = "Entry View";
-            entry.Init(null, true, false, false);
-/*
-            if (currentGraph != null)
-            {
-                AssetDatabase.AddObjectToAsset(_entryView, currentGraph);
-                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+            currentGraph.EntryNode = entry;
             
-                currentGraph.EntryView = _entryView;
-            }
- */
+            entry.exitSocket = CreateInstance<NodeSocket>();
+            entry.exitSocket.Init(
+                new Rect(entry.windowRect.xMin, entry.windowRect.yMax, BTConstants.SocketWidth,
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, entry);
+            entry.exitSocket.name = entry.name + " exitSocket";
+            
+            entry.Init(null, true, false, false);
+
+            AssetDatabase.AddObjectToAsset(entry.exitSocket, currentGraph);
+            AssetDatabase.AddObjectToAsset(entry, currentGraph);
+            
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
         }
 
         private void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
@@ -442,22 +466,26 @@ namespace BT
             Debug.Assert(instance != null, "Couldn't create the node with name " + nameof(nodeType.DrawerType));
 
             instance.exitSocket = CreateInstance<NodeSocket>();
-            instance.exitSocket.Init(new Rect(instance.windowRect.xMin, instance.windowRect.yMax, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.Out,instance);
+            instance.exitSocket.Init(
+                new Rect(instance.windowRect.xMin, instance.windowRect.yMax, BTConstants.SocketWidth,
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, instance);
             instance.exitSocket.name = instance.name + " exitSocket";
             AssetDatabase.AddObjectToAsset(instance.exitSocket, currentGraph);
-            
+
             instance.entrySocket = CreateInstance<NodeSocket>();
-            instance.entrySocket.Init(new Rect(instance.windowRect.xMin, instance.windowRect.yMin, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.In,instance);
+            instance.entrySocket.Init(
+                new Rect(instance.windowRect.xMin, instance.windowRect.yMin, BTConstants.SocketWidth,
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.In, instance);
             instance.entrySocket.name = instance.name + " entrySocket";
             AssetDatabase.AddObjectToAsset(instance.entrySocket, currentGraph);
-            
+
             instance.Task = CreateInstance(nodeType.taskType) as ATask;
             Debug.Assert(instance.Task != null, "Couldn't create the task with name " + nameof(nodeType.taskType));
             instance.Task.name = nodeType.taskType.Name;
             AssetDatabase.AddObjectToAsset(instance.Task, currentGraph);
             instance.windowRect = windowRect;
             instance.windowTitle = windowTitle;
-            
+
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
 
             if (instance.Task is IComposite cast)
@@ -481,14 +509,18 @@ namespace BT
             instance.Task = CreateInstance(baseNode.Task.GetType()) as ATask;
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph.GetInstanceID()));
             AssetDatabase.AddObjectToAsset(instance.Task, currentGraph);
-            
+
             instance.exitSocket = CreateInstance<NodeSocket>();
-            instance.exitSocket.Init(new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMax, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.Out,instance);
+            instance.exitSocket.Init(
+                new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMax, BTConstants.SocketWidth,
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, instance);
             instance.exitSocket.name = instance.name + " exitSocket";
             AssetDatabase.AddObjectToAsset(instance.exitSocket, currentGraph);
-            
+
             instance.entrySocket = CreateInstance<NodeSocket>();
-            instance.entrySocket.Init(new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMin, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.In,instance);
+            instance.entrySocket.Init(
+                new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMin, BTConstants.SocketWidth,
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.In, instance);
             instance.entrySocket.name = instance.name + " entrySocket";
             AssetDatabase.AddObjectToAsset(instance.entrySocket, currentGraph);
 
@@ -547,6 +579,7 @@ namespace BT
                 {
                     RemoveNotification();
                     CopyTreeGraphData();
+                    GraphInstanceID = 0;
                     GraphInstanceID = currentGraph.GetInstanceID();
                 }
             }
@@ -730,8 +763,9 @@ namespace BT
             _drag = e.delta * (1 / _currentZoom);
 
             foreach (var nodeView in _nodeViews) nodeView.Drag(_drag);
-
-            entry.Drag(_drag);
+            
+            if(entry != null)
+                entry.Drag(_drag);
 
             _drag = e.delta * (0.27f / _currentZoom);
             GUI.changed = true;
@@ -739,7 +773,7 @@ namespace BT
 
         private bool DragWindowIfSelected(Event e)
         {
-            if (entry.IsSelected)
+            if (entry != null && entry.IsSelected)
             {
                 _drag = Vector2.zero;
                 entry.Drag(e.delta * (1 / _currentZoom));
@@ -768,52 +802,11 @@ namespace BT
 
             if (_rightClickedNode)
             {
-                genericMenu.AddItem(new GUIContent("Delete Node", "Delete the following node."), false, () =>
-                {
-                    var connectionsToRemove = new List<int>();
-
-                    foreach (var connection in _connections)
-                        if (connection.EndSocket == _rightClickedNode.entrySocket ||
-                            connection.StartSocket == _rightClickedNode.exitSocket)
-                            connectionsToRemove.Add(_connections.IndexOf(connection));
-
-                    foreach (var conn in connectionsToRemove)
-                        _connections.RemoveAt(conn);
-
-                    _nodeViews.Remove(_rightClickedNode);
-                    AssetDatabase.RemoveObjectFromAsset(_rightClickedNode.Task);
-                    AssetDatabase.RemoveObjectFromAsset(_rightClickedNode);
-                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
-                    _rightClickedNode = null;
-
-                    SaveGraphData();
-                });
+                genericMenu.AddItem(new GUIContent("Delete Node", "Delete the following node."), false, DeleteNode);
 
                 genericMenu.AddItem(
                     new GUIContent("Make Root Node", "Make the selected node the entry point of the tree."), false,
-                    () =>
-                    {
-                        var connectionsToRemove = new List<NodeConnection>();
-
-                        foreach (var connection in _connections)
-                        {
-                            if (connection.IsEntryConnection)
-                                connectionsToRemove.Add(connection);
-                            else if (connection.EndSocket == _rightClickedNode.entrySocket)
-                                connectionsToRemove.Add(connection);
-                        }
-
-                        foreach (var toRemove in connectionsToRemove)
-                        {
-                            _connections.Remove(toRemove);
-                        }
-
-                        entry.exitSocket.IsHooked = true;
-                        _rightClickedNode.entrySocket.IsHooked = true;
-
-                        _connections.Add(CreateConnection(entry.exitSocket, _rightClickedNode.entrySocket,
-                            Color.red));
-                    });
+                    SelectRootNode);
             }
             else
             {
@@ -828,6 +821,63 @@ namespace BT
             }
 
             genericMenu.ShowAsContext();
+        }
+
+        private void SelectRootNode()
+        {
+            var connectionsToRemove = new List<NodeConnection>();
+
+            foreach (var connection in _connections)
+            {
+                if (connection.IsEntryConnection)
+                    connectionsToRemove.Add(connection);
+                else if (connection.EndSocket == _rightClickedNode.entrySocket)
+                    connectionsToRemove.Add(connection);
+            }
+
+            foreach (var toRemove in connectionsToRemove)
+            {
+                _connections.Remove(toRemove);
+            }
+
+            entry.exitSocket.IsHooked = true;
+            _rightClickedNode.entrySocket.IsHooked = true;
+
+            _connections.Add(CreateConnection(entry.exitSocket, _rightClickedNode.entrySocket,
+                Color.red));
+        }
+
+        private void DeleteNode()
+        {
+            var connectionsToRemove = new List<int>();
+
+            foreach (var connection in _connections)
+                if (connection.EndSocket == _rightClickedNode.entrySocket ||
+                    connection.StartSocket == _rightClickedNode.exitSocket)
+                    connectionsToRemove.Add(_connections.IndexOf(connection));
+
+            foreach (var conn in connectionsToRemove)
+                _connections.RemoveAt(conn);
+
+            _nodeViews.Remove(_rightClickedNode);
+
+            if (_rightClickedNode.IsRootView)
+            {
+                currentGraph.root = null;
+                entry.exitSocket.Node = null;
+                entry.exitSocket.IsHooked = false;
+                
+                currentGraph.entryConnection = null;
+                AssetDatabase.RemoveObjectFromAsset(currentGraph.entryConnection);
+                DestroyImmediate(currentGraph.entryConnection);
+            }
+
+            AssetDatabase.RemoveObjectFromAsset(_rightClickedNode.Task);
+            AssetDatabase.RemoveObjectFromAsset(_rightClickedNode);
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+            _rightClickedNode = null;
+
+            SaveGraphData();
         }
 
         private void OnNodeSocketClicked(NodeSocket socket)
@@ -850,7 +900,6 @@ namespace BT
                     var connection = CreateConnection(socket, clickedSocket, Color.red);
                     _connections.Add(connection);
 
-
                     NodeSocket.CurrentClickedSocket.Node.children.Add(socket.Node);
 
                     NodeSocket.CurrentClickedSocket = null;
@@ -869,16 +918,20 @@ namespace BT
 
             connection = CreateInstance<NodeConnection>();
             connection.name = "Connection";
-            AssetDatabase.AddObjectToAsset(connection, currentGraph);
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
 
             connection.StartSocket = StartSocket;
             connection.EndSocket = EndSocket;
             connection.ConnectionColor = color;
-            connection.IsEntryConnection = false || NodeSocket.CurrentClickedSocket.Node is EntryNode;
+            connection.IsEntryConnection = false;
 
+            if(NodeSocket.CurrentClickedSocket != null && NodeSocket.CurrentClickedSocket.Node is EntryNode)
+                connection.IsEntryConnection = true;
+            
             StartSocket.IsHooked = true;
             EndSocket.IsHooked = true;
+            
+            AssetDatabase.AddObjectToAsset(connection, currentGraph);
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             return connection;
         }
 
@@ -953,11 +1006,20 @@ namespace BT
             }
             else
             {
+                BTLog.Log("Copying Data", BTLog.ELogLevel.Error);
                 _nodeViews.Clear();
-
                 _connections.Clear();
 
                 AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(currentGraph));
+
+                if (entry != null)
+                {
+                    AssetDatabase.RemoveObjectFromAsset(entry);
+                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+                    DestroyImmediate(entry);
+                }
+                
+                CreateEntryNode();
 
                 foreach (var savedNode in currentGraph.SavedNodes)
                 {

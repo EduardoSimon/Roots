@@ -30,7 +30,6 @@ namespace BT
 
         private void OnEnable()
         {
-            hideFlags = HideFlags.DontUnloadUnusedAsset & HideFlags.DontSaveInEditor;
         }
 
         public void Init(Rect socketRect, NodeSocketType type, BaseNode node)

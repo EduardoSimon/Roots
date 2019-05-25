@@ -16,13 +16,9 @@ namespace BT.Editor
 
         public NodeConnection entryConnection;
 
-        [SerializeField] private BaseNode root;
+        [SerializeField] public BaseNode root;
         [SerializeField] public BehaviorTree _tree;
-
-        private void OnEnable()
-        {
-            hideFlags = HideFlags.DontSave;
-        }
+        public BaseNode EntryNode;
 
         public void OnSave()
         {

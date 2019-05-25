@@ -21,11 +21,9 @@ namespace BT.Scripts.Drawers
         public Color ConnectionColor;
 
         public void Draw()
-        {
-            
+        {       
             Handles.color = ConnectionColor;
             Handles.DrawLine(StartSocket.Position, EndSocket.Position);
-
         }
     }
 }

@@ -51,7 +51,6 @@ namespace BT
 
         private void OnEnable()
         {
-            hideFlags = HideFlags.DontSave;
         }
 
         /// <summary>
