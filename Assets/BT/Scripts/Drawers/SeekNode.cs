@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BT.Scripts.Core;
 using UnityEditor;
@@ -15,9 +16,9 @@ namespace BT.Scripts.Drawers
             set => task = (Seek) value;
         }
 
-        public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView)
+        public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
         {
-            base.Init(id, isEntryPoint, isRootView, isParentView);
+            base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked);
         }
 
         public override void DrawInspector()

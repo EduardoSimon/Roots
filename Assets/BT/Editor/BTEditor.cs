@@ -104,7 +104,7 @@ namespace BT
         }
 
         //Called every time the editor is enabled.
-        private void StartEditor(bool hasEnteredEditMode)
+        private void StartEditor()
         {
             BTLog.Log("On Enable Called");
             Application.quitting += OnApplicationQuit;
@@ -130,15 +130,8 @@ namespace BT
             _connections = new List<NodeConnection>();
             _nodesToDestroy = new List<BaseNode>();
             _variablesToDestroy = new List<BlackBoardVariable>();
-            
-            if (NodeSocket.OnSocketClicked == null)
-                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
 
-            //when entering play mode or when entering edit mode, there will be a loading proccess. We get back the references.
-            if (hasEnteredEditMode || EditorApplication.isPlayingOrWillChangePlaymode)
-                RestoreSerializedData();
-            else
-                //CopyTreeGraphData();
+            RestoreSerializedData();
 
             _tooltipWindow = null;
 
@@ -147,13 +140,12 @@ namespace BT
 
         private void RestoreSerializedData()
         {
-            if (NodeSocket.OnSocketClicked == null)
-                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
+            if (currentGraph == null)
+                return;
             
-            if (GraphInstanceID != 0)
-                AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(currentGraph));
+            AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(currentGraph));
 
-            BTLog.Log("Getting node's ids", BTLog.ELogLevel.Error);
+            BTLog.Log("Getting node's ids");
             _nodeViews.Clear();
             _connections.Clear();
 
@@ -170,7 +162,7 @@ namespace BT
 
                 _nodeViews[i].Init(currentGraph.SavedNodes[i].GUID, currentGraph.SavedNodes[i].IsEntryPoint,
                     currentGraph.SavedNodes[i].IsRootView,
-                    currentGraph.SavedNodes[i].IsParentView);
+                    currentGraph.SavedNodes[i].IsParentView, OnNodeSocketClicked);
 
                 _nodeViews[i].OnClickedNode += OnClickedNode;
 
@@ -211,7 +203,7 @@ namespace BT
 
         private void OnEnable()
         {
-            StartEditor(false);
+            StartEditor();
         }
 
 
@@ -227,7 +219,7 @@ namespace BT
                     ConvertIDsToObjects();
                     break;
                 case PlayModeStateChange.EnteredEditMode:
-                    StartEditor(true);
+                    StartEditor();
                     break;
                 default:
                     BTLog.Log("Entering :" + state);
@@ -416,7 +408,7 @@ namespace BT
 
         #region Creation Methods
 
-        private void CreateEntryNode()
+        public void CreateEntryNode()
         {
             Rect entryViewWindowRect = new Rect(400, 20,
                 BTConstants.kNodeWidht, BTConstants.kNodeHeight);
@@ -429,10 +421,10 @@ namespace BT
             entry.exitSocket = CreateInstance<NodeSocket>();
             entry.exitSocket.Init(
                 new Rect(entry.windowRect.xMin, entry.windowRect.yMax, BTConstants.SocketWidth,
-                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, entry);
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, entry, OnNodeSocketClicked);
             entry.exitSocket.name = entry.name + " exitSocket";
 
-            entry.Init(null, true, false, false);
+            entry.Init(null, true, false, false, OnNodeSocketClicked);
 
             AssetDatabase.AddObjectToAsset(entry.exitSocket, currentGraph);
             AssetDatabase.AddObjectToAsset(entry, currentGraph);
@@ -440,7 +432,7 @@ namespace BT
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
         }
 
-        private void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
+        public void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect, string windowTitle)
         {
             var instance = InitializeNode(nodeType, windowRect, windowTitle);
 
@@ -462,14 +454,14 @@ namespace BT
             instance.exitSocket = CreateInstance<NodeSocket>();
             instance.exitSocket.Init(
                 new Rect(instance.windowRect.xMin, instance.windowRect.yMax, BTConstants.SocketWidth,
-                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, instance);
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, instance, OnNodeSocketClicked);
             instance.exitSocket.name = instance.name + " exitSocket";
             AssetDatabase.AddObjectToAsset(instance.exitSocket, currentGraph);
 
             instance.entrySocket = CreateInstance<NodeSocket>();
             instance.entrySocket.Init(
                 new Rect(instance.windowRect.xMin, instance.windowRect.yMin, BTConstants.SocketWidth,
-                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.In, instance);
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.In, instance, OnNodeSocketClicked);
             instance.entrySocket.name = instance.name + " entrySocket";
             AssetDatabase.AddObjectToAsset(instance.entrySocket, currentGraph);
 
@@ -484,9 +476,9 @@ namespace BT
 
             if (instance.Task is IComposite cast)
                 instance.Init(null, false, _nodeViews.Count == 0 ? true : false,
-                    true); // if we pass null to the guid a new one will be created
+                    true, OnNodeSocketClicked); // if we pass null to the guid a new one will be created
             else
-                instance.Init(null, false, _nodeViews.Count == 0 ? true : false, false);
+                instance.Init(null, false, _nodeViews.Count == 0 ? true : false, false, OnNodeSocketClicked);
 
             instance.CopyVariables(instance.variables);
             return instance;
@@ -507,14 +499,14 @@ namespace BT
             instance.exitSocket = CreateInstance<NodeSocket>();
             instance.exitSocket.Init(
                 new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMax, BTConstants.SocketWidth,
-                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, instance);
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, instance, OnNodeSocketClicked);
             instance.exitSocket.name = instance.name + " exitSocket";
             AssetDatabase.AddObjectToAsset(instance.exitSocket, currentGraph);
 
             instance.entrySocket = CreateInstance<NodeSocket>();
             instance.entrySocket.Init(
                 new Rect(baseNode.windowRect.xMin, baseNode.windowRect.yMin, BTConstants.SocketWidth,
-                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.In, instance);
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.In, instance, OnNodeSocketClicked);
             instance.entrySocket.name = instance.name + " entrySocket";
             AssetDatabase.AddObjectToAsset(instance.entrySocket, currentGraph);
 
@@ -522,7 +514,7 @@ namespace BT
             instance.windowRect = baseNode.windowRect;
             instance.windowTitle = baseNode.windowTitle;
 
-            instance.Init(baseNode.GUID, false, baseNode.IsRootView ? true : false, instance.Task is IComposite);
+            instance.Init(baseNode.GUID, false, baseNode.IsRootView ? true : false, instance.Task is IComposite, OnNodeSocketClicked);
 
             instance.OnClickedNode += OnClickedNode;
 
@@ -565,33 +557,17 @@ namespace BT
 
             EditorGUI.BeginChangeCheck();
 
-            BehaviorTreeGraph previousGraph = currentGraph;
-
             currentGraph =
                 EditorGUILayout.ObjectField(currentGraph, typeof(BehaviorTreeGraph), false) as BehaviorTreeGraph;
             if (EditorGUI.EndChangeCheck())
             {
                 GUI.FocusControl(null);
 
-                if (currentGraph != null && previousGraph == null)
+                if (currentGraph != null)
                 {
-                    BTLog.Log(currentGraph.name, BTLog.ELogLevel.Error);
-
-                    RemoveNotification();
-                    //CopyTreeGraphData();
-                    RestoreSerializedData();
-                    GraphInstanceID = 0;
-                    GraphInstanceID = currentGraph.GetInstanceID();
-                }
-                else if (currentGraph != null && previousGraph != null)
-                {
-                    BTLog.Log(currentGraph.name + "previos wasnt null", BTLog.ELogLevel.Error);
                     _nodeViews.Clear();
                     _connections.Clear();
                     RestoreSerializedData();
-                    //StartEditor(false);
-                    //CopyTreeGraphData();
-                    GraphInstanceID = 0;
                     GraphInstanceID = currentGraph.GetInstanceID();
                 }
             }

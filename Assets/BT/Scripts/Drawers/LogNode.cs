@@ -20,9 +20,9 @@ namespace BT.Scripts.Drawers
             set => task = (Log) value;
         }
 
-        public override void Init(string guid,bool isEntryPoint, bool isRootView, bool isParentView)
+        public override void Init(string guid,bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
         {
-            base.Init(guid, isEntryPoint, isRootView, isParentView);
+            base.Init(guid, isEntryPoint, isRootView, isParentView, OnSocketClicked);
 
             if (_texture2D == null)
                 _texture2D = Resources.Load<Texture2D>("log_icon");

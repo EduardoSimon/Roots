@@ -59,7 +59,7 @@ namespace BT
         /// <param name="id"> If the node has been created before and only a copy is need, the GUID parameter MUST BE NULL</param>
         /// <param name="isRootView"> Is the entry view of the graph</param>
         /// <param name="isParentView"> Is allowed to have children</param>
-        public virtual void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView)
+        public virtual void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
         {
             if(variables == null)
                 variables = new List<BlackBoardVariable>();
@@ -77,7 +77,7 @@ namespace BT
             if (exitSocket == null)
             {
                 exitSocket = CreateInstance<NodeSocket>();
-                exitSocket.Init(new Rect(windowRect.xMin, windowRect.yMax, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.Out,this);
+                exitSocket.Init(new Rect(windowRect.xMin, windowRect.yMax, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.Out,this, OnSocketClicked);
             }
             
             if (!isEntryPoint)
@@ -85,12 +85,11 @@ namespace BT
                 if (entrySocket == null)
                 {
                     entrySocket = CreateInstance<NodeSocket>();
-                    entrySocket.Init(new Rect(windowRect.xMin, windowRect.yMin, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.In,this);
+                    entrySocket.Init(new Rect(windowRect.xMin, windowRect.yMin, BTConstants.SocketWidth, BTConstants.SocketHeight),NodeSocket.NodeSocketType.In,this,OnSocketClicked);
                 }
                 
                 windowTitle = task.GetType().Name;
             }
-
 
             this.isRootView = isRootView;
             this.isParentView = isParentView;

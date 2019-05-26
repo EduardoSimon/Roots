@@ -17,7 +17,7 @@ namespace BT
         }
 
         public static NodeSocket CurrentClickedSocket = null;
-        public static Action<NodeSocket> OnSocketClicked;
+        public Action<NodeSocket> OnSocketClicked;
 
         public Rect _socketRect;
         
@@ -32,11 +32,12 @@ namespace BT
         {
         }
 
-        public void Init(Rect socketRect, NodeSocketType type, BaseNode node)
+        public void Init(Rect socketRect, NodeSocketType type, BaseNode node, Action<NodeSocket> OnSocketClicked)
         {
             this._socketRect = socketRect;
             this.SocketType = type;
             this.Node = node;
+            this.OnSocketClicked = OnSocketClicked;
         }
 
         public void Draw()
