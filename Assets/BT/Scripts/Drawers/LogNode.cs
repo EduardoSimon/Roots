@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using BT.Core;
 using BT.Editor;
+using UnityEditor;
 using UnityEngine;
 
 namespace BT.Scripts.Drawers
@@ -72,6 +75,30 @@ namespace BT.Scripts.Drawers
 
             logTask.message = message.StringVariable;
             //logTask.isLogError = isLogError.BoolVariable;
+        }
+
+        public override void CopyVariables(List<BlackBoardVariable> previousVariables)
+        {
+            base.CopyVariables(previousVariables);
+            
+            var variable = CreateInstance<StringBlackBoardVariable>();
+            AssetDatabase.AddObjectToAsset(variable,this);
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
+            variable.node = this;
+
+            if (previousVariables != null)
+                message = (StringBlackBoardVariable)previousVariables[0];
+            
+            variable.Init(message == null ? null : message.guid);
+
+            if (message != null )
+            {
+                AssetDatabase.RemoveObjectFromAsset(message);
+                variable.StringVariable = message.StringVariable;
+            }
+            
+            message = variable;
+            variables.Add(variable);
         }
     }
 }

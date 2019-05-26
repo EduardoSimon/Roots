@@ -20,6 +20,10 @@ namespace BT.Editor
         [SerializeField] public BehaviorTree _tree;
         public BaseNode EntryNode;
 
+        private void OnEnable()
+        {
+        }
+
         public void OnSave()
         {
             root = null;

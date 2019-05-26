@@ -115,9 +115,6 @@ namespace BT
 
             _skin = Resources.Load<GUISkin>("BTSkin");
 
-            if (NodeSocket.OnSocketClicked == null)
-                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
-
             if (nodeIDs == null)
                 nodeIDs = new List<int>();
 
@@ -133,12 +130,15 @@ namespace BT
             _connections = new List<NodeConnection>();
             _nodesToDestroy = new List<BaseNode>();
             _variablesToDestroy = new List<BlackBoardVariable>();
+            
+            if (NodeSocket.OnSocketClicked == null)
+                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
 
             //when entering play mode or when entering edit mode, there will be a loading proccess. We get back the references.
             if (hasEnteredEditMode || EditorApplication.isPlayingOrWillChangePlaymode)
                 RestoreSerializedData();
             else
-                CopyTreeGraphData();
+                //CopyTreeGraphData();
 
             _tooltipWindow = null;
 
@@ -147,7 +147,10 @@ namespace BT
 
         private void RestoreSerializedData()
         {
-            if(GraphInstanceID != 0)
+            if (NodeSocket.OnSocketClicked == null)
+                NodeSocket.OnSocketClicked += OnNodeSocketClicked;
+            
+            if (GraphInstanceID != 0)
                 AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(currentGraph));
 
             BTLog.Log("Getting node's ids", BTLog.ELogLevel.Error);
@@ -158,6 +161,9 @@ namespace BT
 
             entry = currentGraph.EntryNode;
             
+            if(entry == null)
+                CreateEntryNode();
+
             for (int i = 0; i < currentGraph.SavedNodes.Count; i++)
             {
                 _nodeViews.Add(currentGraph.SavedNodes[i]);
@@ -177,7 +183,7 @@ namespace BT
                     rootNode = _nodeViews[i];
             }
 
-            if (rootNode != null)
+            if (rootNode != null  && currentGraph.entryConnection != null)
             {
                 currentGraph.entryConnection.Init(entry.exitSocket,
                     rootNode.entrySocket, currentGraph.entryConnection.ConnectionColor, true);
@@ -231,11 +237,11 @@ namespace BT
 
         private void ConvertIDsToObjects()
         {
-            if(GraphInstanceID != 0)
+            if (GraphInstanceID != 0)
                 currentGraph = EditorUtility.InstanceIDToObject(GraphInstanceID) as BehaviorTreeGraph;
 
             entry = EditorUtility.InstanceIDToObject(entryID) as BaseNode;
-            
+
             for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
             {
                 currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
@@ -283,11 +289,11 @@ namespace BT
             {
                 if (_saveOnPlay)
                     SaveGraphData();
-                
+
                 GraphInstanceID = currentGraph.GetInstanceID();
 
                 entryID = entry.GetInstanceID();
-                
+
                 foreach (var savedNode in currentGraph.SavedNodes)
                 {
                     int[] variablesID = new int[savedNode.variables.Count];
@@ -407,18 +413,6 @@ namespace BT
             if (GUI.changed) Repaint();
         }
 
-        public void CleanGraph()
-        {
-            var assets = AssetDatabase.LoadAllAssetRepresentationsAtPath(AssetDatabase.GetAssetPath(currentGraph));
-
-            foreach (var asset in assets)
-            {
-                AssetDatabase.RemoveObjectFromAsset(asset);
-                DestroyImmediate(asset);
-            }
-
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
-        }
 
         #region Creation Methods
 
@@ -431,18 +425,18 @@ namespace BT
             entry.windowRect = entryViewWindowRect;
             entry.windowTitle = "Entry View";
             currentGraph.EntryNode = entry;
-            
+
             entry.exitSocket = CreateInstance<NodeSocket>();
             entry.exitSocket.Init(
                 new Rect(entry.windowRect.xMin, entry.windowRect.yMax, BTConstants.SocketWidth,
                     BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, entry);
             entry.exitSocket.name = entry.name + " exitSocket";
-            
+
             entry.Init(null, true, false, false);
 
             AssetDatabase.AddObjectToAsset(entry.exitSocket, currentGraph);
             AssetDatabase.AddObjectToAsset(entry, currentGraph);
-            
+
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
         }
 
@@ -494,7 +488,7 @@ namespace BT
             else
                 instance.Init(null, false, _nodeViews.Count == 0 ? true : false, false);
 
-            instance.CopyVariables(null);
+            instance.CopyVariables(instance.variables);
             return instance;
         }
 
@@ -570,15 +564,33 @@ namespace BT
             GUILayout.BeginHorizontal();
 
             EditorGUI.BeginChangeCheck();
+
+            BehaviorTreeGraph previousGraph = currentGraph;
+
             currentGraph =
                 EditorGUILayout.ObjectField(currentGraph, typeof(BehaviorTreeGraph), false) as BehaviorTreeGraph;
             if (EditorGUI.EndChangeCheck())
             {
                 GUI.FocusControl(null);
-                if (currentGraph != null)
+
+                if (currentGraph != null && previousGraph == null)
                 {
+                    BTLog.Log(currentGraph.name, BTLog.ELogLevel.Error);
+
                     RemoveNotification();
-                    CopyTreeGraphData();
+                    //CopyTreeGraphData();
+                    RestoreSerializedData();
+                    GraphInstanceID = 0;
+                    GraphInstanceID = currentGraph.GetInstanceID();
+                }
+                else if (currentGraph != null && previousGraph != null)
+                {
+                    BTLog.Log(currentGraph.name + "previos wasnt null", BTLog.ELogLevel.Error);
+                    _nodeViews.Clear();
+                    _connections.Clear();
+                    RestoreSerializedData();
+                    //StartEditor(false);
+                    //CopyTreeGraphData();
                     GraphInstanceID = 0;
                     GraphInstanceID = currentGraph.GetInstanceID();
                 }
@@ -604,9 +616,7 @@ namespace BT
             if (GUILayout.Button("Save Graph Data"))
                 SaveGraphData();
 
-            if (GUILayout.Button("Clear Graph"))
-                CleanGraph();
-
+            GUILayout.Label("Current Graph ID: " + GraphInstanceID + " and graph value: " + currentGraph);
             /*
             if (GUILayout.Button("Show window"))
                 _showWindows = !_showWindows;*/
@@ -763,8 +773,8 @@ namespace BT
             _drag = e.delta * (1 / _currentZoom);
 
             foreach (var nodeView in _nodeViews) nodeView.Drag(_drag);
-            
-            if(entry != null)
+
+            if (entry != null)
                 entry.Drag(_drag);
 
             _drag = e.delta * (0.27f / _currentZoom);
@@ -866,7 +876,7 @@ namespace BT
                 currentGraph.root = null;
                 entry.exitSocket.Node = null;
                 entry.exitSocket.IsHooked = false;
-                
+
                 currentGraph.entryConnection = null;
                 AssetDatabase.RemoveObjectFromAsset(currentGraph.entryConnection);
                 DestroyImmediate(currentGraph.entryConnection);
@@ -924,12 +934,15 @@ namespace BT
             connection.ConnectionColor = color;
             connection.IsEntryConnection = false;
 
-            if(NodeSocket.CurrentClickedSocket != null && NodeSocket.CurrentClickedSocket.Node is EntryNode)
+            if (NodeSocket.CurrentClickedSocket != null && NodeSocket.CurrentClickedSocket.Node is EntryNode)
                 connection.IsEntryConnection = true;
-            
+
             StartSocket.IsHooked = true;
             EndSocket.IsHooked = true;
-            
+
+            if(currentGraph == null)
+                currentGraph = EditorUtility.InstanceIDToObject(GraphInstanceID) as BehaviorTreeGraph;
+
             AssetDatabase.AddObjectToAsset(connection, currentGraph);
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
             return connection;
@@ -1000,17 +1013,18 @@ namespace BT
 
         private void CopyTreeGraphData()
         {
+            /*
             if (currentGraph == null)
             {
                 BTLog.Log("Select a graph to Load Data From", BTLog.ELogLevel.Error);
             }
             else
             {
-                BTLog.Log("Copying Data", BTLog.ELogLevel.Error);
+
+                BTLog.Log("Copying Data", BTLog.ELogLevel.Warning);
                 _nodeViews.Clear();
                 _connections.Clear();
 
-                AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(currentGraph));
 
                 if (entry != null)
                 {
@@ -1018,7 +1032,7 @@ namespace BT
                     AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
                     DestroyImmediate(entry);
                 }
-                
+
                 CreateEntryNode();
 
                 foreach (var savedNode in currentGraph.SavedNodes)
@@ -1095,12 +1109,12 @@ namespace BT
                 }
                 
                 _nodesToDestroy.Clear();
-                */
+                
 
                 GUI.changed = true;
+                */
             }
         }
 
         #endregion
     }
-}
