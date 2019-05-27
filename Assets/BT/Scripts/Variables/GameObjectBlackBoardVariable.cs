@@ -55,9 +55,9 @@ namespace BT.Scripts
             }
         }
 
-        public override void DrawVariableInspector(string label)
+        public override void DrawVariableInspector(string label,Event current)
         {
-            base.DrawVariableInspector(label);
+            base.DrawVariableInspector(label,current);
             
             GUI.SetNextControlName("ObjectVariable");
             EditorGUI.BeginChangeCheck();

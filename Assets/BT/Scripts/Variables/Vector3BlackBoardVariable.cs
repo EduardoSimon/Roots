@@ -7,9 +7,9 @@ namespace BT.Scripts
     {
         public Vector3 Vector3Variable;
         
-        public override void DrawVariableInspector(string label)
+        public override void DrawVariableInspector(string label, Event current)
         {
-            base.DrawVariableInspector(label);
+            base.DrawVariableInspector(label, current);
             
             GUI.SetNextControlName("Vector3Variable");
             EditorGUI.BeginChangeCheck();

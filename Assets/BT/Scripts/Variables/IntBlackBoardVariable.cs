@@ -7,9 +7,9 @@ namespace BT.Scripts
     {
         public int IntVariable;    
         
-        public override void DrawVariableInspector(string label)
+        public override void DrawVariableInspector(string label, Event current)
         {
-            base.DrawVariableInspector(label);
+            base.DrawVariableInspector(label, current);
             
             GUI.SetNextControlName("IntVariable");
             EditorGUI.BeginChangeCheck();

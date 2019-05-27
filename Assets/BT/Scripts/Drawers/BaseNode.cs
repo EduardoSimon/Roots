@@ -120,7 +120,8 @@ namespace BT
         /// <summary>
         /// Callback for drawing this node's inspector. Use EditorGUILayout or GUILayout functions for easier positioning.
         /// </summary>
-        public virtual void DrawInspector()
+        /// <param name="current"></param>
+        public virtual void DrawInspector(Event current)
         {
             GUILayout.Label(windowTitle);
         }
@@ -141,7 +142,6 @@ namespace BT
                             isSelected = true;
                             OnClickedNode?.Invoke(this);
                             GUI.FocusWindow(_id);
-
                             return true;
                         case 0:
                             return true;

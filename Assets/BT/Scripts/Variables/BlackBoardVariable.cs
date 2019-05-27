@@ -25,7 +25,7 @@ namespace BT.Scripts
             this.guid = guid ?? GUID.Generate().ToString();
         }
         
-        public virtual void DrawVariableInspector(string label) {}
+        public virtual void DrawVariableInspector(string label, Event current) {}
 
     }
 }

@@ -60,10 +60,10 @@ namespace BT.Scripts.Drawers
             base.DrawSockets();
         }
 
-        public override void DrawInspector()
+        public override void DrawInspector(Event current)
         {
-            base.DrawInspector();
-            message.DrawVariableInspector("Log Message");
+            base.DrawInspector(current);
+            message.DrawVariableInspector("Log Message",Event.current);
             //isLogError.DrawVariableInspector("Is Logging an error?");
         }
 

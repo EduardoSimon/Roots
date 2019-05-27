@@ -21,11 +21,11 @@ namespace BT.Scripts.Drawers
             base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked);
         }
 
-        public override void DrawInspector()
+        public override void DrawInspector(Event current)
         {
-            base.DrawInspector();
+            base.DrawInspector(current);
             
-            target.DrawVariableInspector("Target");
+            target.DrawVariableInspector("Target",current);
         }
 
         public override void SaveNodeInfo()
