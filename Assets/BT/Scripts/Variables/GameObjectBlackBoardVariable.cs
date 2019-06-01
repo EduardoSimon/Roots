@@ -17,7 +17,12 @@ namespace BT.Scripts
             
             BehaviorTreeManager manager = FindObjectOfType<BehaviorTreeManager>();
 
-            if (manager != null && manager.references != null && guid != null)
+            if (manager == null)
+            {
+                GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
+            }
+            
+            if (manager.references != null && guid != null)
             {
                 if(manager.references.ContainsKey(guid))
                     gameObjectVariable = manager.references[this.guid];
@@ -36,6 +41,11 @@ namespace BT.Scripts
                 case PlayModeStateChange.ExitingEditMode:
                     BehaviorTreeManager btManager = FindObjectOfType<BehaviorTreeManager>();
                     
+                    if (btManager == null)
+                    {
+                        GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
+                    }
+                    
                     if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid))
                     {
                         btManager.references[guid] = gameObjectVariable;
@@ -46,6 +56,11 @@ namespace BT.Scripts
                 case PlayModeStateChange.EnteredPlayMode:
                     var manager = FindObjectOfType<BehaviorTreeManager>();
 
+                    if (manager == null)
+                    {
+                        GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
+                    }
+                    
                     if (manager != null && manager.references != null && manager.references.ContainsKey(guid))
                         gameObjectVariable = manager.references[guid];
                     break;

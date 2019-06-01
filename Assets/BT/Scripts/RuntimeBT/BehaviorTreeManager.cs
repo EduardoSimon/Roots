@@ -12,7 +12,8 @@ namespace BT.Runtime
     public class BehaviorTreeManager : MonoBehaviour
     {
         public static BehaviorTreeManager Instance = null;
-        public ReferenceDictionary references;
+        
+        [HideInInspector] public ReferenceDictionary references;
         
         private BehaviorTreeController[] _behaviorTreeControllers;
 

@@ -79,7 +79,7 @@ namespace BT.Runtime
 
             _hasCompletedOnce = true;
 
-            BTLog.Log("The tree has at " + gameObject.name + "has: " + status,
+            BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status,
                 status != TaskStatus.Succeeded ? BTLog.ELogLevel.Error : BTLog.ELogLevel.Log);
         }
 
