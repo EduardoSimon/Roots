@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using BT;
 using BT.Editor;
@@ -13,36 +14,87 @@ namespace BT.Runtime
     {
         public enum EUpdateType
         {
-            Update, LateUpdate, FixedUpdate, Manual
+            Update,
+            LateUpdate,
+            FixedUpdate,
+            Manual
         }
-    
-        public BehaviorTreeGraph TreeGraph;
-    
-        [TextArea]
-        [SerializeField] private string BehaviorTreeDescription;
-        [SerializeField] private EUpdateType UpdateType;
-        [SerializeField] private bool StartOnEnable = true;
-        [SerializeField] private bool PauseOnDisabled = false;
-        [SerializeField] private bool RestartOnComplete = false;
 
+        public BehaviorTreeGraph treeGraph;
+
+        [TextArea] [SerializeField] private string behaviorTreeDescription;
+        [SerializeField] private EUpdateType updateType;
+        [SerializeField] private bool startOnEnable = true;
+        [SerializeField] private bool pauseOnDisabled = false;
+        [SerializeField] private bool restartOnComplete = true;
+
+        private bool _hasCompletedOnce;
+//        private bool _isPaused;
         private BehaviorTree _tree;
 
 
         private void Start()
         {
-            Init();
+            _hasCompletedOnce = false;
+
+            if (startOnEnable)
+                Init();
         }
 
-        public void Init()
+        private void Init()
         {
-            if(TreeGraph != null)
-                _tree = TreeGraph._tree;
+            if (treeGraph != null)
+                _tree = treeGraph._tree;
         }
 
         private void Update()
         {
-            if(TreeGraph != null)
-                Debug.Log(_tree.Tick());
+            if (updateType == EUpdateType.Update)
+                TickTree();
+        }
+
+        private void LateUpdate()
+        {
+            if (updateType == EUpdateType.LateUpdate)
+                TickTree();
+        }
+
+        private void FixedUpdate()
+        {
+            if (updateType == EUpdateType.FixedUpdate)
+                TickTree();
+        }
+
+        private void TickTree()
+        {
+            if (_tree == null)
+                return;
+
+            if (!restartOnComplete && _hasCompletedOnce)
+                return;
+
+            if (treeGraph == null) return;
+            
+            var status = _tree.Tick();
+
+            _hasCompletedOnce = true;
+
+            BTLog.Log("The tree has at " + gameObject.name + "has: " + status,
+                status != TaskStatus.Succeeded ? BTLog.ELogLevel.Error : BTLog.ELogLevel.Log);
+        }
+
+        private void OnDisable()
+        {
+            if (!pauseOnDisabled) return;
+            
+    //        _isPaused = true;
+            BTLog.Log("The tree is paused.", BTLog.ELogLevel.Warning);
+        }
+
+        private void OnEnable()
+        {
+//            if (pauseOnDisabled)
+  //              _isPaused = false;
         }
     }
 }

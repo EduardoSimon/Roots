@@ -54,8 +54,10 @@ namespace BT.Editor
                     true, OnNodeSocketClicked); // if we pass null to the guid a new one will be created
             else
                 instance.Init(null, false, editor.Nodes.Count == 0 ? true : false, false, OnNodeSocketClicked);
+            
+            BTLog.Log(instance.IsRootView);
 
-            instance.CopyVariables(instance.variables);
+            instance.CopyVariables(null);
             return instance;
         }
     }

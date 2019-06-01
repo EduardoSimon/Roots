@@ -26,11 +26,7 @@ namespace BT
         public BaseNode Node;
         public string NodeGuid;
         public bool IsHooked;
-
-
-        private void OnEnable()
-        {
-        }
+        
 
         public void Init(Rect socketRect, NodeSocketType type, BaseNode node, Action<NodeSocket> OnSocketClicked)
         {

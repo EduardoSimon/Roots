@@ -26,26 +26,6 @@ namespace BT.Scripts.Drawers
 
             if (_texture2D == null)
                 _texture2D = Resources.Load<Texture2D>("log_icon");
-
-            message = CreateInstance<StringBlackBoardVariable>();
-            message.Init(message == null ? null : message.guid);
-
-            message.node = this;
-
-            if (!variables.Contains(message))
-                variables.Add(message);
-
-            message.StringVariable = "Enter your log message here.";
-
-            isLogError = CreateInstance<BoolBlackBoardVariable>();
-            isLogError.Init(isLogError == null ? null : isLogError.guid);
-            isLogError.node = this;
-            
-            if(!variables.Contains(isLogError))
-                variables.Add(isLogError);
-            
-            isLogError.BoolVariable = false;
-            
         }
 
         public override void DrawWindow(int id)
@@ -80,25 +60,29 @@ namespace BT.Scripts.Drawers
         public override void CopyVariables(List<BlackBoardVariable> previousVariables)
         {
             base.CopyVariables(previousVariables);
-            
-            var variable = CreateInstance<StringBlackBoardVariable>();
-            AssetDatabase.AddObjectToAsset(variable,this);
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
-            variable.node = this;
 
-            if (previousVariables != null)
-                message = (StringBlackBoardVariable)previousVariables[0];
-            
-            variable.Init(message == null ? null : message.guid);
-
-            if (message != null )
+            if (previousVariables == null)
             {
-                AssetDatabase.RemoveObjectFromAsset(message);
-                variable.StringVariable = message.StringVariable;
+                message = CreateInstance<StringBlackBoardVariable>();
+                AssetDatabase.AddObjectToAsset(message,this);
+                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
+                message.node = this;
+                variables.Add(message);
+                
+                isLogError = CreateInstance<BoolBlackBoardVariable>();
+                AssetDatabase.AddObjectToAsset(isLogError,this);
+                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
+                isLogError.node = this;
+                variables.Add(isLogError);
+            }
+            else
+            {
+                message = (StringBlackBoardVariable)previousVariables[0];
+                isLogError = (BoolBlackBoardVariable)previousVariables[1];
             }
             
-            message = variable;
-            variables.Add(variable);
+            message.Init(previousVariables == null ? null : message.guid);
+            isLogError.Init(previousVariables == null ? null : isLogError.guid);
         }
     }
 }

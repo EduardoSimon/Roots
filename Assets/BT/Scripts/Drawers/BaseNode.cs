@@ -48,11 +48,7 @@ namespace BT
 
         public static event Action<BaseNode> OnNodeRightClicked;
         public event Action<BaseNode> OnClickedNode;
-
-        private void OnEnable()
-        {
-        }
-
+        
         /// <summary>
         /// Emulates the constructor of the class. Override this method calling the base one for your custom initialization
         /// </summary>
