@@ -1,5 +1,56 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7123952054790238140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: ' exitSocket'
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 400
+    y: 120
+    width: 80
+    height: 16
+  SocketType: 1
+  Node: {fileID: -5059879424099643583}
+  NodeGuid: 
+  IsHooked: 0
+--- !u!114 &-5059879424099643583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9226d078b5408445a98c64bd52932368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entrySocket: {fileID: 0}
+  exitSocket: {fileID: -7123952054790238140}
+  task: {fileID: 0}
+  windowRect:
+    serializedVersion: 2
+    x: 400
+    y: 20
+    width: 100
+    height: 100
+  windowTitle: Entry View
+  variables: []
+  isParentView: 0
+  isRootView: 0
+  isSelected: 0
+  isEntryPoint: 1
+  guid: b514235d-b89f-4537-9bc8-893cb890c637
+  children: []
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19,4 +70,4 @@ MonoBehaviour:
   root: {fileID: 0}
   _tree:
     rootNode: {fileID: 0}
-  EntryNode: {fileID: 0}
+  EntryNode: {fileID: -5059879424099643583}
