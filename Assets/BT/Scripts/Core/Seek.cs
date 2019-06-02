@@ -9,15 +9,24 @@ namespace BT.Scripts.Core
     public class Seek : AAction
     {
         public Transform target;
+        public float speed = 10f;
+
+        private Transform _transform;
         
         protected override void OnInitialize()
         {
             base.OnInitialize();
             Debug.Log("Initialized Seek Action.");
+            _transform = controller.transform;
         }
 
         protected override TaskStatus Update()
         {
+            var position = _transform.position;
+            Vector3 dir = target.position - position;
+            position += speed * Time.deltaTime * dir.normalized;
+            _transform.position = position;
+
             Debug.Log("Chasing: " + target.gameObject.name);
             return base.Update();
         }

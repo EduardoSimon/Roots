@@ -21,7 +21,7 @@ namespace BT.Decorators
 
         protected override TaskStatus Update()
         {
-            var childStatus = _child.Tick();
+            var childStatus = _child.Tick(controller);
 
             if (childStatus == TaskStatus.Running) return TaskStatus.Running;
 

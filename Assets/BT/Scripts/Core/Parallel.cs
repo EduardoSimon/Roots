@@ -37,7 +37,7 @@ namespace BT
 
             for (var i = 0; i < Children.Count; i++)
             {
-                var childrenStatus = Children[i].Tick();
+                var childrenStatus = Children[i].Tick(controller);
 
                 if (childrenStatus == TaskStatus.Succeeded)
                 {
@@ -68,7 +68,7 @@ namespace BT
         {
             for (var i = 0; i < Children.Count; i++)
             {
-                var childrenStatus = Children[i].Tick();
+                var childrenStatus = Children[i].Tick(controller);
 
                 if (childrenStatus == TaskStatus.Running)
                     Children[i].Abort();

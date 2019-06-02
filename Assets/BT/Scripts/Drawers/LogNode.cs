@@ -37,7 +37,7 @@ namespace BT.Scripts.Drawers
 
         public override void DrawSockets()
         {
-            base.DrawSockets();
+            entrySocket.Draw();
         }
 
         public override void DrawInspector(Event current)

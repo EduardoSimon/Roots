@@ -1,4 +1,5 @@
 using System.Data;
+using BT.Runtime;
 using UnityEngine;
 
 namespace BT
@@ -20,9 +21,9 @@ namespace BT
 
         public ATask RootNode => rootNode;
 
-        public TaskStatus Tick()
+        public TaskStatus Tick(BehaviorTreeController treeContext)
         {
-            return RootNode.Tick();
+            return RootNode.Tick(treeContext);
         }
 
         public void AddRoot(ATask task)

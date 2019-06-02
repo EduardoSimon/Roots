@@ -1,4 +1,5 @@
 using System;
+using BT.Runtime;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -8,6 +9,7 @@ namespace BT
     public class ATask : ScriptableObject
     {
         public TaskStatus Status;
+        public BehaviorTreeController controller;
 
         private void OnEnable()
         {
@@ -23,7 +25,7 @@ namespace BT
 
         protected virtual void OnTerminate(TaskStatus status) { }
 
-        public TaskStatus Tick()
+        public TaskStatus Tick(BehaviorTreeController treeContext)
         {
             if (Status == TaskStatus.Aborted)
             {
@@ -32,7 +34,10 @@ namespace BT
             }
 
             if (Status == TaskStatus.NonInitialized)
+            {
+                controller = treeContext;
                 OnInitialize();
+            }
 
             Status = Update();
 

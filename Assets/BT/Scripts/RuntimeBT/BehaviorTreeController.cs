@@ -75,7 +75,7 @@ namespace BT.Runtime
 
             if (treeGraph == null) return;
             
-            var status = _tree.Tick();
+            var status = _tree.Tick(this);
 
             _hasCompletedOnce = true;
 

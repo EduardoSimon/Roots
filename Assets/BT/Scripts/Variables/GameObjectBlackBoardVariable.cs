@@ -2,36 +2,34 @@ using System;
 using BT.Editor;
 using BT.Runtime;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BT.Scripts
 {
     [System.Serializable]
-    public class  GameObjectBlackBoardVariable : BlackBoardVariable
+    public class GameObjectBlackBoardVariable : BlackBoardVariable
     {
         public GameObject gameObjectVariable;
 
         private void OnEnable()
         {
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged; 
-            
-            BehaviorTreeManager manager = FindObjectOfType<BehaviorTreeManager>();
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+            EditorSceneManager.sceneOpened += OnSceneOpened;
 
-            if (manager == null)
-            {
-                GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
-            }
-            
-            if (manager.references != null && guid != null)
-            {
-                if(manager.references.ContainsKey(guid))
-                    gameObjectVariable = manager.references[this.guid];
-            }
+            RetrieveVariable(false);
+        }
+
+
+        private void OnSceneOpened(Scene arg0, OpenSceneMode mode)
+        {
+            RetrieveVariable(false);
         }
 
         private void OnDisable()
         {
-            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged; 
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
         }
 
         private void OnPlayModeStateChanged(PlayModeStateChange state)
@@ -39,50 +37,63 @@ namespace BT.Scripts
             switch (state)
             {
                 case PlayModeStateChange.ExitingEditMode:
-                    BehaviorTreeManager btManager = FindObjectOfType<BehaviorTreeManager>();
-                    
-                    if (btManager == null)
-                    {
-                        GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
-                    }
-                    
-                    if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid))
-                    {
-                        btManager.references[guid] = gameObjectVariable;
-                    }
-
+                    StoreVariable();
                     break;
-                
+
                 case PlayModeStateChange.EnteredPlayMode:
-                    var manager = FindObjectOfType<BehaviorTreeManager>();
-
-                    if (manager == null)
-                    {
-                        GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
-                    }
-                    
-                    if (manager != null && manager.references != null && manager.references.ContainsKey(guid))
-                        gameObjectVariable = manager.references[guid];
+                    RetrieveVariable(true);
                     break;
-                    
+
                 case PlayModeStateChange.EnteredEditMode:
                     break;
             }
         }
 
-        public override void DrawVariableInspector(string label,Event current)
+        private void StoreVariable()
         {
-            base.DrawVariableInspector(label,current);
-            
+            BehaviorTreeManager btManager = FindObjectOfType<BehaviorTreeManager>();
+
+            if (btManager == null)
+            {
+                GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
+                btManager = gameObject.GetComponent<BehaviorTreeManager>();
+            }
+
+            if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid))
+            {
+                btManager.references[guid] = gameObjectVariable;
+            }
+        }
+
+        public override void DrawVariableInspector(string label, Event current)
+        {
+            base.DrawVariableInspector(label, current);
+
             GUI.SetNextControlName("ObjectVariable");
             EditorGUI.BeginChangeCheck();
-            gameObjectVariable = EditorGUILayout.ObjectField(label,gameObjectVariable, typeof(GameObject),true) as GameObject;
+            gameObjectVariable =
+                EditorGUILayout.ObjectField(label, gameObjectVariable, typeof(GameObject), true) as GameObject;
 
             if (EditorGUI.EndChangeCheck())
             {
                 GUI.FocusControl("ObjectVariable");
             }
         }
+        private void RetrieveVariable(bool willCreateManagerIfNotFound)
+        {
+            BehaviorTreeManager manager = FindObjectOfType<BehaviorTreeManager>();
 
+            if (willCreateManagerIfNotFound && manager == null)
+            {
+                GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
+                manager = gameObject.GetComponent<BehaviorTreeManager>();
+            }
+
+            if (manager.references != null && guid != null)
+            {
+                if (manager.references.ContainsKey(guid))
+                    gameObjectVariable = manager.references[this.guid];
+            }
+        }
     }
 }

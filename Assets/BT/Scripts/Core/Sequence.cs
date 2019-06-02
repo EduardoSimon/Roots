@@ -55,7 +55,7 @@ namespace BT
 
             for (var i = 0; i < Children.Count; i++)
             {
-                var status = Children[i].Tick();
+                var status = Children[i].Tick(controller);
 
                 if (status != TaskStatus.Succeeded)
                     return status;
