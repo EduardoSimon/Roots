@@ -15,17 +15,21 @@ namespace BT.Scripts
 
         public  virtual void SaveBlackboardVariable() {}
 
-        private void OnEnable()
-        {
-
-        }
-
         public virtual void Init(string guid)
         {
             this.guid = guid ?? GUID.Generate().ToString();
         }
-        
-        public virtual void DrawVariableInspector(string label, Event current) {}
+
+        public virtual void DrawVariableInspector(string label, Event current)
+        {
+            if (current.type != EventType.MouseDown || GUI.GetNameOfFocusedControl() != "") return;
+
+            if (!GUILayoutUtility.GetLastRect().Contains(current.mousePosition))
+            {
+                GUI.FocusControl(null);
+                Event.current.Use();
+            }
+        }
 
     }
 }

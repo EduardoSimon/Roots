@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using BT;
+using BT.Core;
 using BT.Editor;
 using UnityEngine;
-using UnityEngine.SpatialTracking;
 
 namespace BT.Runtime
 {
@@ -27,14 +27,17 @@ namespace BT.Runtime
         [SerializeField] private bool startOnEnable = true;
         [SerializeField] private bool pauseOnDisabled = false;
         [SerializeField] private bool restartOnComplete = true;
-
+        [SerializeField] private BTLog.ELogLevel minimunLogLevel;
+        
+        
         private bool _hasCompletedOnce;
 //        private bool _isPaused;
         private BehaviorTree _tree;
-
-
+        
         private void Start()
         {
+            BTLog.LogLevel = minimunLogLevel;
+            
             _hasCompletedOnce = false;
 
             if (startOnEnable)
@@ -77,10 +80,16 @@ namespace BT.Runtime
             
             var status = _tree.Tick(this);
 
-            _hasCompletedOnce = true;
+            if(status != TaskStatus.Running)
+                _hasCompletedOnce = true;
 
-            BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status,
-                status != TaskStatus.Succeeded ? BTLog.ELogLevel.Error : BTLog.ELogLevel.Log);
+            if (status == TaskStatus.Running)
+                BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Warning);
+            else if(status == TaskStatus.Succeeded)
+                BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Succeded);
+            else
+                BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Error);
+
         }
 
         private void OnDisable()
@@ -89,6 +98,15 @@ namespace BT.Runtime
             
     //        _isPaused = true;
             BTLog.Log("The tree is paused.", BTLog.ELogLevel.Warning);
+        }
+
+        private void OnDestroy()
+        {
+            //reset all the tasks in the tree
+            foreach (var nodes in treeGraph.SavedNodes)
+            {
+                nodes.Task.Reset();
+            }
         }
 
         private void OnEnable()

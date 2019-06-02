@@ -9,8 +9,7 @@ namespace BT.Scripts
 
         public override void DrawVariableInspector(string label, Event current)
         {
-            base.DrawVariableInspector(label,current);
-            
+
             GUI.SetNextControlName("BoolVariable");
             EditorGUI.BeginChangeCheck();
             BoolVariable = GUILayout.Toggle(BoolVariable, "Is Logging an Error?");
@@ -18,7 +17,8 @@ namespace BT.Scripts
             {
                 GUI.FocusControl("BoolVariable");
             }
-
+            
+            base.DrawVariableInspector(label,current);
         }
     }
 }

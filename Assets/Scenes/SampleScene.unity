@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -175,7 +175,33 @@ MonoBehaviour:
     _keyValues: []
     _keys:
     - 3c009e68b1f80424e9734a106452fd24
+    - 768cdf4ff31ea224c8e7b05f2d4a318a
+    - 69b30001732ee3042a068fa7e315bf7e
+    - b040fac5ebaf48e42ac614da32c05c34
+    - e2693e751bd6a1e459a269b9c2a63389
+    - b3f3c2467e117d8439875d0eaffa9787
+    - 877e643ebbd5c994eb78e92afbed59ee
+    - a036442199c6fcd49a2eac3f1a504710
+    - 180e5c21d12b73d4a8c354f437b51863
+    - d3fa9de226634c34d860e4803acad30c
+    - 55ecbeae444dd254e9b049bad3a8cd79
+    - b06c34762e94b1342ad0ee9f7e36af54
+    - 98d0194579143a045ad8018411669f03
+    - c9b3b1b45753a8446835d5b5f6e019d4
     _values:
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 0}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 0}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
     - {fileID: 118884577}
 --- !u!4 &9522949
 Transform:
@@ -223,12 +249,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f31160f463622d4091cbb11d0ae1ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeGraph: {fileID: 11400000, guid: 885e771267e5ffe4bb47ab478e21123e, type: 2}
+  treeGraph: {fileID: 11400000, guid: 902eef31780973840a73b5252adb5b90, type: 2}
   behaviorTreeDescription: 
   updateType: 0
   startOnEnable: 1
   pauseOnDisabled: 0
   restartOnComplete: 1
+  minimunLogLevel: 0
 --- !u!65 &38728038
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -314,7 +341,7 @@ GameObject:
   - component: {fileID: 118884579}
   - component: {fileID: 118884578}
   m_Layer: 0
-  m_Name: Target
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

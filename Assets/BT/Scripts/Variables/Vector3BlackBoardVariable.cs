@@ -9,8 +9,6 @@ namespace BT.Scripts
         
         public override void DrawVariableInspector(string label, Event current)
         {
-            base.DrawVariableInspector(label, current);
-            
             GUI.SetNextControlName("Vector3Variable");
             EditorGUI.BeginChangeCheck();
             Vector3Variable = EditorGUILayout.Vector3Field(label,Vector3Variable);
@@ -19,6 +17,9 @@ namespace BT.Scripts
             {
                 GUI.FocusControl("Vector3Variable");
             }
+            
+            base.DrawVariableInspector(label, current);
+
         }
     }
 }

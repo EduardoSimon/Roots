@@ -13,7 +13,7 @@ namespace BT
 
         private void OnEnable()
         {
-            hideFlags = HideFlags.HideInHierarchy;
+            //hideFlags = HideFlags.HideInHierarchy;
         }
 
         protected virtual void OnInitialize() { }
@@ -23,7 +23,10 @@ namespace BT
             return TaskStatus.Invalid;
         }
 
-        protected virtual void OnTerminate(TaskStatus status) { }
+        protected virtual void OnTerminate(TaskStatus status)
+        {
+            status = TaskStatus.NonInitialized;
+        }
 
         public TaskStatus Tick(BehaviorTreeController treeContext)
         {
@@ -50,8 +53,13 @@ namespace BT
         public void Abort()
         {
             Status = TaskStatus.Aborted;
-        } 
-       
+        }
+
+        public void Reset()
+        {
+            controller = null;
+            Status = TaskStatus.NonInitialized;
+        }
     }
 
 }

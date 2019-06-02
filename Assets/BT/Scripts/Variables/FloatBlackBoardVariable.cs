@@ -5,7 +5,7 @@ namespace BT.Scripts
 {
     public class FloatBlackBoardVariable : BlackBoardVariable
     {
-        public float FloatVariable;
+        public float FloatVariable = 5f;
 
         public override void SaveBlackboardVariable()
         {
@@ -14,7 +14,6 @@ namespace BT.Scripts
 
         public override void DrawVariableInspector(string label, Event current)
         {
-            base.DrawVariableInspector(label, current);
             
             GUI.SetNextControlName("FloatVariable");
             EditorGUI.BeginChangeCheck();
@@ -24,7 +23,8 @@ namespace BT.Scripts
             {
                 GUI.FocusControl("FloatVariable");
             }
-
+            
+            base.DrawVariableInspector(label, current);
         }
     }
 }

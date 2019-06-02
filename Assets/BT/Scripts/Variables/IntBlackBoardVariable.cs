@@ -9,7 +9,6 @@ namespace BT.Scripts
         
         public override void DrawVariableInspector(string label, Event current)
         {
-            base.DrawVariableInspector(label, current);
             
             GUI.SetNextControlName("IntVariable");
             EditorGUI.BeginChangeCheck();
@@ -19,6 +18,8 @@ namespace BT.Scripts
             {
                 GUI.FocusControl("IntVariable");
             }
+
+            base.DrawVariableInspector(label, current);
 
         }
     }

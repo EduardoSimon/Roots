@@ -67,7 +67,6 @@ namespace BT.Scripts
 
         public override void DrawVariableInspector(string label, Event current)
         {
-            base.DrawVariableInspector(label, current);
 
             GUI.SetNextControlName("ObjectVariable");
             EditorGUI.BeginChangeCheck();
@@ -78,7 +77,11 @@ namespace BT.Scripts
             {
                 GUI.FocusControl("ObjectVariable");
             }
+            
+            base.DrawVariableInspector(label, current);
+
         }
+        
         private void RetrieveVariable(bool willCreateManagerIfNotFound)
         {
             BehaviorTreeManager manager = FindObjectOfType<BehaviorTreeManager>();

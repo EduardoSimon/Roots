@@ -9,7 +9,8 @@ namespace BT.Editor
             Verbose = 0,
             Log = 1,
             Warning = 2,
-            Error = 3
+            Error = 3,
+            Succeded = 4,
         }
 
         private static ELogLevel _logLevel = ELogLevel.Verbose;
@@ -42,6 +43,9 @@ namespace BT.Editor
                         break;
                     case ELogLevel.Error:
                         Debug.LogError("<color=red><b>BT ERROR:</b></color> " + message);
+                        break;
+                    case ELogLevel.Succeded:
+                        Debug.Log("<color=green><b>BT RUNNING:</b></color> " + message);
                         break;
                 }
             }

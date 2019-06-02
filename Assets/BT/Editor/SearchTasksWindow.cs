@@ -42,7 +42,7 @@ namespace Editor
                 myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(ATask))))
             {
                 var searchMenuAttributes =
-                    (SearchMenuAttribute[]) type.GetCustomAttributes(typeof(SearchMenuAttribute), false);
+                    (SearchTaskPathAttribute[]) type.GetCustomAttributes(typeof(SearchTaskPathAttribute), false);
 
                 var customNodeDrawerAttributes =
                     (CustomNodeDrawerAttribute[]) type.GetCustomAttributes(typeof(CustomNodeDrawerAttribute), false);

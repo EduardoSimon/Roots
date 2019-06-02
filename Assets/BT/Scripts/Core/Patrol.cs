@@ -2,7 +2,7 @@
 
 namespace BT
 {
-    [SearchMenu("Action/Patrol")]
+    [SearchTaskPath("Action/Patrol")]
     [CustomNodeDrawer(typeof(AAction))]
     public class Patrol : AAction
     {

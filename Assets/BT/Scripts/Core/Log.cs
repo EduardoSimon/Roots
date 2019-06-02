@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BT.Core
 {
     [CustomNodeDrawer(typeof(LogNode))]
-    [SearchMenu("Action/Log")]
+    [SearchTaskPath("Action/Log")]
     [TaskTooltip("HI IM A LOG")]
     public class Log : AAction
     {
