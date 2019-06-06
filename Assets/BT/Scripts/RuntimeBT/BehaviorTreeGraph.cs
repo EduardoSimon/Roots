@@ -64,13 +64,29 @@ namespace BT.Editor
                     }
                     else
                     {
-                        if (compositeTask.Children.Count < node.children.Count)
+                        compositeTask.Children.Clear();
+                        if (node.children.Count > 0)
                         {
+                            List<BaseNode> unorderedNodes = new List<BaseNode>(node.children);
+
                             for (int i = 0; i < node.children.Count; i++)
                             {
-                                compositeTask.AddChild(node.children[i].Task);
+                                int index = 0;
+                                float xmin = int.MaxValue;
+                                for (int j = 0; j < unorderedNodes.Count; j++)
+                                {
+                                    if (unorderedNodes[j].windowRect.xMin < xmin)
+                                    {
+                                        index = j;
+                                        xmin = unorderedNodes[j].windowRect.xMin;
+                                    }
+                                }
+                                
+                                compositeTask.AddChild(unorderedNodes[index].Task);
+                                unorderedNodes.RemoveAt(index);
                                 ConstructTree(node.children[i]);
-                            }                           
+                            }
+                          
                         }
                     }
                 }

@@ -20,15 +20,10 @@ namespace BT.Scripts
             this.guid = guid ?? GUID.Generate().ToString();
         }
 
-        public virtual void DrawVariableInspector(string label, Event current)
+        public virtual Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            if (current.type != EventType.MouseDown || GUI.GetNameOfFocusedControl() != "") return;
-
-            if (!GUILayoutUtility.GetLastRect().Contains(current.mousePosition))
-            {
-                GUI.FocusControl(null);
-                Event.current.Use();
-            }
+            id++;
+            return new Rect(0, 0, 0, 0);
         }
 
     }

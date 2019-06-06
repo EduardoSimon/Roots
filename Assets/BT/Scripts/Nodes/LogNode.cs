@@ -31,15 +31,15 @@ namespace BT.Scripts.Drawers
         /// <param name="isRootView"></param>
         /// <param name="isParentView"></param>
         /// <param name="OnSocketClicked"></param>
-        public override void Init(string guid,bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
+        public override void Init(string guid, bool isEntryPoint, bool isRootView, bool isParentView,
+            Action<NodeSocket> OnSocketClicked)
         {
             base.Init(guid, isEntryPoint, isRootView, isParentView, OnSocketClicked);
 
             if (_texture2D == null)
                 _texture2D = Resources.Load<Texture2D>("log_icon");
-
         }
-        
+
         /// <summary>
         /// The node drawing function. Generally you would just draw a texture on top of the node, but its fully customizable.
         /// </summary>
@@ -60,17 +60,6 @@ namespace BT.Scripts.Drawers
         }
 
         /// <summary>
-        /// How we want to draw the inspector for this specific class, which field and with wich label.
-        /// </summary>
-        /// <param name="current"></param>
-        public override void DrawInspector(Event current)
-        {
-            base.DrawInspector(current);
-            message.DrawVariableInspector("Log Message",Event.current);
-            isLogError.DrawVariableInspector("Is Logging an error?",current);
-        }
-
-        /// <summary>
         /// We need to override this method in order to pass the variables info to the Task class.
         /// </summary>
         public override void SaveNodeInfo()
@@ -82,6 +71,5 @@ namespace BT.Scripts.Drawers
             logTask.message = message.StringVariable;
             logTask.isLogError = isLogError.BoolVariable;
         }
-
     }
 }

@@ -8,20 +8,28 @@ namespace BT.Scripts
     {
         [SerializeField] public string StringVariable;
         
-        public override void DrawVariableInspector(string label, Event current)
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            
-            GUI.SetNextControlName("StringVariable");
+
+            base.DrawVariableInspector(rect,label,ref id);
             
             EditorGUI.BeginChangeCheck();
-            StringVariable = EditorGUILayout.TextField( label,StringVariable);
-            if (EditorGUI.EndChangeCheck())
+            GUI.SetNextControlName("Variable"  + id);
+            StringVariable = EditorGUI.TextField( rect,label,StringVariable);
+            
+            
+            if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
-                GUI.FocusControl("StringVariable");
+                GUI.FocusControl(null);
+                
+            }
+            else if(Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
             }
 
-            base.DrawVariableInspector(label,current);
-
+            return rect;
+            
         }
     }
 }

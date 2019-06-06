@@ -7,18 +7,23 @@ namespace BT.Scripts
     {
         public bool BoolVariable;
 
-        public override void DrawVariableInspector(string label, Event current)
+        public override Rect DrawVariableInspector(Rect rect,string label, ref int id)
         {
-
-            GUI.SetNextControlName("BoolVariable");
-            EditorGUI.BeginChangeCheck();
-            BoolVariable = GUILayout.Toggle(BoolVariable, "Is Logging an Error?");
-            if (EditorGUI.EndChangeCheck())
-            {
-                GUI.FocusControl("BoolVariable");
-            }
+            base.DrawVariableInspector(rect,label, ref id);
+            GUI.SetNextControlName("Variable" + id);
+            BoolVariable = GUI.Toggle(rect,BoolVariable,label);
             
-            base.DrawVariableInspector(label,current);
+            if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
+            {
+               GUI.FocusControl(null);
+                
+            }
+            else if(Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
+
+            return rect;
         }
     }
 }

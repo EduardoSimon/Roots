@@ -7,18 +7,27 @@ namespace BT.Scripts
     {
         public Vector3 Vector3Variable;
         
-        public override void DrawVariableInspector(string label, Event current)
+        
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            GUI.SetNextControlName("Vector3Variable");
-            EditorGUI.BeginChangeCheck();
-            Vector3Variable = EditorGUILayout.Vector3Field(label,Vector3Variable);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                GUI.FocusControl("Vector3Variable");
-            }
+            base.DrawVariableInspector(rect,label,ref id);
             
-            base.DrawVariableInspector(label, current);
+            EditorGUI.BeginChangeCheck();
+            GUI.SetNextControlName("Variable"  + id);
+            Vector3Variable = EditorGUI.Vector3Field( rect,label,Vector3Variable);
+            
+            
+            if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl(null);
+                
+            }
+            else if(Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
+
+            return rect;
 
         }
     }

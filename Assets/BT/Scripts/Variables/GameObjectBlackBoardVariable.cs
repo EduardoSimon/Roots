@@ -65,23 +65,26 @@ namespace BT.Scripts
             }
         }
 
-        public override void DrawVariableInspector(string label, Event current)
-        {
 
-            GUI.SetNextControlName("ObjectVariable");
-            EditorGUI.BeginChangeCheck();
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
+        {
+            base.DrawVariableInspector(rect, label, ref id);
+            GUI.SetNextControlName("Variable" + id);
             gameObjectVariable =
                 EditorGUILayout.ObjectField(label, gameObjectVariable, typeof(GameObject), true) as GameObject;
 
-            if (EditorGUI.EndChangeCheck())
+            if (Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
-                GUI.FocusControl("ObjectVariable");
+                GUI.FocusControl(null);
             }
-            
-            base.DrawVariableInspector(label, current);
+            else if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
 
+            return rect;
         }
-        
+
         private void RetrieveVariable(bool willCreateManagerIfNotFound)
         {
             BehaviorTreeManager manager = FindObjectOfType<BehaviorTreeManager>();

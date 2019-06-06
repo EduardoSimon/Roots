@@ -237,6 +237,12 @@ namespace BT
             }
         }
 
+        private void OnInspectorUpdate()
+        {
+            if(EditorApplication.isPlaying)
+                Repaint();
+        }
+
         private void ConvertIDsToObjects()
         {
             if (GraphInstanceID != 0)
@@ -392,7 +398,7 @@ namespace BT
             else
             {
                 GUILayout.Label("Selected Node: " + _selectedNode.windowTitle, _skin.GetStyle("H2"));
-                _selectedNode.DrawInspector(Event.current);
+                _selectedNode.DrawInspector(inspectorRect);
             }
 
             GUILayout.EndVertical();
@@ -557,15 +563,27 @@ namespace BT
             if (entry != null)
             {
                 entry.windowRect = GUI.Window(-1, entry.windowRect, (id) => entry.DrawWindow(id),
-                    entry.windowTitle);
+                    entry.windowTitle,_skin.GetStyle("window"));
 
                 entry.DrawSockets();
             }
-
+            
             for (var index = 0; index < nodes.Count; index++)
             {
+                GUI.contentColor = Color.white;
+                
+                if (EditorApplication.isPlaying)
+                {
+                    if(nodes[index].Task.Status == TaskStatus.Succeeded)
+                        GUI.backgroundColor = Color.green;
+                    else if (nodes[index].Task.Status == TaskStatus.Failed)
+                        GUI.backgroundColor = Color.red;
+                    else if(nodes[index].Task.Status == TaskStatus.Running)
+                        GUI.backgroundColor = Color.yellow;
+                }
+                
                 nodes[index].DrawSockets();
-
+                
                 nodes[index].windowRect = GUI.Window(index, nodes[index].windowRect, DrawNodeWindowCallback,
                     nodes[index].windowTitle);
             }
@@ -611,12 +629,32 @@ namespace BT
             _drag = Vector2.zero;
             switch (e.type)
             {
+                case EventType.MouseDown:
+                    if (e.button == 0)
+                    {
+                        if (position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
+                        {
+                            UDebug.Log("Contained");
+                            Focus();
+
+                        }
+                        else
+                        {
+                            UDebug.Log("Not Contained");
+
+                        }
+                        
+                    }
+                    break;
                 case EventType.MouseDrag:
                     if (e.button == 0)
                     {
-                        if (DragWindowIfSelected(e)) return;
+                        if (_zoomArea.Contains(e.mousePosition))
+                        {
+                            if (DragWindowIfSelected(e)) return;
 
-                        DragEverything(e);
+                            DragEverything(e);
+                        }
                     }
 
                     break;
@@ -627,9 +665,13 @@ namespace BT
 
                 case EventType.KeyUp:
 
-                    if (e.keyCode == KeyCode.Space && position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)) &&
+                    if (e.keyCode == KeyCode.Space && focusedWindow == this &&
                         GUI.GetNameOfFocusedControl() == "")
+                    {
+                        e.Use();
                         ShowSearchTaskWindow(e);
+                    }
+                    
                     else if (e.keyCode == KeyCode.Escape && NodeSocket.CurrentClickedSocket != null)
                         NodeSocket.CurrentClickedSocket = null;
                     else if (e.keyCode == KeyCode.Escape)

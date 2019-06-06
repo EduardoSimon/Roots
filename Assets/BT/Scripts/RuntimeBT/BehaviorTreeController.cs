@@ -33,7 +33,15 @@ namespace BT.Runtime
         private bool _hasCompletedOnce;
 //        private bool _isPaused;
         private BehaviorTree _tree;
-        
+
+        private void OnValidate()
+        {
+            if (treeGraph == null)
+            {
+                BTLog.Log("There is a controller without a Behavior graph in the scene.", BTLog.ELogLevel.Warning);
+            }
+        }
+
         private void Start()
         {
             BTLog.LogLevel = minimunLogLevel;
@@ -47,7 +55,10 @@ namespace BT.Runtime
         private void Init()
         {
             if (treeGraph != null)
+            {
                 _tree = treeGraph._tree;
+                treeGraph.root.task.controller = this;
+            }
         }
 
         private void Update()
