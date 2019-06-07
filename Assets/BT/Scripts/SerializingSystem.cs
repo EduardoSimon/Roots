@@ -20,7 +20,7 @@ namespace BT.Scripts
 
                 foreach (var nodeView in editorNodes)
                 {
-                    nodeView.SaveNodeInfo();
+                    nodeView.SaveNodeData();
                     currentGraph.SavedNodes.Add(nodeView);
 //                    EditorFix.SetObjectDirty(nodeView);
                 }

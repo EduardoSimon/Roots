@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 namespace BT.Editor
 {
     [CreateAssetMenu(menuName = "BT/Behavior Tree Graph")]
-    public class BehaviorTreeGraph : ScriptableObject
+    public class  BehaviorTreeGraph : ScriptableObject
     {
         public string Name;
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();

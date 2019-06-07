@@ -1,10 +1,8 @@
+using BT.Scripts.Nodes;
+
 namespace BT.Editor
 {
-    public class PatrolNode : BaseNode
+    public class PatrolNode : LeafNode
     {
-        public override void DrawWindow(int id)
-        {
-            base.DrawWindow(id);
-        }
     }
 }

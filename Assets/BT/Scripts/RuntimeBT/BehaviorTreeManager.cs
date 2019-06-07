@@ -11,24 +11,43 @@ namespace BT.Runtime
     [HelpURL("https://www.github.com/EduardoSimon")]
     public class BehaviorTreeManager : MonoBehaviour
     {
+        [System.Serializable]
+        public enum ETickMode
+        {
+            CPUCycles,
+            Milliseconds,
+            UnityTick,
+            Manual
+        }
+
+        public static BehaviorTreeController currentTickingController;
         public static BehaviorTreeManager Instance = null;
+
+        public ETickMode TickMode = ETickMode.UnityTick;
+        
+        [Tooltip("The update frequency of the tree in milliseconds.")]
+        public float updateFreq = 5;
         
         [HideInInspector] public ReferenceDictionary references;
+        public List<BehaviorTreeController> _enabledTrees;
         
         private BehaviorTreeController[] _behaviorTreeControllers;
+        private float timer = 0f;
+        
 
         private void OnEnable()
         {
-            if(references == null)
+            _enabledTrees = new List<BehaviorTreeController>();
+
+            if (references == null)
                 references = new ReferenceDictionary();
-                
         }
 
         private void Awake()
         {
             if (Instance == null)
                 Instance = this;
-            else if(Instance != null && Instance != this)
+            else if (Instance != null && Instance != this)
                 Destroy(this.gameObject);
         }
 
@@ -36,23 +55,64 @@ namespace BT.Runtime
         {
             _behaviorTreeControllers = FindObjectsOfType<BehaviorTreeController>();
 
-            for (int i = 0; i < _behaviorTreeControllers.Length; i++)
+            foreach (var controller in _behaviorTreeControllers)
             {
-                /*
-                if (!_behaviorTreeControllers[i].HasRoot)
+                if (controller.startOnEnable)
+                    controller.Init();
+            }
+        }
+
+        private void Update()
+        {
+            timer += Time.deltaTime;
+            
+            if (TickMode == ETickMode.UnityTick)
+            {
+                foreach (var tree in _enabledTrees)
                 {
-                    Debug.Log("There is no root in the BT controlled attached.", _behaviorTreeControllers[i].gameObject);
+                    if (tree.updateType == BehaviorTreeController.EUpdateType.Update)
+                        tree.TickTree();
                 }
-                else
+            }
+            else if (TickMode == ETickMode.Milliseconds)
+            {
+                if (timer > updateFreq / 1000)
                 {
-                    _behaviorTreeControllers[i].Init();
-                }*/
+                    timer = 0f;
+                    
+                    foreach (var tree in _enabledTrees)
+                    {
+                        if (tree.updateType == BehaviorTreeController.EUpdateType.Update)
+                        {
+                            tree.TickTree();
+                            Debug.Log("Tick at " + Time.time);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void LateUpdate()
+        {
+            foreach (var tree in _enabledTrees)
+            {
+                if (tree.updateType == BehaviorTreeController.EUpdateType.LateUpdate)
+                    tree.TickTree();
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            foreach (var tree in _enabledTrees)
+            {
+                if (tree.updateType == BehaviorTreeController.EUpdateType.FixedUpdate)
+                    tree.TickTree();
             }
         }
 
         [Serializable]
-        public class ReferenceDictionary : SerializableDictionaryBase<string, GameObject>{}
+        public class ReferenceDictionary : SerializableDictionaryBase<string, GameObject>
+        {
+        }
     }
-  
-
 }

@@ -60,8 +60,6 @@ namespace BT.Editor
             else
                 instance.Init(null, false, editor.Nodes.Count == 0 ? true : false, false, OnNodeSocketClicked);
 
-            BTLog.Log(instance.IsRootView);
-
             instance.CopyVariables(null);
             return instance;
         }

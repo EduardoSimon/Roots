@@ -149,6 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e22698663300662459141cd10c4b4f26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TickMode: 1
+  updateFreq: 100
   references:
     reorderableList:
       canAdd: 0
@@ -196,6 +198,25 @@ MonoBehaviour:
     - f87af4093310d4cc1afe43a0ecc8d85a
     - 7271b5b36e41449d3aae2545e3205096
     - f5431bf659a7843d7b5c342f23897587
+    - 2a0862993dfbf443ea312076a15105d5
+    - 91dbd6c7fce954ddb9a8181687ce63d0
+    - a9c98d1e214184db3bd655b4997dc5cb
+    - 1c26229a63d5846f19b59bb2e5ca12e3
+    - 400a84b7ba754491483dd4a59997b88e
+    - c9b8b0c8134014928be7e04bfebd2f7c
+    - 23f08897838044802b31bb1ff49daf83
+    - 81737c9de11da41b797532c209a914ae
+    - 5f4fbdddd3b9f4c168a80a7f47c7b6c6
+    - 0030364d91b134d6ab848af8a6089605
+    - f65923e496f4042d9b286099e55c7ca4
+    - c7a88a53de8454942b9cbcd64b3455a0
+    - dd60007720f414d4e8127cec20ee331b
+    - 18104376f30ec4c468c1728aa0a854ac
+    - de5d0841670fa41eaac1d2cbf08ef315
+    - 081d2e5009c144d669e61f0f8e25cf9f
+    - afe51f4441e8f42cba00a096ab08356c
+    - fb534454cce544b73bf1e0f625ae4954
+    - b9c042c7fb8c54590be109332b2a945d
     _values:
     - {fileID: 118884577}
     - {fileID: 118884577}
@@ -219,6 +240,26 @@ MonoBehaviour:
     - {fileID: 118884577}
     - {fileID: 118884577}
     - {fileID: 118884577}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+  _enabledTrees: []
 --- !u!4 &9522949
 Transform:
   m_ObjectHideFlags: 0
@@ -265,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f31160f463622d4091cbb11d0ae1ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeGraph: {fileID: 11400000, guid: 06fd45e29a22d473381ef5b96ed6eec0, type: 2}
+  treeGraph: {fileID: 11400000, guid: beab28a8545544a54951a5ed5dfde408, type: 2}
   behaviorTreeDescription: 
   updateType: 0
   startOnEnable: 1
@@ -356,6 +397,7 @@ GameObject:
   - component: {fileID: 118884580}
   - component: {fileID: 118884579}
   - component: {fileID: 118884578}
+  - component: {fileID: 118884582}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -435,6 +477,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &118884582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118884577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4faff7edceb4a4b9ca8315a46c2438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 7
 --- !u!1 &947603244
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,13 +566,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947603244}
-  m_LocalRotation: {x: -0.0011264496, y: 0.9067362, z: -0.4216897, w: -0.0024524566}
-  m_LocalPosition: {x: -1.3450923, y: 16.653805, z: 18.774664}
+  m_LocalRotation: {x: 0.42169264, y: -0.000007343598, z: 0.000015790472, w: 0.9067389}
+  m_LocalPosition: {x: -1.3450923, y: 16.653805, z: -20.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 49.883003, y: 0, z: 0.002}
 --- !u!1 &1058044845
 GameObject:
   m_ObjectHideFlags: 0

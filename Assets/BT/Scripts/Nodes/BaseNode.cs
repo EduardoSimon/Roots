@@ -5,6 +5,7 @@ using System.Reflection;
 using BT.Editor;
 using BT.Scripts;
 using BT.Scripts.Drawers;
+using BT.Scripts.Nodes;
 using UnityEditor;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
@@ -12,7 +13,7 @@ using Debug = System.Diagnostics.Debug;
 namespace BT
 {
     [SerializeField]
-    public class BaseNode : ScriptableObject
+    public abstract class BaseNode : ScriptableObject, ISavableNode
     {
         public class InspectorFieldData
         {
@@ -35,7 +36,6 @@ namespace BT
         public NodeSocket entrySocket;
         public NodeSocket exitSocket;
 
-        public ATask task;
         public Rect windowRect;
         public string windowTitle;
 
@@ -58,12 +58,7 @@ namespace BT
 
         //serialize this
         public List<BaseNode> children;
-
-        public virtual ATask Task
-        {
-            get { return task; }
-            set { task = value; }
-        }
+        protected ATask _task;
 
         public static event Action<BaseNode> OnNodeRightClicked;
         public event Action<BaseNode> OnClickedNode;
@@ -108,13 +103,19 @@ namespace BT
                         NodeSocket.NodeSocketType.In, this, OnSocketClicked);
                 }
 
-                windowTitle = task.GetType().Name;
+                windowTitle = Task.GetType().Name;
             }
 
             this.isRootView = isRootView;
             this.isParentView = isParentView;
             this.isEntryPoint = isEntryPoint;
+            
+            inspectorVariables = new List<InspectorFieldData>();
+
+            if(variables.Count > 0)
+                GetInspectorVariables();
         }
+
 
         public virtual void DrawWindow(int id)
         {
@@ -144,30 +145,35 @@ namespace BT
         public virtual void DrawInspector(Rect inspectorRect)
         {
             GUILayout.Label(windowTitle);
-            VariableId = 0;
 
-            Rect? previousRect = null;
-            foreach (var inspectorField in inspectorVariables)
+            if (inspectorVariables.Count > 0)
             {
-                if (previousRect == null)
-                    previousRect = inspectorField.variable.DrawVariableInspector(
-                        new Rect(inspectorRect.x + 10, inspectorRect.y + 20, inspectorRect.width - 20,
-                            20), inspectorField.fieldName, ref VariableId);
-                else
-                    previousRect = inspectorField.variable.DrawVariableInspector(
-                        new Rect(inspectorRect.x + 10, previousRect.Value.y + 25, inspectorRect.width - 20,
-                            20), inspectorField.fieldName, ref VariableId);
+                VariableId = 0;
+
+                Rect? previousRect = null;
+                foreach (var inspectorField in inspectorVariables)
+                {
+                    if (previousRect == null)
+                        previousRect = inspectorField.variable.DrawVariableInspector(
+                            new Rect(inspectorRect.x + 10, inspectorRect.y + 20, inspectorRect.width - 20,
+                                20), inspectorField.fieldName, ref VariableId);
+                    else
+                        previousRect = inspectorField.variable.DrawVariableInspector(
+                            new Rect(inspectorRect.x + 10, previousRect.Value.y + 25, inspectorRect.width - 20,
+                                20), inspectorField.fieldName, ref VariableId);
+                }
+
+                if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Tab)
+                {
+                    GUI.FocusControl("Variable" + focusID);
+                    GUI.changed = true;
+                    focusID++;
+
+                    if (focusID > VariableId)
+                        focusID = 1;
+                }
             }
 
-            if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Tab)
-            {
-                GUI.FocusControl("Variable" + focusID);
-                GUI.changed = true;
-                focusID++;
-
-                if (focusID > VariableId)
-                    focusID = 1;
-            }
         }
 
         public void Drag(Vector2 delta)
@@ -207,6 +213,19 @@ namespace BT
 
             return false;
         }
+        private void GetInspectorVariables()
+        {
+            inspectorVariables = new List<InspectorFieldData>();
+
+            foreach (var field in this.GetType().GetFields()
+                .Where(info => info.FieldType.IsSubclassOf(typeof(BlackBoardVariable))))
+            {
+                BTLog.Log("Getting inspector data, field: " + field.Name + "of type: " + field.FieldType,
+                    BTLog.ELogLevel.Verbose);
+
+                inspectorVariables.Add(new InspectorFieldData(field.GetValue(this) as BlackBoardVariable, field.Name));
+            }
+        }
 
         public override int GetHashCode()
         {
@@ -218,10 +237,6 @@ namespace BT
             var node = other as BaseNode;
 
             return node != null && node.guid == guid;
-        }
-
-        public virtual void SaveNodeInfo()
-        {
         }
 
         public virtual void CopyVariables(List<BlackBoardVariable> previousVariables)
@@ -256,17 +271,16 @@ namespace BT
 
                 count++;
             }
-
-            inspectorVariables = new List<InspectorFieldData>();
-
-            foreach (var field in this.GetType().GetFields()
-                .Where(info => info.FieldType.IsSubclassOf(typeof(BlackBoardVariable))))
-            {
-                BTLog.Log("Getting inspector data, field: " + field.Name + "of type: " + field.FieldType,
-                    BTLog.ELogLevel.Verbose);
-
-                inspectorVariables.Add(new InspectorFieldData(field.GetValue(this) as BlackBoardVariable, field.Name));
-            }
+            
+            GetInspectorVariables();
         }
+
+        public virtual ATask Task
+        {
+            get => _task;
+            set => _task = value;
+        }
+
+        public abstract void SaveNodeData();
     }
 }

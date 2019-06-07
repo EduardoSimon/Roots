@@ -1,6 +1,5 @@
 namespace BT
 {
-    [CustomNodeDrawer(typeof(Action))]
     public abstract class AAction : ATask
     {
         public BlackBoard board;

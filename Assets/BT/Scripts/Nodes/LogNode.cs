@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using BT.Core;
 using BT.Editor;
+using BT.Scripts.Nodes;
 using UnityEditor;
 using UnityEngine;
 
 namespace BT.Scripts.Drawers
 {
-    public class LogNode : BaseNode
+    public class LogNode : LeafNode
     {
         private Texture2D _texture2D;
         [SerializeField] public BoolBlackBoardVariable isLogError;
         [SerializeField] public StringBlackBoardVariable message;
 
 
-        public override ATask Task
+        public ATask Task
         {
-            get => task as Log;
-            set => task = (Log) value;
+            get => _task as Log;
+            set => _task = (Log) value;
         }
 
         /// <summary>
@@ -50,23 +51,15 @@ namespace BT.Scripts.Drawers
 
             GUI.DrawTexture(new Rect(20, 20, BTConstants.kNodeWidht - 30, BTConstants.kNodeHeight - 30), _texture2D);
         }
-
-        /// <summary>
-        /// We can override how sockets are drawn.
-        /// </summary>
-        public override void DrawSockets()
-        {
-            entrySocket.Draw();
-        }
-
+        
         /// <summary>
         /// We need to override this method in order to pass the variables info to the Task class.
         /// </summary>
-        public override void SaveNodeInfo()
+        public void SaveNodeData()
         {
-            base.SaveNodeInfo();
+            base.SaveNodeData();
 
-            var logTask = task as Log;
+            var logTask = _task as Log;
 
             logTask.message = message.StringVariable;
             logTask.isLogError = isLogError.BoolVariable;

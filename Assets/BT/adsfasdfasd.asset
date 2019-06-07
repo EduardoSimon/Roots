@@ -1,0 +1,418 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8433897579918298937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b378b15cbdab4c0ca5e0776d325332b5, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  entrySocket: {fileID: -4327188387276859252}
+  exitSocket: {fileID: 2509167538408764063}
+  windowRect:
+    serializedVersion: 2
+    x: 372.33334
+    y: 214.33331
+    width: 100
+    height: 100
+  windowTitle: Sequence
+  variables: []
+  isParentView: 1
+  isRootView: 1
+  isSelected: 0
+  isEntryPoint: 0
+  guid: bdd5f154-81df-4561-803c-992e2fe2f3e5
+  children:
+  - {fileID: 5306254852920052476}
+  - {fileID: 6927648279498430531}
+--- !u!114 &-7887394693381694535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  node: {fileID: 6927648279498430531}
+  guid: b9c042c7fb8c54590be109332b2a945d
+  gameObjectVariable: {fileID: 0}
+--- !u!114 &-6721375029415791340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab2c1ae84454c0faff14da614d3c53d, type: 3}
+  m_Name: Seek
+  m_EditorClassIdentifier: 
+  Status: 3
+  controller: {fileID: 0}
+  board: {fileID: 0}
+  target: {fileID: 0}
+  speed: 5
+--- !u!114 &-6389875660822533511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5795ca095464c13aa0f4e4ff601c7d6, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  Status: 3
+  controller: {fileID: 0}
+  _children:
+  - {fileID: 3790051250753034078}
+  - {fileID: -6721375029415791340}
+--- !u!114 &-5763767213212119006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 0
+  StartSocket: {fileID: 2509167538408764063}
+  EndSocket: {fileID: -1325356370453427981}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &-4358591229356058656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 0
+  StartSocket: {fileID: 2509167538408764063}
+  EndSocket: {fileID: 8475713961618992184}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &-4327188387276859252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: SequenceNode entrySocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 384.83334
+    y: 203.33331
+    width: 80
+    height: 16
+  SocketType: 0
+  Node: {fileID: -8433897579918298937}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &-3073952593679620214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b1483f50954cfcaf4000b89732c1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  node: {fileID: 6927648279498430531}
+  guid: eca9f4a1f28214a9f8c8c2171bfdf192
+  FloatVariable: 5
+--- !u!114 &-1325356370453427981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: IsTargetInRangeNode entrySocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 248.83344
+    y: 389.9999
+    width: 80
+    height: 16
+  SocketType: 0
+  Node: {fileID: 5306254852920052476}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &-640784118613844911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  node: {fileID: 5306254852920052476}
+  guid: afe51f4441e8f42cba00a096ab08356c
+  gameObjectVariable: {fileID: 0}
+--- !u!114 &-158076434171074319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 1
+  StartSocket: {fileID: 7641422393403930934}
+  EndSocket: {fileID: -4327188387276859252}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb08b08fdab4a2d956d0784676a2c88, type: 3}
+  m_Name: adsfasdfasd
+  m_EditorClassIdentifier: 
+  Name: 
+  SavedConnections:
+  - {fileID: -5763767213212119006}
+  - {fileID: -4358591229356058656}
+  SavedNodes:
+  - {fileID: -8433897579918298937}
+  - {fileID: 5306254852920052476}
+  - {fileID: 6927648279498430531}
+  entryConnection: {fileID: -158076434171074319}
+  root: {fileID: -8433897579918298937}
+  _tree:
+    rootNode: {fileID: -6389875660822533511}
+  EntryNode: {fileID: 4786703129963435210}
+--- !u!114 &2509167538408764063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: SequenceNode exitSocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 384.83334
+    y: 309.3333
+    width: 80
+    height: 16
+  SocketType: 1
+  Node: {fileID: -8433897579918298937}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &2695780520021706885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b1483f50954cfcaf4000b89732c1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  node: {fileID: 5306254852920052476}
+  guid: df47f19fb8d2f41a38d133772aa41a38
+  FloatVariable: 5
+--- !u!114 &3790051250753034078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a9827c8511883468b8da6f8c007a28, type: 3}
+  m_Name: IsTargetInRange
+  m_EditorClassIdentifier: 
+  Status: 3
+  controller: {fileID: 0}
+  target: {fileID: 0}
+  distanceRange: 5
+--- !u!114 &4786703129963435210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9226d078b5408445a98c64bd52932368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entrySocket: {fileID: 0}
+  exitSocket: {fileID: 7641422393403930934}
+  windowRect:
+    serializedVersion: 2
+    x: 414.99997
+    y: -3.333331
+    width: 100
+    height: 100
+  windowTitle: Entry View
+  variables: []
+  isParentView: 0
+  isRootView: 0
+  isSelected: 0
+  isEntryPoint: 1
+  guid: f8d98d10-ad91-4acd-912b-858ff145717e
+  children:
+  - {fileID: -8433897579918298937}
+--- !u!114 &5306254852920052476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db2a7d59c901325498784e0941d111a0, type: 3}
+  m_Name: IsTargetInRangeNode
+  m_EditorClassIdentifier: 
+  entrySocket: {fileID: -1325356370453427981}
+  exitSocket: {fileID: 0}
+  windowRect:
+    serializedVersion: 2
+    x: 236.33344
+    y: 400.9999
+    width: 100
+    height: 100
+  windowTitle: IsTargetInRange
+  variables:
+  - {fileID: -640784118613844911}
+  - {fileID: 2695780520021706885}
+  isParentView: 0
+  isRootView: 0
+  isSelected: 0
+  isEntryPoint: 0
+  guid: ef4bdc83-f453-41c4-82af-f9eb890753af
+  children: []
+  target: {fileID: -640784118613844911}
+  distanceRange: {fileID: 2695780520021706885}
+--- !u!114 &6927648279498430531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433eb5370833494b9104c4f0ff17bdd1, type: 3}
+  m_Name: SeekNode
+  m_EditorClassIdentifier: 
+  entrySocket: {fileID: 8475713961618992184}
+  exitSocket: {fileID: 0}
+  windowRect:
+    serializedVersion: 2
+    x: 493.0002
+    y: 407.6668
+    width: 100
+    height: 100
+  windowTitle: Seek
+  variables:
+  - {fileID: -7887394693381694535}
+  - {fileID: -3073952593679620214}
+  isParentView: 0
+  isRootView: 0
+  isSelected: 0
+  isEntryPoint: 0
+  guid: 9b412862-ee4d-4fc1-a69b-2eb3b0147d65
+  children: []
+  target: {fileID: -7887394693381694535}
+  speed: {fileID: -3073952593679620214}
+--- !u!114 &7641422393403930934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: ' exitSocket'
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 427.49997
+    y: 91.66667
+    width: 80
+    height: 16
+  SocketType: 1
+  Node: {fileID: 4786703129963435210}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &8475713961618992184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: SeekNode entrySocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 505.5002
+    y: 396.6668
+    width: 80
+    height: 16
+  SocketType: 0
+  Node: {fileID: 6927648279498430531}
+  NodeGuid: 
+  IsHooked: 1

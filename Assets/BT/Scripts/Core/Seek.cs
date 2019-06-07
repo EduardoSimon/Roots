@@ -1,3 +1,4 @@
+using BT.Runtime;
 using BT.Scripts.Drawers;
 using UnityEngine;
 
@@ -17,33 +18,22 @@ namespace BT.Scripts.Core
         {
             base.OnInitialize();
             Debug.Log("Initialized Seek Action.");
-            _transform = controller.transform;
         }
 
         protected override TaskStatus Update()
         {
-            _transform = controller.transform;
-            var position = _transform.position;
+            var transform = BehaviorTreeManager.currentTickingController.transform;
+            var position = transform.position;
             Vector3 dir = target.position - position;
             position += speed * Time.deltaTime * dir.normalized;
-            _transform.position = position;
+            transform.position = position;
 
-
-            if (Vector3.Distance(_transform.position, target.position) < 1f)
+            if (Vector3.Distance(transform.position, target.position) < 1f)
                 return TaskStatus.Succeeded;
             else
             {
                 return TaskStatus.Running;
             }
-            Debug.Log("Chasing: " + target.gameObject.name);
-            return base.Update();
-        }
-
-        protected override void OnTerminate(TaskStatus taskStatus)
-        {
-            _transform = null;
-            base.OnTerminate(taskStatus);
-            //Debug.Log("Terminated Seek Action");
         }
     }
 }

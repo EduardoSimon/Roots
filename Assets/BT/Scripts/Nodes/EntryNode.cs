@@ -23,7 +23,12 @@ public class EntryNode : BaseNode
     
     public override void DrawSockets()
     {
-        exitSocket?.Draw();
-        exitSocket?.ProcessEvent(Event.current);
+        exitSocket.Draw();
+        exitSocket.ProcessEvent(Event.current);
+    }
+
+    public override void SaveNodeData()
+    {
+        
     }
 }

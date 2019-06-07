@@ -23,8 +23,8 @@ namespace BT.Runtime
         public BehaviorTreeGraph treeGraph;
 
         [TextArea] [SerializeField] private string behaviorTreeDescription;
-        [SerializeField] private EUpdateType updateType;
-        [SerializeField] private bool startOnEnable = true;
+        [SerializeField] public EUpdateType updateType;
+        [SerializeField] public bool startOnEnable = true;
         [SerializeField] private bool pauseOnDisabled = false;
         [SerializeField] private bool restartOnComplete = true;
         [SerializeField] private BTLog.ELogLevel minimunLogLevel;
@@ -47,39 +47,22 @@ namespace BT.Runtime
             BTLog.LogLevel = minimunLogLevel;
             
             _hasCompletedOnce = false;
-
-            if (startOnEnable)
-                Init();
         }
 
-        private void Init()
+        public void Init()
         {
             if (treeGraph != null)
             {
                 _tree = treeGraph._tree;
-                treeGraph.root.task.controller = this;
+                BehaviorTreeManager.Instance._enabledTrees.Add(this);
+            }
+            else
+            {
+                BTLog.Log("The tree is null and couldn't be initialized.", BTLog.ELogLevel.Warning);
             }
         }
 
-        private void Update()
-        {
-            if (updateType == EUpdateType.Update)
-                TickTree();
-        }
-
-        private void LateUpdate()
-        {
-            if (updateType == EUpdateType.LateUpdate)
-                TickTree();
-        }
-
-        private void FixedUpdate()
-        {
-            if (updateType == EUpdateType.FixedUpdate)
-                TickTree();
-        }
-
-        private void TickTree()
+        public void TickTree()
         {
             if (_tree == null)
                 return;
@@ -88,6 +71,8 @@ namespace BT.Runtime
                 return;
 
             if (treeGraph == null) return;
+
+            BehaviorTreeManager.currentTickingController = this;
             
             var status = _tree.Tick(this);
 
@@ -106,8 +91,9 @@ namespace BT.Runtime
         private void OnDisable()
         {
             if (!pauseOnDisabled) return;
+            BehaviorTreeManager.Instance._enabledTrees.Remove(this);
             
-    //        _isPaused = true;
+            //        _isPaused = true;
             BTLog.Log("The tree is paused.", BTLog.ELogLevel.Warning);
         }
 
@@ -118,12 +104,6 @@ namespace BT.Runtime
             {
                 nodes.Task.Reset();
             }
-        }
-
-        private void OnEnable()
-        {
-//            if (pauseOnDisabled)
-  //              _isPaused = false;
         }
     }
 }

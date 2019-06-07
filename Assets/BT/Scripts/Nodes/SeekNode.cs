@@ -1,32 +1,28 @@
 using System;
 using System.Collections.Generic;
 using BT.Scripts.Core;
+using BT.Scripts.Nodes;
 using UnityEditor;
 using UnityEngine;
 
 namespace BT.Scripts.Drawers
 {
-    public class SeekNode : BaseNode
+    public class SeekNode : LeafNode
     {
         public GameObjectBlackBoardVariable target;
         public FloatBlackBoardVariable speed;
         
+        /*
         public override ATask Task
         {
-            get => (Seek) task;
-            set => task = (Seek) value;
-        }
+            get => (Seek) _task;
+            set => _task = (Seek) value;
+        }*/
 
-        public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
+        public override void SaveNodeData()
         {
-            base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked);
-        }
 
-        public override void SaveNodeInfo()
-        {
-            base.SaveNodeInfo();
-
-            Seek seekTask = task as Seek;
+            Seek seekTask = _task as Seek;
             
             if(target.gameObjectVariable != null)
                 seekTask.target = target.gameObjectVariable.transform;

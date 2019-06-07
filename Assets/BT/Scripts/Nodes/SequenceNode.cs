@@ -17,5 +17,10 @@ namespace BT
             base.DrawWindow(id);
             GUI.DrawTexture(new Rect(10,20, BTConstants.kNodeWidht - 30 , BTConstants.kNodeHeight - 30), icon);
         }
+
+        public override ATask Task { get; set; }
+        public override void SaveNodeData()
+        {
+        }
     }
 }
