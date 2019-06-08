@@ -17,22 +17,24 @@ namespace BT
     [System.Serializable]
     public class BehaviorTree
     {
-        [SerializeField]private ATask rootNode;
+        [SerializeField]private ATask rootTask;
 
-        public ATask RootNode => rootNode;
+        public ATask RootTask => rootTask;
 
-        public TaskStatus Tick(BehaviorTreeController treeContext)
+        public TaskStatus Tick()
         {
-            return RootNode.Tick(treeContext);
+            return RootTask.Tick();
         }
 
         public void AddRoot(ATask task)
         {
             if (task != null)
-                rootNode = task;
+                rootTask = task;
             else
                 throw new NoNullAllowedException();
         }
+        
+        
         
         
     }

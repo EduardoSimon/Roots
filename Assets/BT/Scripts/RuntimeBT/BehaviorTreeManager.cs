@@ -20,7 +20,7 @@ namespace BT.Runtime
             Manual
         }
 
-        public static BehaviorTreeController currentTickingController;
+        public BehaviorTreeController CurrentTickingController;
         public static BehaviorTreeManager Instance = null;
 
         public ETickMode TickMode = ETickMode.UnityTick;
@@ -33,7 +33,14 @@ namespace BT.Runtime
         
         private BehaviorTreeController[] _behaviorTreeControllers;
         private float timer = 0f;
-        
+        [SerializeField]private bool _isDebugMode;
+
+        public bool isDebugMode
+        {
+            get { return _isDebugMode; }
+            set { _isDebugMode = value; }
+        }
+
 
         private void OnEnable()
         {
@@ -85,7 +92,6 @@ namespace BT.Runtime
                         if (tree.updateType == BehaviorTreeController.EUpdateType.Update)
                         {
                             tree.TickTree();
-                            Debug.Log("Tick at " + Time.time);
                         }
                     }
                 }

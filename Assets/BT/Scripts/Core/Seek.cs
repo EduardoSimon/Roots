@@ -11,18 +11,16 @@ namespace BT.Scripts.Core
     {
         public Transform target;
         public float speed = 10f;
-
-        private Transform _transform = null;
         
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
-            base.OnInitialize();
             Debug.Log("Initialized Seek Action.");
+            base.OnFirstTick();
         }
 
         protected override TaskStatus Update()
         {
-            var transform = BehaviorTreeManager.currentTickingController.transform;
+            var transform = _manager.CurrentTickingController.transform;
             var position = transform.position;
             Vector3 dir = target.position - position;
             position += speed * Time.deltaTime * dir.normalized;

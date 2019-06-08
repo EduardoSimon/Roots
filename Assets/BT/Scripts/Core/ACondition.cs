@@ -1,6 +1,6 @@
 namespace BT
 {
-    public abstract class ACondition : ATask
+    public class ACondition : ATask
     {
         public enum ConditionCheckMode
         {
@@ -12,8 +12,9 @@ namespace BT
 
         protected readonly bool negateCondition = false;
 
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
+            base.OnFirstTick();
             Status = TaskStatus.Running;
         }
 
@@ -50,6 +51,9 @@ namespace BT
         {
         }
 
-        protected abstract bool isConditionSatisfied();
+        protected virtual bool isConditionSatisfied()
+        {
+            return false;
+        }
     }
 }

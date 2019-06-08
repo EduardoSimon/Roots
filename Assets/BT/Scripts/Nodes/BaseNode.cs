@@ -275,7 +275,7 @@ namespace BT
             GetInspectorVariables();
         }
 
-        public virtual ATask Task
+        public ATask Task
         {
             get => _task;
             set => _task = value;

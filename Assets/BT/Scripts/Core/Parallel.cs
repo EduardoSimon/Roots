@@ -16,6 +16,7 @@ namespace BT
 
         protected Policy _successPolicy;
 
+        //todo refactor this, cant have constructors  in scriptable objects
         public Parallel(Policy successPolicy, Policy failurePolicy)
         {
             _successPolicy = successPolicy;
@@ -26,7 +27,7 @@ namespace BT
 
         public List<ATask> Children { get; set; }
 
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
             Status = TaskStatus.Running;
         }
@@ -37,7 +38,7 @@ namespace BT
 
             for (var i = 0; i < Children.Count; i++)
             {
-                var childrenStatus = Children[i].Tick(controller);
+                var childrenStatus = Children[i].Tick();
 
                 if (childrenStatus == TaskStatus.Succeeded)
                 {
@@ -68,7 +69,7 @@ namespace BT
         {
             for (var i = 0; i < Children.Count; i++)
             {
-                var childrenStatus = Children[i].Tick(controller);
+                var childrenStatus = Children[i].Tick();
 
                 if (childrenStatus == TaskStatus.Running)
                     Children[i].Abort();

@@ -6,9 +6,9 @@ namespace BT
     [CustomNodeDrawer(typeof(AAction))]
     public class Patrol : AAction
     {
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
-            base.OnInitialize();
+            base.OnFirstTick();
             Debug.Log("Initialized Patrol Action");
         }
 

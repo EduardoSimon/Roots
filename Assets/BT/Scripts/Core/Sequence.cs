@@ -48,11 +48,6 @@ namespace BT
             Children.Clear();
         }
 
-        protected override void OnInitialize()
-        {
-            //todo implement
-        }
-
         protected override TaskStatus Update()
         {
             //if the sequence is empty we return a failed result
@@ -61,7 +56,7 @@ namespace BT
 
             for (var i = 0; i < Children.Count; i++)
             {
-                var status = Children[i].Tick(controller);
+                var status = Children[i].Tick();
 
                 if (status != TaskStatus.Succeeded)
                 {

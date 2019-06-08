@@ -21,7 +21,8 @@ namespace BT.Scripts.Drawers
 
         public override void SaveNodeData()
         {
-
+            base.SaveNodeData();
+            
             Seek seekTask = _task as Seek;
             
             if(target.gameObjectVariable != null)

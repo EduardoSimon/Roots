@@ -14,14 +14,10 @@ public class IsTargetInRangeNode : LeafNode
     public GameObjectBlackBoardVariable target;
     public FloatBlackBoardVariable distanceRange;
 
-   /* public override ATask Task
-    {
-        get { return (IsTargetInRange) _task;}
-        set { _task = (IsTargetInRange) value; }
-    }
-    */
     public override void SaveNodeData()
     {
+        base.SaveNodeData();
+        
         var isTargetInRangeTask = _task as IsTargetInRange;
 
         if(target.gameObjectVariable.transform == null) //todo stop tree compilation with error code

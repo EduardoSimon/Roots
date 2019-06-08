@@ -35,7 +35,7 @@ namespace BT
             Children.Clear();
         }
 
-        protected override void OnInitialize() { }
+        protected override void OnFirstTick() { }
 
         protected override TaskStatus Update()
         {
@@ -44,7 +44,7 @@ namespace BT
 
             for (var i = 0; i < Children.Count; i++)
             {
-                var status = Children[i].Tick(controller);
+                var status = Children[i].Tick();
 
                 if (status != TaskStatus.Failed)
                     return status;

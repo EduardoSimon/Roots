@@ -14,14 +14,14 @@ namespace BT.Decorators
             Status = TaskStatus.NonInitialized;
         }
 
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
             Status = TaskStatus.Running;
         }
 
         protected override TaskStatus Update()
         {
-            var childStatus = _child.Tick(controller);
+            var childStatus = _child.Tick();
 
             if (childStatus == TaskStatus.Running) return TaskStatus.Running;
 

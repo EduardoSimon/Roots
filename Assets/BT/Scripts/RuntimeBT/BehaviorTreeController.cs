@@ -21,16 +21,21 @@ namespace BT.Runtime
         }
 
         public BehaviorTreeGraph treeGraph;
-
+        public ATask currentTickingTask;
         [TextArea] [SerializeField] private string behaviorTreeDescription;
         [SerializeField] public EUpdateType updateType;
         [SerializeField] public bool startOnEnable = true;
         [SerializeField] private bool pauseOnDisabled = false;
         [SerializeField] private bool restartOnComplete = true;
         [SerializeField] private BTLog.ELogLevel minimunLogLevel;
-        
-        
+
+
+        private BTDebugCanvasController _debugCanvasController;
+
         private bool _hasCompletedOnce;
+
+        private BehaviorTreeManager _manager;
+
 //        private bool _isPaused;
         private BehaviorTree _tree;
 
@@ -42,10 +47,16 @@ namespace BT.Runtime
             }
         }
 
+        private void Awake()
+        {
+            _debugCanvasController = GetComponentInChildren<BTDebugCanvasController>();
+            _manager = BehaviorTreeManager.Instance;
+        }
+
         private void Start()
         {
             BTLog.LogLevel = minimunLogLevel;
-            
+
             _hasCompletedOnce = false;
         }
 
@@ -54,12 +65,27 @@ namespace BT.Runtime
             if (treeGraph != null)
             {
                 _tree = treeGraph._tree;
-                BehaviorTreeManager.Instance._enabledTrees.Add(this);
+                _manager._enabledTrees.Add(this);
+
+                InitializeTasks(_tree.RootTask);
             }
             else
             {
                 BTLog.Log("The tree is null and couldn't be initialized.", BTLog.ELogLevel.Warning);
             }
+        }
+
+        private void InitializeTasks(ATask task)
+        {
+            if (task is IComposite compositeNode)
+            {
+                for (int i = 0; i < compositeNode.Children.Count; i++)
+                {
+                    InitializeTasks(compositeNode.Children[i]);
+                }
+            }
+
+            task.OnTreeInitialize();
         }
 
         public void TickTree()
@@ -72,27 +98,31 @@ namespace BT.Runtime
 
             if (treeGraph == null) return;
 
-            BehaviorTreeManager.currentTickingController = this;
-            
-            var status = _tree.Tick(this);
+            _manager.CurrentTickingController = this;
 
-            if(status != TaskStatus.Running)
+            var status = _tree.Tick();
+
+            if (_manager.isDebugMode)
+                _debugCanvasController.SetDebugInfo(status, currentTickingTask.name);
+
+            if (status != TaskStatus.Running)
                 _hasCompletedOnce = true;
 
             if (status == TaskStatus.Running)
-                BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Warning);
-            else if(status == TaskStatus.Succeeded)
-                BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Succeded);
+                BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status,
+                    BTLog.ELogLevel.Warning);
+            else if (status == TaskStatus.Succeeded)
+                BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status,
+                    BTLog.ELogLevel.Succeded);
             else
                 BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Error);
-
         }
 
         private void OnDisable()
         {
             if (!pauseOnDisabled) return;
-            BehaviorTreeManager.Instance._enabledTrees.Remove(this);
-            
+            _manager._enabledTrees.Remove(this);
+
             //        _isPaused = true;
             BTLog.Log("The tree is paused.", BTLog.ELogLevel.Warning);
         }

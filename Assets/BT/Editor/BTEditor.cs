@@ -549,7 +549,7 @@ namespace BT
 
             GUILayout.BeginVertical();
             if (currentGraph != null)
-                GUILayout.Label(currentGraph.Name, _skin.GetStyle("H1"));
+                GUILayout.Label(currentGraph.GraphName, _skin.GetStyle("H1"));
             GUILayout.EndVertical();
 
             GUILayout.EndArea();

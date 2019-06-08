@@ -9,15 +9,25 @@ namespace BT
     public class ATask : ScriptableObject
     {
         public TaskStatus Status;
-        public BehaviorTreeController controller;
-
-        private void OnEnable()
+        protected BehaviorTreeManager _manager;
+        
+        /// <summary>
+        /// This is called when the tree is initialized. Use it to gather your references
+        /// </summary>
+        public virtual void OnTreeInitialize()
         {
-            //hideFlags = HideFlags.HideInHierarchy;
+            _manager = BehaviorTreeManager.Instance;
         }
+        
+        /// <summary>
+        /// This method is called the first time is tick.
+        /// </summary>
+        protected virtual void OnFirstTick() {}
 
-        protected virtual void OnInitialize() { }
-
+        /// <summary>
+        /// This method is called every tick of the tree when it hasnt succeded or failed.
+        /// </summary>
+        /// <returns></returns>
         protected virtual TaskStatus Update()
         {
             return TaskStatus.Invalid;
@@ -28,7 +38,7 @@ namespace BT
             status = TaskStatus.NonInitialized;
         }
 
-        public TaskStatus Tick(BehaviorTreeController treeContext)
+        public TaskStatus Tick()
         {
             if (Status == TaskStatus.Aborted)
             {
@@ -38,9 +48,11 @@ namespace BT
 
             if (Status == TaskStatus.NonInitialized)
             {
-                controller = treeContext;
-                OnInitialize();
+                OnFirstTick();
             }
+
+            if (_manager != null && _manager.isDebugMode)
+                _manager.CurrentTickingController.currentTickingTask = this;
 
             Status = Update();
 
@@ -57,9 +69,7 @@ namespace BT
 
         public void Reset()
         {
-            controller = null;
             Status = TaskStatus.NonInitialized;
         }
     }
-
 }

@@ -14,13 +14,7 @@ namespace BT.Scripts.Drawers
         private Texture2D _texture2D;
         [SerializeField] public BoolBlackBoardVariable isLogError;
         [SerializeField] public StringBlackBoardVariable message;
-
-
-        public ATask Task
-        {
-            get => _task as Log;
-            set => _task = (Log) value;
-        }
+        
 
         /// <summary>
         /// The init has two purposes:

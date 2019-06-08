@@ -10,7 +10,7 @@ namespace BT.Editor
     [CreateAssetMenu(menuName = "BT/Behavior Tree Graph")]
     public class  BehaviorTreeGraph : ScriptableObject
     {
-        public string Name;
+        public string GraphName;
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
         public List<BaseNode> SavedNodes = new List<BaseNode>();
 
@@ -19,10 +19,7 @@ namespace BT.Editor
         [SerializeField] public BaseNode root;
         [SerializeField] public BehaviorTree _tree;
         public BaseNode EntryNode;
-
-        private void OnEnable()
-        {
-        }
+        
 
         public void OnSave()
         {
@@ -49,7 +46,7 @@ namespace BT.Editor
 
             ConstructTree(root);
             
-            PrintTree(_tree.RootNode);
+            PrintTree(_tree.RootTask);
         }
 
         public void ConstructTree(BaseNode node)

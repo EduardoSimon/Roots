@@ -12,9 +12,9 @@ namespace BT.Core
         public string message;
         public bool isLogError;
         
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
-            base.OnInitialize();
+            base.OnFirstTick();
         }
 
         protected override TaskStatus Update()
