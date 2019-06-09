@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using BT.Scripts;
 using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BT.Runtime
 {
@@ -26,13 +27,14 @@ namespace BT.Runtime
         public ETickMode TickMode = ETickMode.UnityTick;
         
         [Tooltip("The update frequency of the tree in milliseconds.")]
-        public float updateFreq = 5;
+        public float UpdateMsFreq = 5;
+        public float UpdateCPUCyclesFreq;
         
         [HideInInspector] public ReferenceDictionary references;
         public List<BehaviorTreeController> _enabledTrees;
         
         private BehaviorTreeController[] _behaviorTreeControllers;
-        private float timer = 0f;
+        private float _timer = 0f;
         [SerializeField]private bool _isDebugMode;
 
         public bool isDebugMode
@@ -40,7 +42,6 @@ namespace BT.Runtime
             get { return _isDebugMode; }
             set { _isDebugMode = value; }
         }
-
 
         private void OnEnable()
         {
@@ -71,7 +72,7 @@ namespace BT.Runtime
 
         private void Update()
         {
-            timer += Time.deltaTime;
+            _timer += Time.deltaTime;
             
             if (TickMode == ETickMode.UnityTick)
             {
@@ -83,9 +84,9 @@ namespace BT.Runtime
             }
             else if (TickMode == ETickMode.Milliseconds)
             {
-                if (timer > updateFreq / 1000)
+                if (_timer > UpdateMsFreq / 1000)
                 {
-                    timer = 0f;
+                    _timer = 0f;
                     
                     foreach (var tree in _enabledTrees)
                     {
