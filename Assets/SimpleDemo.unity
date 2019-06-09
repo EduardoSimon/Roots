@@ -151,8 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTickingController: {fileID: 0}
-  TickMode: 2
-  updateFreq: 10
+  TickMode: 0
+  UpdateMsFreq: 5
+  UpdateCPUCyclesFreq: 0
   references:
     reorderableList:
       canAdd: 0
@@ -219,6 +220,8 @@ MonoBehaviour:
     - afe51f4441e8f42cba00a096ab08356c
     - fb534454cce544b73bf1e0f625ae4954
     - b9c042c7fb8c54590be109332b2a945d
+    - 3270ed0baa9d646c5b9ab7c03774951a
+    - ab204314fa9b74f289a2ded2917f692e
     _values:
     - {fileID: 118884577}
     - {fileID: 118884577}
@@ -261,7 +264,11 @@ MonoBehaviour:
     - {fileID: 118884577}
     - {fileID: 118884577}
     - {fileID: 118884577}
-  _enabledTrees: []
+    - {fileID: 118884577}
+    - {fileID: 118884577}
+  _updateTrees: []
+  _lateUpdateTrees: []
+  _fixedUpdateTrees: []
   _isDebugMode: 1
 --- !u!4 &9522949
 Transform:
@@ -321,7 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f31160f463622d4091cbb11d0ae1ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeGraph: {fileID: 11400000, guid: beab28a8545544a54951a5ed5dfde408, type: 2}
+  treeGraph: {fileID: 11400000, guid: ba945f979e7f243558459afa9f3dbf4b, type: 2}
   currentTickingTask: {fileID: 0}
   behaviorTreeDescription: 
   updateType: 0

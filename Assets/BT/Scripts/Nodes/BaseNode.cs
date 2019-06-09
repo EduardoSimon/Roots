@@ -58,7 +58,7 @@ namespace BT
 
         //serialize this
         public List<BaseNode> children;
-        protected ATask _task;
+        [SerializeField] protected ATask _task;
 
         public static event Action<BaseNode> OnNodeRightClicked;
         public event Action<BaseNode> OnClickedNode;

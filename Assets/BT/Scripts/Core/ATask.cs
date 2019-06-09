@@ -9,14 +9,14 @@ namespace BT
     public class ATask : ScriptableObject
     {
         public TaskStatus Status;
-        protected BehaviorTreeManager _manager;
+        protected BTManager _manager;
         
         /// <summary>
         /// This is called when the tree is initialized. Use it to gather your references
         /// </summary>
         public virtual void OnTreeInitialize()
         {
-            _manager = BehaviorTreeManager.Instance;
+            _manager = BTManager.Instance;
         }
         
         /// <summary>

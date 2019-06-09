@@ -171,6 +171,7 @@ namespace BT
             for (int i = 0; i < currentGraph.SavedNodes.Count; i++)
             {
                 nodes.Add(currentGraph.SavedNodes[i]);
+                nodes[i].Task = currentGraph.SavedNodes[i].Task;
 
                 NodeUtils.InitializeNode(nodes[i], OnNodeSocketClicked);
 

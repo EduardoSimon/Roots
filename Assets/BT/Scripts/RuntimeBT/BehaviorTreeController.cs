@@ -34,7 +34,7 @@ namespace BT.Runtime
 
         private bool _hasCompletedOnce;
 
-        private BehaviorTreeManager _manager;
+        private BTManager _manager;
 
 //        private bool _isPaused;
         private BehaviorTree _tree;
@@ -50,7 +50,7 @@ namespace BT.Runtime
         private void Awake()
         {
             _debugCanvasController = GetComponentInChildren<BTDebugCanvasController>();
-            _manager = BehaviorTreeManager.Instance;
+            _manager = BTManager.Instance;
         }
 
         private void Start()
@@ -65,7 +65,13 @@ namespace BT.Runtime
             if (treeGraph != null)
             {
                 _tree = treeGraph._tree;
-                _manager._enabledTrees.Add(this);
+
+                if (updateType == EUpdateType.Update)
+                    _manager._updateTrees.Add(this);
+                else if (updateType == EUpdateType.FixedUpdate)
+                    _manager._fixedUpdateTrees.Add(this);
+                else if (updateType == EUpdateType.LateUpdate)
+                    _manager._lateUpdateTrees.Add(this);
 
                 InitializeTasks(_tree.RootTask);
             }
@@ -121,7 +127,7 @@ namespace BT.Runtime
         private void OnDisable()
         {
             if (!pauseOnDisabled) return;
-            _manager._enabledTrees.Remove(this);
+            _manager._updateTrees.Remove(this);
 
             //        _isPaused = true;
             BTLog.Log("The tree is paused.", BTLog.ELogLevel.Warning);
@@ -129,10 +135,13 @@ namespace BT.Runtime
 
         private void OnDestroy()
         {
-            //reset all the tasks in the tree
-            foreach (var nodes in treeGraph.SavedNodes)
+            if (treeGraph != null && treeGraph.SavedNodes != null)
             {
-                nodes.Task.Reset();
+                //reset all the tasks in the tree
+                foreach (var nodes in treeGraph.SavedNodes)
+                {
+                    nodes.Task.Reset();
+                }
             }
         }
     }

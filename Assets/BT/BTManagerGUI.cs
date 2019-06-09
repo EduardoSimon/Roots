@@ -13,7 +13,7 @@ public class BTManagerGUI : MonoBehaviour
 
     private void DrawDebugGUI(int id)
     {
-        if(BehaviorTreeManager.Instance.CurrentTickingController != null)
-            GUILayout.Label("Running: <b>" + BehaviorTreeManager.Instance.CurrentTickingController.gameObject.name + "</b> with tree name: " + BehaviorTreeManager.Instance.CurrentTickingController.treeGraph.GraphName);
+        if(BTManager.Instance.CurrentTickingController != null)
+            GUILayout.Label("Running: <b>" + BTManager.Instance.CurrentTickingController.gameObject.name + "</b> with tree name: " + BTManager.Instance.CurrentTickingController.treeGraph.GraphName);
     }
 }

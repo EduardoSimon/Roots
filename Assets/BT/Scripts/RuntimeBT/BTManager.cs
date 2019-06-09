@@ -10,7 +10,7 @@ namespace BT.Runtime
 {
     [AddComponentMenu("Behavior Tree/BehaviorTree Manager")]
     [HelpURL("https://www.github.com/EduardoSimon")]
-    public class BehaviorTreeManager : MonoBehaviour
+    public class BTManager : MonoBehaviour
     {
         [System.Serializable]
         public enum ETickMode
@@ -22,20 +22,25 @@ namespace BT.Runtime
         }
 
         public BehaviorTreeController CurrentTickingController;
-        public static BehaviorTreeManager Instance = null;
+        public static BTManager Instance = null;
 
         public ETickMode TickMode = ETickMode.UnityTick;
-        
+
         [Tooltip("The update frequency of the tree in milliseconds.")]
         public float UpdateMsFreq = 5;
+
         public float UpdateCPUCyclesFreq;
-        
+
         [HideInInspector] public ReferenceDictionary references;
-        public List<BehaviorTreeController> _enabledTrees;
-        
+
+        public List<BehaviorTreeController> _updateTrees;
+        public List<BehaviorTreeController> _lateUpdateTrees;
+        public List<BehaviorTreeController> _fixedUpdateTrees;
+
+
         private BehaviorTreeController[] _behaviorTreeControllers;
         private float _timer = 0f;
-        [SerializeField]private bool _isDebugMode;
+        [SerializeField] private bool _isDebugMode;
 
         public bool isDebugMode
         {
@@ -45,7 +50,7 @@ namespace BT.Runtime
 
         private void OnEnable()
         {
-            _enabledTrees = new List<BehaviorTreeController>();
+            _updateTrees = new List<BehaviorTreeController>();
 
             if (references == null)
                 references = new ReferenceDictionary();
@@ -72,48 +77,100 @@ namespace BT.Runtime
 
         private void Update()
         {
-            _timer += Time.deltaTime;
-            
-            if (TickMode == ETickMode.UnityTick)
+            switch (TickMode)
             {
-                foreach (var tree in _enabledTrees)
+                case ETickMode.UnityTick:
                 {
-                    if (tree.updateType == BehaviorTreeController.EUpdateType.Update)
-                        tree.TickTree();
-                }
-            }
-            else if (TickMode == ETickMode.Milliseconds)
-            {
-                if (_timer > UpdateMsFreq / 1000)
-                {
-                    _timer = 0f;
-                    
-                    foreach (var tree in _enabledTrees)
+                    foreach (var tree in _updateTrees)
                     {
-                        if (tree.updateType == BehaviorTreeController.EUpdateType.Update)
+                        tree.TickTree();
+                    }
+
+                    break;
+                }
+
+                case ETickMode.Milliseconds:
+                {
+                    _timer += Time.deltaTime;
+
+                    if (_timer > UpdateMsFreq / 1000)
+                    {
+                        _timer = 0f;
+
+                        foreach (var tree in _updateTrees)
                         {
                             tree.TickTree();
                         }
                     }
+
+                    break;
                 }
             }
         }
 
         private void LateUpdate()
         {
-            foreach (var tree in _enabledTrees)
+            switch (TickMode)
             {
-                if (tree.updateType == BehaviorTreeController.EUpdateType.LateUpdate)
-                    tree.TickTree();
+                case ETickMode.UnityTick:
+                {
+                    foreach (var tree in _lateUpdateTrees)
+                    {
+                        tree.TickTree();
+                    }
+
+                    break;
+                }
+
+                case ETickMode.Milliseconds:
+                {
+                    _timer += Time.deltaTime;
+
+                    if (_timer > UpdateMsFreq / 1000)
+                    {
+                        _timer = 0f;
+
+                        foreach (var tree in _lateUpdateTrees)
+                        {
+                            tree.TickTree();
+                        }
+                    }
+
+                    break;
+                }
             }
         }
 
         private void FixedUpdate()
         {
-            foreach (var tree in _enabledTrees)
+            switch (TickMode)
             {
-                if (tree.updateType == BehaviorTreeController.EUpdateType.FixedUpdate)
-                    tree.TickTree();
+                case ETickMode.UnityTick:
+                {
+                    foreach (var tree in _fixedUpdateTrees)
+                    {
+                        tree.TickTree();
+                    }
+
+                    break;
+                }
+
+                case ETickMode.Milliseconds:
+                {
+                    _timer += Time.deltaTime;
+
+                    if (_timer > UpdateMsFreq / 1000)
+                    {
+                        _timer = 0f;
+
+                        foreach (var tree in _fixedUpdateTrees)
+                        {
+                            tree.TickTree();
+                        }
+                    }
+
+                    break;
+                }
             }
         }
 

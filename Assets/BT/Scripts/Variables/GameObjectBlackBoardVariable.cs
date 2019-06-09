@@ -18,7 +18,7 @@ namespace BT.Scripts
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorSceneManager.sceneOpened += OnSceneOpened;
 
-            RetrieveVariable(false);
+            RetrieveVariable(true);
         }
 
 
@@ -51,12 +51,12 @@ namespace BT.Scripts
 
         private void StoreVariable()
         {
-            BehaviorTreeManager btManager = FindObjectOfType<BehaviorTreeManager>();
+            BTManager btManager = FindObjectOfType<BTManager>();
 
             if (btManager == null)
             {
-                GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
-                btManager = gameObject.GetComponent<BehaviorTreeManager>();
+                GameObject gameObject = new GameObject("BTManager", typeof(BTManager));
+                btManager = gameObject.GetComponent<BTManager>();
             }
 
             if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid))
@@ -87,12 +87,12 @@ namespace BT.Scripts
 
         private void RetrieveVariable(bool willCreateManagerIfNotFound)
         {
-            BehaviorTreeManager manager = FindObjectOfType<BehaviorTreeManager>();
+            BTManager manager = FindObjectOfType<BTManager>();
 
             if (willCreateManagerIfNotFound && manager == null)
             {
-                GameObject gameObject = new GameObject("BTManager", typeof(BehaviorTreeManager));
-                manager = gameObject.GetComponent<BehaviorTreeManager>();
+                GameObject gameObject = new GameObject("BTManager", typeof(BTManager));
+                manager = gameObject.GetComponent<BTManager>();
             }
 
             if (manager.references != null && guid != null)

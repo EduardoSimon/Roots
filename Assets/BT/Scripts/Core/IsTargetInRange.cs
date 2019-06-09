@@ -15,6 +15,6 @@ public class IsTargetInRange : ACondition
 
     protected override bool isConditionSatisfied()
     {
-        return Vector3.Distance(BehaviorTreeManager.Instance.CurrentTickingController.transform.position, target.position) < distanceRange;
+        return Vector3.Distance(BTManager.Instance.CurrentTickingController.transform.position, target.position) < distanceRange;
     }
 }
