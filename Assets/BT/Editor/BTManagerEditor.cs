@@ -16,8 +16,6 @@ public class BTManagerEditor : UnityEditor.Editor
 
         if (script.TickMode == BTManager.ETickMode.Milliseconds)
             script.UpdateMsFreq = EditorGUILayout.FloatField("Frequency", script.UpdateMsFreq);
-        else if (script.TickMode == BTManager.ETickMode.CPUCycles)
-            script.UpdateCPUCyclesFreq = EditorGUILayout.FloatField("Frequency",script.UpdateCPUCyclesFreq);
 
         script.isDebugMode = EditorGUILayout.Toggle("Is Debug Mode", script.isDebugMode);
     }

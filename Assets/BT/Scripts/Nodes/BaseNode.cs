@@ -144,8 +144,6 @@ namespace BT
         /// <param name="current"></param>
         public virtual void DrawInspector(Rect inspectorRect)
         {
-            GUILayout.Label(windowTitle);
-
             if (inspectorVariables.Count > 0)
             {
                 VariableId = 0;

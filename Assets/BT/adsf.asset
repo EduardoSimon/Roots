@@ -136,11 +136,9 @@ MonoBehaviour:
   m_Name: adsf
   m_EditorClassIdentifier: 
   GraphName: 
-  SavedConnections:
-  - {fileID: -1923997028936662077}
+  SavedConnections: []
   SavedNodes:
   - {fileID: 6069915167048577314}
-  - {fileID: -4794890209204327983}
   entryConnection: {fileID: 5657825593496399406}
   root: {fileID: 6069915167048577314}
   _tree:

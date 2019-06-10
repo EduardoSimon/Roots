@@ -15,7 +15,6 @@ namespace BT.Runtime
         [System.Serializable]
         public enum ETickMode
         {
-            CPUCycles,
             Milliseconds,
             UnityTick,
             Manual
@@ -28,8 +27,6 @@ namespace BT.Runtime
 
         [Tooltip("The update frequency of the tree in milliseconds.")]
         public float UpdateMsFreq = 5;
-
-        public float UpdateCPUCyclesFreq;
 
         [HideInInspector] public ReferenceDictionary references;
 
