@@ -19,6 +19,7 @@ namespace BT.Scripts.Nodes
 
         public override void SaveNodeData()
         {
+            base.SaveNodeData();
             _task.Status = TaskStatus.NonInitialized;
         }
     }

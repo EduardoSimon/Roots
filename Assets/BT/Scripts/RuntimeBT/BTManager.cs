@@ -172,7 +172,7 @@ namespace BT.Runtime
         }
 
         [Serializable]
-        public class ReferenceDictionary : SerializableDictionaryBase<string, GameObject>
+        public class ReferenceDictionary : SerializableDictionaryBase<string, Transform>
         {
         }
     }

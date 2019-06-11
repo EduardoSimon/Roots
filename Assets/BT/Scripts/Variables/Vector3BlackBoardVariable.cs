@@ -5,7 +5,7 @@ namespace BT.Scripts
 {
     public class Vector3BlackBoardVariable : BlackBoardVariable
     {
-        public Vector3 Vector3Variable;
+        public Vector3 Variable;
         
         
         public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
@@ -14,7 +14,7 @@ namespace BT.Scripts
             
             EditorGUI.BeginChangeCheck();
             GUI.SetNextControlName("Variable"  + id);
-            Vector3Variable = EditorGUI.Vector3Field( rect,label,Vector3Variable);
+            Variable = EditorGUI.Vector3Field( rect,label,Variable);
             
             
             if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))

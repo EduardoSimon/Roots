@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class IsTargetInRangeNode : LeafNode
 {
-    public GameObjectBlackBoardVariable target;
+    public TransformBlackBoardVariable target;
     public FloatBlackBoardVariable distanceRange;
 
     public override void SaveNodeData()
@@ -20,13 +20,13 @@ public class IsTargetInRangeNode : LeafNode
         
         var isTargetInRangeTask = _task as IsTargetInRange;
 
-        if(target.gameObjectVariable.transform == null) //todo stop tree compilation with error code
+        if(target.Variable.transform == null) //todo stop tree compilation with error code
             BTLog.Log("Target in " + nameof(IsTargetInRangeNode) + "is null, please assign one to compile the tree.");
         else
         {
-            isTargetInRangeTask.target = target.gameObjectVariable.transform;
+            isTargetInRangeTask.target = target.Variable.transform;
         }
 
-        isTargetInRangeTask.distanceRange = distanceRange.FloatVariable;
+        isTargetInRangeTask.distanceRange = distanceRange.Variable;
     }
 }

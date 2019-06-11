@@ -9,6 +9,7 @@ namespace BT.Scripts
     public class BlackBoardVariable : ScriptableObject
     {
         public BaseNode node;
+        public string taskFieldName;
         [SerializeField] public string guid;
 
         public string Guid => guid;

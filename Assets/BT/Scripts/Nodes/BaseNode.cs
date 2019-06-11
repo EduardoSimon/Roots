@@ -109,10 +109,10 @@ namespace BT
             this.isRootView = isRootView;
             this.isParentView = isParentView;
             this.isEntryPoint = isEntryPoint;
-            
+
             inspectorVariables = new List<InspectorFieldData>();
 
-            if(variables.Count > 0)
+            if (variables.Count > 0)
                 GetInspectorVariables();
         }
 
@@ -171,7 +171,6 @@ namespace BT
                         focusID = 1;
                 }
             }
-
         }
 
         public void Drag(Vector2 delta)
@@ -211,17 +210,16 @@ namespace BT
 
             return false;
         }
+
         private void GetInspectorVariables()
         {
             inspectorVariables = new List<InspectorFieldData>();
 
-            foreach (var field in this.GetType().GetFields()
-                .Where(info => info.FieldType.IsSubclassOf(typeof(BlackBoardVariable))))
+            foreach (var variable in variables)
             {
-                BTLog.Log("Getting inspector data, field: " + field.Name + "of type: " + field.FieldType,
-                    BTLog.ELogLevel.Verbose);
+                BTLog.Log("Getting inspector data, field: " + variable.taskFieldName + "of type: " + variable.GetType());
 
-                inspectorVariables.Add(new InspectorFieldData(field.GetValue(this) as BlackBoardVariable, field.Name));
+                    inspectorVariables.Add(new InspectorFieldData(variable, variable.taskFieldName));
             }
         }
 
@@ -241,22 +239,30 @@ namespace BT
         {
             int count = 0;
 
-            foreach (var field in this.GetType().GetFields()
-                .Where(info => info.FieldType.IsSubclassOf(typeof(BlackBoardVariable))))
+            foreach (var field in _task.GetType().GetFields().Where(info => info.FieldType != typeof(TaskStatus) && info.FieldType != typeof(BlackBoard)))
             {
-                BTLog.Log("Copying variable with field name: " + field.Name + "of type: " + field.FieldType,
-                    BTLog.ELogLevel.Verbose);
+                BTLog.Log("Copying variable with field name: " + field.Name + "of type: " + field.FieldType);
 
-                BlackBoardVariable variable;
+                    BlackBoardVariable variable;
 
                 if (previousVariables == null)
                 {
-                    variable = CreateInstance(field.FieldType) as BlackBoardVariable;
-                    AssetDatabase.AddObjectToAsset(variable, this);
-                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
-                    Debug.Assert(variable != null, nameof(variable) + " != null");
-                    variable.node = this;
-                    variables.Add(variable);
+                    variable = CreateVariableByType(field.FieldType);
+                    
+                    if (variable != null)
+                    {
+                        AssetDatabase.AddObjectToAsset(variable, this);
+                        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
+                        Debug.Assert(variable != null, nameof(variable) + " != null");
+                        variable.node = this;
+                        variable.taskFieldName = field.Name;
+                        variables.Add(variable); 
+                    }
+                    else
+                    {
+                        BTLog.Log("Couldnt create a variable of type: " + field.FieldType);
+                    }
+
                 }
                 else
                 {
@@ -264,13 +270,25 @@ namespace BT
                 }
 
                 variable.Init(previousVariables == null ? null : variable.guid);
-
-                field.SetValue(this, variable);
-
+                
                 count++;
             }
-            
+
             GetInspectorVariables();
+        }
+
+        private BlackBoardVariable CreateVariableByType(Type type)
+        {
+            if (type == typeof(float))
+                return CreateInstance<FloatBlackBoardVariable>();
+
+            if (type == typeof(Transform))
+                return CreateInstance<TransformBlackBoardVariable>();
+
+            if (type == typeof(int))
+                return CreateInstance<IntBlackBoardVariable>();
+
+            return null;
         }
 
         public ATask Task
@@ -279,6 +297,17 @@ namespace BT
             set => _task = value;
         }
 
-        public abstract void SaveNodeData();
+        public virtual void SaveNodeData()
+        {
+            foreach (var variable in variables)
+            {
+                if (variable != null)
+                {
+                    FieldInfo info = variable.GetType().GetField("Variable");
+                    FieldInfo field2 = _task.GetType().GetField(variable.taskFieldName);
+                    field2.SetValue(_task, info.GetValue(variable));
+                }
+            }
+        }
     }
 }

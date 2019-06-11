@@ -6,7 +6,7 @@ namespace BT.Scripts
 {
     public class StringBlackBoardVariable : BlackBoardVariable
     {
-        [SerializeField] public string StringVariable;
+        [SerializeField] public string Variable;
         
         public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
@@ -15,7 +15,7 @@ namespace BT.Scripts
             
             EditorGUI.BeginChangeCheck();
             GUI.SetNextControlName("Variable"  + id);
-            StringVariable = EditorGUI.TextField( rect,label,StringVariable);
+            Variable = EditorGUI.TextField( rect,label,Variable);
             
             
             if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))

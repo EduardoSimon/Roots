@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using BT;
 using BT.Runtime;
+using BT.Scripts.Nodes;
 using UnityEngine;
 
 [TaskTooltip("Returns true if the distance to target is less than distanceRange.")]
 [SearchTaskPath("Conditions/IsTargetInRange")]
-[CustomNodeDrawer(typeof(IsTargetInRangeNode))]
+[CustomNodeDrawer(typeof(LeafNode))]
 public class IsTargetInRange : ACondition
 {
     public Transform target;

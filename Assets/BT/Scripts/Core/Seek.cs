@@ -1,10 +1,11 @@
 using BT.Runtime;
 using BT.Scripts.Drawers;
+using BT.Scripts.Nodes;
 using UnityEngine;
 
 namespace BT.Scripts.Core
 {
-    [CustomNodeDrawer(typeof(SeekNode))]
+    [CustomNodeDrawer(typeof(LeafNode))]
     [SearchTaskPath("Action/Seek")]
     [TaskTooltip("The Seek Task follows its target until reaching a minimum distance.")]
     public class Seek : AAction

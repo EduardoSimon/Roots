@@ -5,13 +5,13 @@ namespace BT.Scripts
 {
     public class BoolBlackBoardVariable : BlackBoardVariable
     {
-        public bool BoolVariable;
+        public bool Variable;
 
         public override Rect DrawVariableInspector(Rect rect,string label, ref int id)
         {
             base.DrawVariableInspector(rect,label, ref id);
             GUI.SetNextControlName("Variable" + id);
-            BoolVariable = GUI.Toggle(rect,BoolVariable,label);
+            Variable = GUI.Toggle(rect,Variable,label);
             
             if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {

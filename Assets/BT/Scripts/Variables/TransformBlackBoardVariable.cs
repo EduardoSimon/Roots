@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 namespace BT.Scripts
 {
     [System.Serializable]
-    public class GameObjectBlackBoardVariable : BlackBoardVariable
+    public class TransformBlackBoardVariable : BlackBoardVariable
     {
-        public GameObject gameObjectVariable;
+        public Transform Variable;
 
         private void OnEnable()
         {
@@ -61,7 +61,7 @@ namespace BT.Scripts
 
             if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid))
             {
-                btManager.references[guid] = gameObjectVariable;
+                btManager.references[guid] = Variable.transform;
             }
         }
 
@@ -70,8 +70,8 @@ namespace BT.Scripts
         {
             base.DrawVariableInspector(rect, label, ref id);
             GUI.SetNextControlName("Variable" + id);
-            gameObjectVariable =
-                EditorGUILayout.ObjectField(label, gameObjectVariable, typeof(GameObject), true) as GameObject;
+            Variable =
+                EditorGUILayout.ObjectField(label, Variable, typeof(Transform), true) as Transform;
 
             if (Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
@@ -98,7 +98,7 @@ namespace BT.Scripts
             if (manager.references != null && guid != null)
             {
                 if (manager.references.ContainsKey(guid))
-                    gameObjectVariable = manager.references[this.guid];
+                    Variable = manager.references[this.guid].transform;
             }
         }
     }

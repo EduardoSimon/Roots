@@ -9,7 +9,7 @@ namespace BT.Scripts.Drawers
 {
     public class SeekNode : LeafNode
     {
-        public GameObjectBlackBoardVariable target;
+        public TransformBlackBoardVariable target;
         public FloatBlackBoardVariable speed;
         
         /*
@@ -25,14 +25,14 @@ namespace BT.Scripts.Drawers
             
             Seek seekTask = _task as Seek;
             
-            if(target.gameObjectVariable != null)
-                seekTask.target = target.gameObjectVariable.transform;
+            if(target.Variable != null)
+                seekTask.target = target.Variable.transform;
             else
             {
                 Debug.LogWarning("The seek node has no <b>target</b>. You can add it at runtime or drag it in the editor.");
             }
 
-            seekTask.speed = speed.FloatVariable;
+            seekTask.speed = speed.Variable;
         }
     }
 }

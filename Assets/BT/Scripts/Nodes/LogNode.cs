@@ -55,8 +55,8 @@ namespace BT.Scripts.Drawers
 
             var logTask = _task as Log;
 
-            logTask.message = message.StringVariable;
-            logTask.isLogError = isLogError.BoolVariable;
+            logTask.message = message.Variable;
+            logTask.isLogError = isLogError.Variable;
         }
     }
 }
