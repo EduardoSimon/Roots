@@ -7,22 +7,23 @@ namespace BT.Scripts
     {
         public bool Variable;
 
-        public override Rect DrawVariableInspector(Rect rect,string label, ref int id)
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            base.DrawVariableInspector(rect,label, ref id);
+            base.DrawVariableInspector(rect, label, ref id);
+#if UNITY_EDITOR
             GUI.SetNextControlName("Variable" + id);
-            Variable = GUI.Toggle(rect,Variable,label);
-            
-            if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
+            Variable = GUI.Toggle(rect, Variable, label);
+
+            if (Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
-               GUI.FocusControl(null);
-                
+                GUI.FocusControl(null);
             }
-            else if(Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            else if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
             {
                 GUI.FocusControl("Variable" + id);
             }
-
+#endif
+            
             return rect;
         }
     }

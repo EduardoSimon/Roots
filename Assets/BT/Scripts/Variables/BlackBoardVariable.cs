@@ -18,7 +18,9 @@ namespace BT.Scripts
 
         public virtual void Init(string guid)
         {
+            #if UNITY_EDITOR
             this.guid = guid ?? GUID.Generate().ToString();
+            #endif
         }
 
         public virtual Rect DrawVariableInspector(Rect rect, string label, ref int id)
@@ -27,5 +29,6 @@ namespace BT.Scripts
             return new Rect(0, 0, 0, 0);
         }
 
+        public virtual void OnTreeInit() {}
     }
 }

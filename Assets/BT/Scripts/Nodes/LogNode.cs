@@ -12,10 +12,7 @@ namespace BT.Scripts.Drawers
     public class LogNode : LeafNode
     {
         private Texture2D _texture2D;
-        [SerializeField] public BoolBlackBoardVariable isLogError;
-        [SerializeField] public StringBlackBoardVariable message;
         
-
         /// <summary>
         /// The init has two purposes:
         ///    -Re-enable the references of the node when they are lost: OnEnterPlayMode or OnExitPlaymode
@@ -39,24 +36,11 @@ namespace BT.Scripts.Drawers
         /// The node drawing function. Generally you would just draw a texture on top of the node, but its fully customizable.
         /// </summary>
         /// <param name="id"></param>
-        public override void DrawWindow(int id)
+        public override void DrawNodeView(int id)
         {
-            base.DrawWindow(id);
+            base.DrawNodeView(id);
 
             GUI.DrawTexture(new Rect(20, 20, BTConstants.kNodeWidht - 30, BTConstants.kNodeHeight - 30), _texture2D);
-        }
-        
-        /// <summary>
-        /// We need to override this method in order to pass the variables info to the Task class.
-        /// </summary>
-        public void SaveNodeData()
-        {
-            base.SaveNodeData();
-
-            var logTask = _task as Log;
-
-            logTask.message = message.Variable;
-            logTask.isLogError = isLogError.Variable;
         }
     }
 }

@@ -26,9 +26,9 @@ namespace BT.Runtime
         public ETickMode TickMode = ETickMode.UnityTick;
 
         [Tooltip("The update frequency of the tree in milliseconds.")]
-        public float UpdateMsFreq = 5;
+        public float UpdateMsFreq;
 
-        [HideInInspector] public ReferenceDictionary references;
+        public ReferenceDictionary references;
 
         public List<BehaviorTreeController> _updateTrees;
         public List<BehaviorTreeController> _lateUpdateTrees;
@@ -45,20 +45,18 @@ namespace BT.Runtime
             set { _isDebugMode = value; }
         }
 
-        private void OnEnable()
-        {
-            _updateTrees = new List<BehaviorTreeController>();
-
-            if (references == null)
-                references = new ReferenceDictionary();
-        }
-
         private void Awake()
         {
+            Debug.Log("Called");
             if (Instance == null)
                 Instance = this;
             else if (Instance != null && Instance != this)
                 Destroy(this.gameObject);
+            
+            _updateTrees = new List<BehaviorTreeController>();
+
+            if (references == null)
+                references = new ReferenceDictionary();
         }
 
         void Start()

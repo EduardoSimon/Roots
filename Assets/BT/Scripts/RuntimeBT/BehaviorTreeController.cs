@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using BT;
 using BT.Core;
 using BT.Editor;
+using BT.Scripts.Nodes;
 using UnityEngine;
 
 namespace BT.Runtime
@@ -29,7 +30,7 @@ namespace BT.Runtime
         [SerializeField] private bool restartOnComplete = true;
         [SerializeField] private BTLog.ELogLevel minimunLogLevel;
 
-
+        private bool active = true;
         private BTDebugCanvasController _debugCanvasController;
 
         private bool _hasCompletedOnce;
@@ -74,10 +75,31 @@ namespace BT.Runtime
                     _manager._lateUpdateTrees.Add(this);
 
                 InitializeTasks(_tree.RootTask);
+                InitializeVariables(treeGraph.root);
             }
             else
             {
                 BTLog.Log("The tree is null and couldn't be initialized.", BTLog.ELogLevel.Warning);
+            }
+        }
+
+        private void InitializeVariables(BaseNode node)
+        {
+            LeafNode leafNode = node as LeafNode;
+            if (leafNode == null)
+            {
+                foreach (var child in node.children)
+                {
+                    InitializeVariables(child);
+                }
+            }
+
+            if (node.variables.Count > 0)
+            {
+                foreach (var variable in node.variables)
+                {
+                    variable.OnTreeInit();
+                }
             }
         }
 
@@ -94,8 +116,18 @@ namespace BT.Runtime
             task.OnTreeInitialize();
         }
 
+        private void OnGUI()
+        {
+#if UNITY_ASSERTIONS
+            active = GUILayout.Toggle(active, "Activate Tree");
+#endif
+        }
+
         public void TickTree()
         {
+            if (!active)
+                return;
+
             if (_tree == null)
                 return;
 

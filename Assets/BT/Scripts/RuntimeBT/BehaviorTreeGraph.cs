@@ -51,7 +51,7 @@ namespace BT.Editor
 
         public void ConstructTree(BaseNode node)
         {
-            if (node.IsParentView)
+            if (node.IsParentNode)
             {
                 if (node.Task is IComposite compositeTask)
                 {

@@ -39,7 +39,9 @@ namespace BT.Scripts
 
                 currentGraph.OnSave();
 
+#if  UNITY_EDITOR
                 EditorUtility.SetDirty(currentGraph);
+#endif
             }
         }
         

@@ -20,7 +20,7 @@ namespace BT.Editor.ContextualCommands
 
             foreach (var connection in connectionsToRemove)
             {
-                if (connection.StartSocket.Node.IsParentView && connection.StartSocket.Node.children.Contains(clickedNode))
+                if (connection.StartSocket.Node.IsParentNode && connection.StartSocket.Node.children.Contains(clickedNode))
                 {
                     connection.StartSocket.Node.children.Remove(clickedNode);
 

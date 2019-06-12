@@ -2,29 +2,37 @@ using System;
 using BT.Editor;
 using BT.Runtime;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+
+#endif
 
 namespace BT.Scripts
 {
-    [System.Serializable]
+    [Serializable]
     public class TransformBlackBoardVariable : BlackBoardVariable
     {
         public Transform Variable;
-
+        
+        public override void OnTreeInit()
+        {
+            base.OnTreeInit();
+            Debug.Log("INIT Variable");
+            RetrieveVariable();
+        }
+        
+#if UNITY_EDITOR
         private void OnEnable()
         {
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorSceneManager.sceneOpened += OnSceneOpened;
-
-            RetrieveVariable(true);
         }
 
-
-        private void OnSceneOpened(Scene arg0, OpenSceneMode mode)
+        private void OnSceneOpened(Scene scene, OpenSceneMode mode)
         {
-            RetrieveVariable(false);
+            RetrieveVariable();
         }
 
         private void OnDisable()
@@ -41,13 +49,14 @@ namespace BT.Scripts
                     break;
 
                 case PlayModeStateChange.EnteredPlayMode:
-                    RetrieveVariable(true);
+                    RetrieveVariable();
                     break;
 
                 case PlayModeStateChange.EnteredEditMode:
                     break;
             }
         }
+#endif
 
         private void StoreVariable()
         {
@@ -69,6 +78,7 @@ namespace BT.Scripts
         public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
             base.DrawVariableInspector(rect, label, ref id);
+#if UNITY_EDITOR
             GUI.SetNextControlName("Variable" + id);
             Variable =
                 EditorGUILayout.ObjectField(label, Variable, typeof(Transform), true) as Transform;
@@ -82,23 +92,26 @@ namespace BT.Scripts
                 GUI.FocusControl("Variable" + id);
             }
 
+#endif
             return rect;
         }
 
-        private void RetrieveVariable(bool willCreateManagerIfNotFound)
+        private void RetrieveVariable()
         {
-            BTManager manager = FindObjectOfType<BTManager>();
+            BTManager manager = BTManager.Instance;
 
-            if (willCreateManagerIfNotFound && manager == null)
+            if (manager == null)
             {
-                GameObject gameObject = new GameObject("BTManager", typeof(BTManager));
-                manager = gameObject.GetComponent<BTManager>();
+                return;
             }
-
+            
             if (manager.references != null && guid != null)
             {
                 if (manager.references.ContainsKey(guid))
+                {
                     Variable = manager.references[this.guid].transform;
+                    node.Task.GetType().GetField(taskFieldName).SetValue(node.Task, Variable);
+                }
             }
         }
     }

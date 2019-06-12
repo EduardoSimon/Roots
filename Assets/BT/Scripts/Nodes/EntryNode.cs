@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using BT;
 using BT.Editor;
@@ -8,15 +9,16 @@ using UnityEngine;
 public class EntryNode : BaseNode
 {
     private Texture2D iconTexture2D;
-    
-    private void Awake()
+
+    public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
     {
+        base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked);
         iconTexture2D = Resources.Load<Texture2D>("entry_icon");
     }
 
-    public override void DrawWindow(int id)
+    public override void DrawNodeView(int id)
     {
-        base.DrawWindow(id);
+        base.DrawNodeView(id);
         GUI.DrawTexture(new Rect(10,20, BTConstants.kNodeWidht - 30 , BTConstants.kNodeHeight - 30), iconTexture2D);
     }
 
@@ -26,9 +28,5 @@ public class EntryNode : BaseNode
         exitSocket.Draw();
         exitSocket.ProcessEvent(Event.current);
     }
-
-    public override void SaveNodeData()
-    {
-        
-    }
+    
 }

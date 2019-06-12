@@ -563,7 +563,7 @@ namespace BT
 
             if (entry != null)
             {
-                entry.windowRect = GUI.Window(-1, entry.windowRect, (id) => entry.DrawWindow(id),
+                entry.windowRect = GUI.Window(-1, entry.windowRect, (id) => entry.DrawNodeView(id),
                     entry.windowTitle,_skin.GetStyle("window"));
 
                 entry.DrawSockets();
@@ -594,7 +594,7 @@ namespace BT
 
         private void DrawNodeWindowCallback(int id)
         {
-            nodes[id].DrawWindow(id);
+            nodes[id].DrawNodeView(id);
         }
 
         private void DrawBackgroundGrid(float gridSpacing, float gridOpacity, Color gridColor, Rect workspaceArea)
@@ -802,7 +802,7 @@ namespace BT
 
                 //return if the socket is hooked and the current clicked socket is not a parent
                 case NodeSocket.NodeSocketType.In
-                    when socket.IsHooked && !NodeSocket.CurrentClickedSocket.Node.IsParentView:
+                    when socket.IsHooked && !NodeSocket.CurrentClickedSocket.Node.IsParentNode:
                     return;
 
                 case NodeSocket.NodeSocketType.In:
@@ -818,7 +818,7 @@ namespace BT
                     break;
                 }
 
-                case NodeSocket.NodeSocketType.Out when socket.Node.IsParentView || !socket.IsHooked:
+                case NodeSocket.NodeSocketType.Out when socket.Node.IsParentNode || !socket.IsHooked:
                     NodeSocket.CurrentClickedSocket = socket;
                     break;
             }

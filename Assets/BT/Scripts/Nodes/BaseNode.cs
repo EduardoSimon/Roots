@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using BT.Editor;
 using BT.Scripts;
-using BT.Scripts.Drawers;
 using BT.Scripts.Nodes;
-using UnityEditor;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
 
 namespace BT
 {
@@ -27,42 +23,48 @@ namespace BT
             }
         }
 
+        #region Private and Protected Members
+
         private GUISkin _skin;
         private int _id;
         private int focusID = 1;
+        [SerializeField] private bool isParentNode;
+        [SerializeField] private bool isRootView;
+        [SerializeField] private bool isEntryPoint;
+        [SerializeField] private bool isSelected;        
+        [SerializeField] private string guid;
+
         protected int VariableId;
         protected List<InspectorFieldData> inspectorVariables;
+        [SerializeField] protected ATask _task;
+        #endregion
 
+        #region Public Members
         public NodeSocket entrySocket;
         public NodeSocket exitSocket;
-
         public Rect windowRect;
         public string windowTitle;
-
         [SerializeField] public List<BlackBoardVariable> variables;
+        #endregion
 
-        [SerializeField] private bool isParentView;
-        public bool IsParentView => isParentView;
+        #region Properties and Statics
 
-        [SerializeField] private bool isRootView;
         public bool IsRootView => isRootView;
-
-        [SerializeField] private bool isSelected;
         public bool IsSelected => isSelected;
-
-        [SerializeField] private bool isEntryPoint;
         public bool IsEntryPoint => isEntryPoint;
-
-        [SerializeField] private string guid;
         public string GUID => guid;
-
-        //serialize this
         public List<BaseNode> children;
-        [SerializeField] protected ATask _task;
-
+        public ATask Task
+        {
+            get => _task;
+            set => _task = value;
+        }
+        public bool IsParentNode => isParentNode;
         public static event Action<BaseNode> OnNodeRightClicked;
         public event Action<BaseNode> OnClickedNode;
 
+        #endregion
+        
         /// <summary>
         /// Emulates the constructor of the class. Override this method calling the base one for your custom initialization
         /// </summary>
@@ -72,6 +74,7 @@ namespace BT
         public virtual void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView,
             Action<NodeSocket> OnSocketClicked)
         {
+            #if UNITY_EDITOR
             if (variables == null)
                 variables = new List<BlackBoardVariable>();
 
@@ -107,24 +110,33 @@ namespace BT
             }
 
             this.isRootView = isRootView;
-            this.isParentView = isParentView;
+            this.isParentNode = isParentView;
             this.isEntryPoint = isEntryPoint;
 
             inspectorVariables = new List<InspectorFieldData>();
 
             if (variables.Count > 0)
-                GetInspectorVariables();
+                inspectorVariables = NodeUtils.GetInspectorVariables(this);
+            #endif
         }
 
 
-        public virtual void DrawWindow(int id)
+        #region DrawingMethods
+
+         /// <summary>
+        /// Extend this method to customize  how  the node is drawn.
+        /// </summary>
+        /// <param name="id"> The unique ID of the window.</param>
+        public virtual void DrawNodeView(int id)
         {
             _id = id;
         }
 
+        /// <summary>
+        /// Override this method and to change how the sockets are drawn.
+        /// </summary>
         public virtual void DrawSockets()
         {
-            //the draw method takes into account the drag of the Node
             if (entrySocket != null)
             {
                 entrySocket.Draw();
@@ -172,6 +184,9 @@ namespace BT
                 }
             }
         }
+        #endregion
+        
+        #region Event Processing
 
         public void Drag(Vector2 delta)
         {
@@ -211,18 +226,37 @@ namespace BT
             return false;
         }
 
-        private void GetInspectorVariables()
+        #endregion
+
+        #region SavingMethods
+        
+        public virtual void CopyVariables(List<BlackBoardVariable> previousVariables)
         {
-            inspectorVariables = new List<InspectorFieldData>();
+            #if UNITY_EDITOR
+            NodeUtils.CopyVariables(this, previousVariables);
 
-            foreach (var variable in variables)
-            {
-                BTLog.Log("Getting inspector data, field: " + variable.taskFieldName + "of type: " + variable.GetType());
-
-                    inspectorVariables.Add(new InspectorFieldData(variable, variable.taskFieldName));
-            }
+            inspectorVariables = NodeUtils.GetInspectorVariables(this);
+            #endif
         }
 
+
+        public virtual void SaveNodeData()
+        {
+            foreach (var variable in variables)
+            {
+                if (variable != null)
+                {
+                    FieldInfo variableField = variable.GetType().GetField("Variable");
+                    FieldInfo taskField = _task.GetType().GetField(variable.taskFieldName);
+                    taskField.SetValue(_task, variableField.GetValue(variable));
+                }
+            }
+        }
+        
+
+        #endregion
+       
+        
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -233,81 +267,6 @@ namespace BT
             var node = other as BaseNode;
 
             return node != null && node.guid == guid;
-        }
-
-        public virtual void CopyVariables(List<BlackBoardVariable> previousVariables)
-        {
-            int count = 0;
-
-            foreach (var field in _task.GetType().GetFields().Where(info => info.FieldType != typeof(TaskStatus) && info.FieldType != typeof(BlackBoard)))
-            {
-                BTLog.Log("Copying variable with field name: " + field.Name + "of type: " + field.FieldType);
-
-                    BlackBoardVariable variable;
-
-                if (previousVariables == null)
-                {
-                    variable = CreateVariableByType(field.FieldType);
-                    
-                    if (variable != null)
-                    {
-                        AssetDatabase.AddObjectToAsset(variable, this);
-                        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
-                        Debug.Assert(variable != null, nameof(variable) + " != null");
-                        variable.node = this;
-                        variable.taskFieldName = field.Name;
-                        variables.Add(variable); 
-                    }
-                    else
-                    {
-                        BTLog.Log("Couldnt create a variable of type: " + field.FieldType);
-                    }
-
-                }
-                else
-                {
-                    variable = previousVariables[count];
-                }
-
-                variable.Init(previousVariables == null ? null : variable.guid);
-                
-                count++;
-            }
-
-            GetInspectorVariables();
-        }
-
-        private BlackBoardVariable CreateVariableByType(Type type)
-        {
-            if (type == typeof(float))
-                return CreateInstance<FloatBlackBoardVariable>();
-
-            if (type == typeof(Transform))
-                return CreateInstance<TransformBlackBoardVariable>();
-
-            if (type == typeof(int))
-                return CreateInstance<IntBlackBoardVariable>();
-
-            return null;
-        }
-
-        public ATask Task
-        {
-            get => _task;
-            set => _task = value;
-        }
-
-        public virtual void SaveNodeData()
-        {
-            foreach (var variable in variables)
-            {
-                if (variable != null)
-                {
-                    FieldInfo info = variable.GetType().GetField("Variable");
-                    FieldInfo field2 = _task.GetType().GetField(variable.taskFieldName);
-                    field2.SetValue(_task, info.GetValue(variable));
-                }
-            }
         }
     }
 }

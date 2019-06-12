@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BT;
+using BT.Scripts.Nodes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -55,7 +56,7 @@ namespace Editor
                             new NodeType(type, customNodeDrawerAttributes[0].DrawWindowType);
                     else if (customNodeDrawerAttributes.Length == 0)
                         _avaliableTasksDictionary[searchMenuAttributes[0].GetMenuPathSplit()] =
-                            new NodeType(type, typeof(DefaultNode));
+                            new NodeType(type, type.GetInterfaces().Contains(typeof(IComposite)) ? typeof(BaseNode) : typeof(LeafNode));
                 }
             }
         }

@@ -11,6 +11,7 @@ namespace BT.Scripts
         {
             
             base.DrawVariableInspector(rect, label, ref id);
+            #if UNITY_EDITOR
             GUI.SetNextControlName("Variable" + id);
             Variable = EditorGUI.IntField(rect,label,Variable);
 
@@ -23,6 +24,7 @@ namespace BT.Scripts
             {
                 GUI.FocusControl("Variable" + id);
             }
+            #endif
 
             return rect;
 

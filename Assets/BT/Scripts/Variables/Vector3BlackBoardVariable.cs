@@ -11,7 +11,7 @@ namespace BT.Scripts
         public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
             base.DrawVariableInspector(rect,label,ref id);
-            
+            #if UNITY_EDITOR
             EditorGUI.BeginChangeCheck();
             GUI.SetNextControlName("Variable"  + id);
             Variable = EditorGUI.Vector3Field( rect,label,Variable);
@@ -27,6 +27,7 @@ namespace BT.Scripts
                 GUI.FocusControl("Variable" + id);
             }
 
+            #endif
             return rect;
 
         }
