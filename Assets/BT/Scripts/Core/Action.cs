@@ -10,7 +10,7 @@ namespace BT
             Status = TaskStatus.NonInitialized;
         }
 
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
             Status = TaskStatus.Running;
             //initialize the data needed

@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace BT
 {
-    public class ActionView : BaseNodeView
+    public class ActionView : BaseNode
     {
-        public override void DrawWindow(int id)
+        public override void DrawNodeView(int id)
         {
-            base.DrawWindow(id);
+            base.DrawNodeView(id);
             #if UNITY_EDITOR
             EditorGUI.BeginChangeCheck();
             var aAction = (AAction) Task;

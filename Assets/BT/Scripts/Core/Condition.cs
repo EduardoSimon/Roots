@@ -12,7 +12,7 @@ namespace BT
 
         protected readonly bool negateCondition = false;
 
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
             Status = TaskStatus.Running;
         }
