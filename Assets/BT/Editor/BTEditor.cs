@@ -61,6 +61,7 @@ namespace BT
         private ConnectionData _entryConnectionID;
         private int entryID;
         private List<Command> _commands;
+        private BlackBoard _currentBb;
 
         public List<BaseNode> Nodes => nodes;
         public List<NodeConnection> Connections => _connections;
@@ -95,7 +96,7 @@ namespace BT
         [MenuItem("BT/Editor")]
         private static void Init()
         {
-            var _editor = GetWindow<BtEditor>("OG", true, new Type[1]
+            var _editor = GetWindow<BtEditor>("", true, new Type[1]
             {
                 typeof(SceneView)
             });
@@ -399,7 +400,7 @@ namespace BT
             else
             {
                 GUILayout.Label("Selected Node: " + _selectedNode.windowTitle, _skin.GetStyle("H2"));
-                _selectedNode.DrawInspector(inspectorRect);
+                _selectedNode.DrawInspector(inspectorRect, _currentBb);
             }
 
             GUILayout.EndVertical();
@@ -510,6 +511,8 @@ namespace BT
                     GraphInstanceID = currentGraph.GetInstanceID();
                 }
             }
+            
+            _currentBb = EditorGUILayout.ObjectField(_currentBb, typeof(BlackBoard), false, GUILayout.MaxWidth(position.width / 5), GUILayout.MinWidth(200)) as BlackBoard;
 
             EditorGUILayout.Separator();
             EditorGUI.BeginChangeCheck();

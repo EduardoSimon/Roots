@@ -16,6 +16,8 @@ public class IsTargetInRange : ACondition
     public Transform target;
     public float distanceRange;
 
+    public Transform FoundTarget;
+
     private void OnEnable()
     {
         Debug.Log("Calling on Enable;");

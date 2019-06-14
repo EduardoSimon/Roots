@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using BT.Editor;
 using BT.Scripts;
 using BT.Scripts.Nodes;
+using UnityEditor;
 using UnityEngine;
 
 namespace BT
@@ -28,23 +30,27 @@ namespace BT
         private GUISkin _skin;
         private int _id;
         private int focusID = 1;
+        private int index;
         [SerializeField] private bool isParentNode;
         [SerializeField] private bool isRootView;
         [SerializeField] private bool isEntryPoint;
-        [SerializeField] private bool isSelected;        
+        [SerializeField] private bool isSelected;
         [SerializeField] private string guid;
 
         protected int VariableId;
         protected List<InspectorFieldData> inspectorVariables;
         [SerializeField] protected ATask _task;
+
         #endregion
 
         #region Public Members
+
         public NodeSocket entrySocket;
         public NodeSocket exitSocket;
         public Rect windowRect;
         public string windowTitle;
         [SerializeField] public List<BlackBoardVariable> variables;
+
         #endregion
 
         #region Properties and Statics
@@ -54,17 +60,19 @@ namespace BT
         public bool IsEntryPoint => isEntryPoint;
         public string GUID => guid;
         public List<BaseNode> children;
+
         public ATask Task
         {
             get => _task;
             set => _task = value;
         }
+
         public bool IsParentNode => isParentNode;
         public static event Action<BaseNode> OnNodeRightClicked;
         public event Action<BaseNode> OnClickedNode;
 
         #endregion
-        
+
         /// <summary>
         /// Emulates the constructor of the class. Override this method calling the base one for your custom initialization
         /// </summary>
@@ -74,7 +82,7 @@ namespace BT
         public virtual void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView,
             Action<NodeSocket> OnSocketClicked)
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (variables == null)
                 variables = new List<BlackBoardVariable>();
 
@@ -117,13 +125,13 @@ namespace BT
 
             if (variables.Count > 0)
                 inspectorVariables = NodeUtils.GetInspectorVariables(this);
-            #endif
+#endif
         }
 
 
         #region DrawingMethods
 
-         /// <summary>
+        /// <summary>
         /// Extend this method to customize  how  the node is drawn.
         /// </summary>
         /// <param name="id"> The unique ID of the window.</param>
@@ -154,24 +162,56 @@ namespace BT
         /// Callback for drawing this node's inspector. Use EditorGUILayout or GUILayout functions for easier positioning.
         /// </summary>
         /// <param name="current"></param>
-        public virtual void DrawInspector(Rect inspectorRect)
+        public virtual void DrawInspector(Rect inspectorRect, BlackBoard blackBoard)
         {
+#if UNITY_EDITOR
             if (inspectorVariables.Count > 0)
             {
                 VariableId = 0;
 
                 Rect? previousRect = null;
+
+                float labelwidth = UnityEditor.EditorGUIUtility.labelWidth;
+                UnityEditor.EditorGUIUtility.labelWidth = inspectorRect.width / 3;
+
                 foreach (var inspectorField in inspectorVariables)
                 {
+                    if (!inspectorField.variable.isLocalVariable)
+                    {
+                        previousRect = previousRect == null
+                            ? new Rect(inspectorRect.x + 10, inspectorRect.y + 15, inspectorRect.width - 40,
+                                15)
+                            : new Rect(inspectorRect.x + 10, previousRect.Value.y + 20, inspectorRect.width - 40,
+                                15);
+                        if(blackBoard != null)
+                            index = UnityEditor.EditorGUI.Popup(previousRect.Value, inspectorField.fieldName, index,
+                            blackBoard.BBKeys.Keys.ToArray());
+                        else
+                            EditorGUILayout.HelpBox("Select a BlackBoard in the toolbar.", MessageType.Error);
+                        continue;
+                    }
+
                     if (previousRect == null)
+                    {
                         previousRect = inspectorField.variable.DrawVariableInspector(
-                            new Rect(inspectorRect.x + 10, inspectorRect.y + 20, inspectorRect.width - 20,
-                                20), inspectorField.fieldName, ref VariableId);
+                            new Rect(inspectorRect.x + 10, inspectorRect.y + 15, inspectorRect.width - 40,
+                                15), inspectorField.fieldName, ref VariableId);
+                        inspectorField.variable.isLocalVariable = GUI.Toggle(
+                            new Rect(previousRect.Value.xMax, inspectorRect.y + 15, 15, 15),
+                            inspectorField.variable.isLocalVariable, "");
+                    }
                     else
+                    {
                         previousRect = inspectorField.variable.DrawVariableInspector(
-                            new Rect(inspectorRect.x + 10, previousRect.Value.y + 25, inspectorRect.width - 20,
-                                20), inspectorField.fieldName, ref VariableId);
+                            new Rect(inspectorRect.x + 10, previousRect.Value.y + 20, inspectorRect.width - 40,
+                                15), inspectorField.fieldName, ref VariableId);
+                        inspectorField.variable.isLocalVariable = GUI.Toggle(
+                            new Rect(previousRect.Value.xMax, previousRect.Value.y, 15, 15),
+                            inspectorField.variable.isLocalVariable, "");
+                    }
                 }
+
+                UnityEditor.EditorGUIUtility.labelWidth = labelwidth;
 
                 if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.Tab)
                 {
@@ -183,9 +223,11 @@ namespace BT
                         focusID = 1;
                 }
             }
+#endif
         }
+
         #endregion
-        
+
         #region Event Processing
 
         public void Drag(Vector2 delta)
@@ -229,14 +271,14 @@ namespace BT
         #endregion
 
         #region SavingMethods
-        
+
         public virtual void CopyVariables(List<BlackBoardVariable> previousVariables)
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             NodeUtils.CopyVariables(this, previousVariables);
 
             inspectorVariables = NodeUtils.GetInspectorVariables(this);
-            #endif
+#endif
         }
 
 
@@ -252,11 +294,10 @@ namespace BT
                 }
             }
         }
-        
 
         #endregion
-       
-        
+
+
         public override int GetHashCode()
         {
             return base.GetHashCode();

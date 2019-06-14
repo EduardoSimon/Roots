@@ -78,10 +78,12 @@ namespace BT.Scripts
         public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
             base.DrawVariableInspector(rect, label, ref id);
+            
 #if UNITY_EDITOR
             GUI.SetNextControlName("Variable" + id);
+
             Variable =
-                EditorGUILayout.ObjectField(label, Variable, typeof(Transform), true) as Transform;
+                EditorGUI.ObjectField(rect,label, Variable, typeof(Transform), true) as Transform;
 
             if (Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
