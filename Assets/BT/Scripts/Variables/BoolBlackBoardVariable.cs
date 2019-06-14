@@ -5,20 +5,26 @@ namespace BT.Scripts
 {
     public class BoolBlackBoardVariable : BlackBoardVariable
     {
-        public bool BoolVariable;
+        public bool Variable;
 
-        public override void DrawVariableInspector(string label, Event current)
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            base.DrawVariableInspector(label,current);
-            
-            GUI.SetNextControlName("BoolVariable");
-            EditorGUI.BeginChangeCheck();
-            BoolVariable = GUILayout.Toggle(BoolVariable, "Is Logging an Error?");
-            if (EditorGUI.EndChangeCheck())
-            {
-                GUI.FocusControl("BoolVariable");
-            }
+            base.DrawVariableInspector(rect, label, ref id);
+#if UNITY_EDITOR
+            GUI.SetNextControlName("Variable" + id);
+            Variable = GUI.Toggle(rect, Variable, label);
 
+            if (Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl(null);
+            }
+            else if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
+#endif
+            
+            return rect;
         }
     }
 }

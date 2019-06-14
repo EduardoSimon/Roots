@@ -6,30 +6,32 @@ namespace BT.Scripts
 {
     public class StringBlackBoardVariable : BlackBoardVariable
     {
-        [SerializeField] public string StringVariable;
+        [SerializeField] public string Variable;
         
-        public override void DrawVariableInspector(string label, Event current)
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            base.DrawVariableInspector(label,current);
+
+            base.DrawVariableInspector(rect,label,ref id);
             
-            GUI.SetNextControlName("StringVariable");
-            
-           
+#if UNITY_EDITOR
             EditorGUI.BeginChangeCheck();
-            StringVariable = EditorGUILayout.TextField( label,StringVariable);
-            if (EditorGUI.EndChangeCheck())
-            {
-                GUI.FocusControl("StringVariable");
-            }
-
-            if (current.type != EventType.MouseDown) return;
-
-            if (!GUILayoutUtility.GetLastRect().Contains(current.mousePosition))
+            GUI.SetNextControlName("Variable"  + id);
+            Variable = EditorGUI.TextField( rect,label,Variable);
+            
+            
+            if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
                 GUI.FocusControl(null);
-                Event.current.Use();
+                
             }
-
+            else if(Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
+#endif
+            
+            return rect;
+            
         }
     }
 }

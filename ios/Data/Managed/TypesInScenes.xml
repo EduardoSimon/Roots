@@ -1,0 +1,103 @@
+<linker>
+	<assembly fullname="UnityEngine">
+		<type fullname="UnityEngine.Object" preserve="nothing"/>
+		<type fullname="UnityEngine.Material" preserve="nothing"/>
+		<type fullname="UnityEditor.MonoScript" preserve="nothing"/>
+		<type fullname="UnityEditor.UnityConnectSettings" preserve="nothing"/>
+		<type fullname="UnityEditor.VFXManager" preserve="nothing"/>
+		<type fullname="UnityEditor.AudioManager" preserve="nothing"/>
+		<type fullname="UnityEditor.PhysicsManager" preserve="nothing"/>
+		<type fullname="UnityEngine.Shader" preserve="nothing"/>
+		<type fullname="UnityEngine.TextAsset" preserve="nothing"/>
+		<type fullname="UnityEditor.PlayerSettings" preserve="nothing"/>
+		<type fullname="UnityEditor.TimeManager" preserve="nothing"/>
+		<type fullname="UnityEditor.InputManager" preserve="nothing"/>
+		<type fullname="UnityEditor.TagManager" preserve="nothing"/>
+		<type fullname="UnityEditor.MonoManager" preserve="nothing"/>
+		<type fullname="UnityEngine.Rendering.GraphicsSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.QualitySettings" preserve="nothing"/>
+		<type fullname="UnityEditor.Physics2DSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.AudioBehaviour" preserve="nothing"/>
+		<type fullname="UnityEngine.Component" preserve="nothing"/>
+		<type fullname="UnityEngine.GameObject" preserve="nothing"/>
+		<type fullname="UnityEngine.Mesh" preserve="nothing"/>
+		<type fullname="UnityEngine.Transform" preserve="nothing"/>
+		<type fullname="UnityEngine.Sprite" preserve="nothing"/>
+		<type fullname="UnityEngine.Texture2D" preserve="nothing"/>
+		<type fullname="UnityEngine.Collider" preserve="nothing"/>
+		<type fullname="UnityEngine.Light" preserve="nothing"/>
+		<type fullname="UnityEngine.MonoBehaviour" preserve="nothing"/>
+		<type fullname="UnityEngine.Renderer" preserve="nothing"/>
+		<type fullname="UnityEngine.Behaviour" preserve="nothing"/>
+		<type fullname="UnityEngine.Texture" preserve="nothing"/>
+		<type fullname="UnityEngine.Camera" preserve="nothing"/>
+		<type fullname="UnityEngine.Canvas" preserve="nothing"/>
+		<type fullname="UnityEngine.CanvasRenderer" preserve="nothing"/>
+		<type fullname="UnityEngine.RectTransform" preserve="nothing"/>
+		<type fullname="UnityEngine.Font" preserve="nothing"/>
+		<type fullname="UnityEngine.MeshRenderer" preserve="nothing"/>
+		<type fullname="UnityEngine.AudioListener" preserve="nothing"/>
+		<type fullname="UnityEngine.LightmapSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.MeshFilter" preserve="nothing"/>
+		<type fullname="UnityEngine.RenderSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.MeshCollider" preserve="nothing"/>
+		<type fullname="UnityEngine.BoxCollider" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Assembly-CSharp-Editor">
+		<type fullname="BT.Editor.TooltipWindow" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="BT.Editor.BehaviorTreeGraph" preserve="nothing"/>
+		<type fullname="BT.NodeSocket" preserve="nothing"/>
+		<type fullname="BT.Runtime.BTManager" preserve="nothing"/>
+		<type fullname="BT.Runtime.BehaviorTreeController" preserve="nothing"/>
+		<type fullname="BT.Scripts.Core.Seek" preserve="nothing"/>
+		<type fullname="BT.Scripts.Drawers.NodeConnection" preserve="nothing"/>
+		<type fullname="BT.Scripts.FloatBlackBoardVariable" preserve="nothing"/>
+		<type fullname="BT.Scripts.Nodes.LeafNode" preserve="nothing"/>
+		<type fullname="BT.Scripts.TransformBlackBoardVariable" preserve="nothing"/>
+		<type fullname="BT.Sequence" preserve="nothing"/>
+		<type fullname="BT.SequenceNode" preserve="nothing"/>
+		<type fullname="BTDebugCanvasController" preserve="nothing"/>
+		<type fullname="CameraBillboard" preserve="nothing"/>
+		<type fullname="EntryNode" preserve="nothing"/>
+		<type fullname="IsTargetInRange" preserve="nothing"/>
+		<type fullname="PlayerMovement" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Tayx.Graphy">
+		<type fullname="Tayx.Graphy.Advanced.G_AdvancedData" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Audio.G_AudioGraph" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Audio.G_AudioManager" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Audio.G_AudioMonitor" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Audio.G_AudioText" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Fps.G_FpsGraph" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Fps.G_FpsManager" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Fps.G_FpsMonitor" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Fps.G_FpsText" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.GraphyDebugger" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.GraphyManager" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Ram.G_RamGraph" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Ram.G_RamManager" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Ram.G_RamMonitor" preserve="nothing"/>
+		<type fullname="Tayx.Graphy.Ram.G_RamText" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Unity.TextMeshPro">
+		<type fullname="TMPro.TMP_FontAsset" preserve="nothing"/>
+		<type fullname="TMPro.TMP_Settings" preserve="nothing"/>
+		<type fullname="TMPro.TMP_SpriteAsset" preserve="nothing"/>
+		<type fullname="TMPro.TMP_StyleSheet" preserve="nothing"/>
+		<type fullname="TMPro.TextMeshProUGUI" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="UnityEditor.TestRunner">
+		<type fullname="UnityEditor.TestTools.TestRunner.TestListCacheData" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="UnityEngine.UI">
+		<type fullname="UnityEngine.EventSystems.EventSystem" preserve="nothing"/>
+		<type fullname="UnityEngine.EventSystems.StandaloneInputModule" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.CanvasScaler" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.GraphicRaycaster" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Image" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Shadow" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Text" preserve="nothing"/>
+	</assembly>
+</linker>

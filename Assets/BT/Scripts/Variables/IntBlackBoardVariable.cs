@@ -5,20 +5,28 @@ namespace BT.Scripts
 {
     public class IntBlackBoardVariable : BlackBoardVariable
     {
-        public int IntVariable;    
+        public int Variable;    
         
-        public override void DrawVariableInspector(string label, Event current)
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            base.DrawVariableInspector(label, current);
             
-            GUI.SetNextControlName("IntVariable");
-            EditorGUI.BeginChangeCheck();
-            IntVariable = EditorGUILayout.IntField(label, IntVariable);
+            base.DrawVariableInspector(rect, label, ref id);
+            #if UNITY_EDITOR
+            GUI.SetNextControlName("Variable" + id);
+            Variable = EditorGUI.IntField(rect,label,Variable);
 
-            if (EditorGUI.EndChangeCheck())
+
+            if (Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
-                GUI.FocusControl("IntVariable");
+                GUI.FocusControl(null);
             }
+            else if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
+            #endif
+
+            return rect;
 
         }
     }

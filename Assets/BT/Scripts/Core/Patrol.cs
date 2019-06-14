@@ -2,13 +2,13 @@
 
 namespace BT
 {
-    [SearchMenu("Action/Patrol")]
-    [CustomNodeDrawer(typeof(AAction))]
-    public class Patrol : AAction
+    [SearchTaskPath("Action/Patrol")]
+    [CustomNodeDrawer(typeof(Action))]
+    public class Patrol : Action
     {
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
-            base.OnInitialize();
+            base.OnFirstTick();
             Debug.Log("Initialized Patrol Action");
         }
 

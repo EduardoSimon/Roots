@@ -1,17 +1,12 @@
 namespace BT
 {
-    [CustomNodeDrawer(typeof(Action))]
-    public abstract class AAction : ATask
+    public class AAction : ATask
     {
         public BlackBoard board;
 
-        public AAction()
+        protected override void OnFirstTick()
         {
-            Status = TaskStatus.NonInitialized;
-        }
-
-        protected override void OnInitialize()
-        {
+            base.OnFirstTick();
             Status = TaskStatus.Running;
             //initialize the data needed
         }
@@ -24,6 +19,7 @@ namespace BT
 
         protected override void OnTerminate(TaskStatus taskStatus)
         {
+            base.OnTerminate(taskStatus);
             //close the data needed
         }
     }

@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using BT.Scripts;
 using BT.Scripts.Drawers;
 using UnityEditor;
-using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace BT.Editor.ContextualCommands
 {
@@ -19,6 +20,16 @@ namespace BT.Editor.ContextualCommands
 
             foreach (var connection in connectionsToRemove)
             {
+                if (connection.StartSocket.Node.IsParentNode && connection.StartSocket.Node.children.Contains(clickedNode))
+                {
+                    connection.StartSocket.Node.children.Remove(clickedNode);
+
+                    if (!(connection.StartSocket.Node.Task is IComposite cast))
+                        throw new NullReferenceException("Not null allowed as a IComposite task in a Parent Node");
+                    
+                    cast.RemoveChildren(clickedNode.Task);
+                }
+                
                 connection.StartSocket.IsHooked = false;
                 connection.EndSocket.IsHooked = false;
                 context.Connections.Remove(connection);
@@ -37,6 +48,14 @@ namespace BT.Editor.ContextualCommands
             }
             if(clickedNode.exitSocket != null)
                 Object.DestroyImmediate(clickedNode.exitSocket,true);
+
+            if (clickedNode.variables.Count > 0)
+            {
+                foreach (var clickedNodeVariable in clickedNode.variables)
+                {
+                    Object.DestroyImmediate(clickedNodeVariable);
+                }
+            }
             Object.DestroyImmediate(clickedNode.entrySocket,true);
             Object.DestroyImmediate(clickedNode.Task,true);
             Object.DestroyImmediate(clickedNode,true);

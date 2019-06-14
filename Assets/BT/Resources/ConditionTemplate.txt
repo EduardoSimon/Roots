@@ -1,0 +1,11 @@
+using UnityEngine;
+using System.Collections;
+using BT;
+ 
+public class #SCRIPTNAME# : Condition
+{
+    protected virtual bool isConditionSatisfied()
+    {
+        return false;
+    }
+}

@@ -9,23 +9,26 @@ namespace BT.Scripts
     public class BlackBoardVariable : ScriptableObject
     {
         public BaseNode node;
+        public string taskFieldName;
         [SerializeField] public string guid;
 
         public string Guid => guid;
 
         public  virtual void SaveBlackboardVariable() {}
 
-        private void OnEnable()
-        {
-
-        }
-
         public virtual void Init(string guid)
         {
+            #if UNITY_EDITOR
             this.guid = guid ?? GUID.Generate().ToString();
+            #endif
         }
-        
-        public virtual void DrawVariableInspector(string label, Event current) {}
 
+        public virtual Rect DrawVariableInspector(Rect rect, string label, ref int id)
+        {
+            id++;
+            return new Rect(0, 0, 0, 0);
+        }
+
+        public virtual void OnTreeInit() {}
     }
 }

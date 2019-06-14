@@ -7,7 +7,7 @@ namespace BT
             Status = testStatus;
         }
 
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
         }
 

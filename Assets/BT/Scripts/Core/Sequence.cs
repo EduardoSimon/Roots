@@ -1,26 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace BT
 {
     [CustomNodeDrawer(typeof(SequenceNode))]
-    [SearchMenu("Composites/Sequence")]
+    [SearchTaskPath("Composites/Sequence")]
     [TaskTooltip("BALABABAB sequence")]
     public class Sequence : ATask, IComposite
     {
+        [SerializeField]private List<ATask> _children;
         /// <summary>
         /// This function is called when the object becomes enabled and active.
         /// </summary>
         void OnEnable()
         {
             if (Children == null)
-                Children = new List<ATask>();
+                _children = new List<ATask>();
 
             Status = TaskStatus.NonInitialized;
         }
 
-        public List<ATask> Children { get; set; }
+        public List<ATask> Children
+        {
+            get => _children;
+            set => _children = value;
+        }
 
         public void AddChild(ATask task)
         {
@@ -42,11 +48,6 @@ namespace BT
             Children.Clear();
         }
 
-        protected override void OnInitialize()
-        {
-            //todo implement
-        }
-
         protected override TaskStatus Update()
         {
             //if the sequence is empty we return a failed result
@@ -58,7 +59,9 @@ namespace BT
                 var status = Children[i].Tick();
 
                 if (status != TaskStatus.Succeeded)
+                {
                     return status;
+                }
 
                 //if we are at the end and the sequence did not fail its considered a success
                 if (i == Children.Count - 1)
@@ -71,7 +74,13 @@ namespace BT
 
         protected override void OnTerminate(TaskStatus status)
         {
-            //todo implement
+            if (Children != null)
+            {
+                foreach (var task in Children)
+                    task.Status = status;
+            }
+
+
             //throw new NotImplementedException();
         }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BT
 {
-    [SearchMenu("Composites/Parallel")]
+    [SearchTaskPath("Composites/Parallel")]
     public class Parallel : ATask, IComposite
     {
         public enum Policy
@@ -16,6 +16,7 @@ namespace BT
 
         protected Policy _successPolicy;
 
+        //todo refactor this, cant have constructors  in scriptable objects
         public Parallel(Policy successPolicy, Policy failurePolicy)
         {
             _successPolicy = successPolicy;
@@ -26,7 +27,7 @@ namespace BT
 
         public List<ATask> Children { get; set; }
 
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
             Status = TaskStatus.Running;
         }

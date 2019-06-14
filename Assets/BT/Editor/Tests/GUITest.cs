@@ -4,6 +4,7 @@ using BT.Core;
 using BT.Editor;
 using BT.Scripts.Core;
 using BT.Scripts.Drawers;
+using BT.Scripts.Nodes;
 using Editor;
 using NUnit.Framework;
 using UnityEditor;
@@ -89,10 +90,9 @@ namespace GUITests
 
         [Test]
         [TestCase(typeof(SequenceNode), typeof(Sequence))]
-        [TestCase(typeof(DefaultNode), typeof(Selector))]
-        [TestCase(typeof(SeekNode), typeof(Seek))]
+        [TestCase(typeof(LeafNode), typeof(Seek))]
         [TestCase(typeof(LogNode), typeof(Log))]
-        [TestCase(typeof(PatrolNode), typeof(Patrol))]
+        [TestCase(typeof(LeafNode), typeof(Patrol))]
         public void Can_add_node_of_type(Type drawerType, Type taskType)
         {
             editor.CreateNodeView(new SearchTasksWindow.NodeType(taskType, drawerType),
@@ -103,24 +103,23 @@ namespace GUITests
 
         [Test]
         [TestCase(typeof(SequenceNode), typeof(Sequence))]
-        [TestCase(typeof(DefaultNode), typeof(Selector))]
-        [TestCase(typeof(SeekNode), typeof(Seek))]
-        [TestCase(typeof(LogNode), typeof(Log))]
-        [TestCase(typeof(PatrolNode), typeof(Patrol))]
+        [TestCase(typeof(LeafNode), typeof(Seek))]
+        [TestCase(typeof(LeafNode), typeof(Log))]
+        [TestCase(typeof(LeafNode), typeof(Patrol))]
         public void Set_root_view(Type drawerType, Type taskType)
         {
             editor.CreateNodeView(new SearchTasksWindow.NodeType(taskType, drawerType),
                 new Rect(100, 100, BTConstants.kNodeWidht, BTConstants.kNodeHeight));
 
             NodeSocket.CurrentClickedSocket = editor.entry.exitSocket;
-            
+
             editor.OnNodeSocketClicked(editor.Nodes[0].entrySocket);
-            
+
             Assert.That(editor.Connections[0].StartSocket != null);
             Assert.That(editor.Connections[0].EndSocket != null);
             Assert.That(editor.Connections.Count == 1);
         }
-        
+
         [Test]
         [TestCase(0)]
         [TestCase(1)]
@@ -135,9 +134,9 @@ namespace GUITests
                 new Rect(100, 100, BTConstants.kNodeWidht, BTConstants.kNodeHeight));
 
             NodeSocket.CurrentClickedSocket = editor.entry.exitSocket;
-            
+
             editor.OnNodeSocketClicked(editor.Nodes[0].entrySocket);
-            
+
             Assert.That(editor.Connections[0].StartSocket != null);
             Assert.That(editor.Connections[0].EndSocket != null);
             Assert.That(editor.Connections.Count == 1);
@@ -146,18 +145,15 @@ namespace GUITests
             {
                 editor.CreateNodeView(new SearchTasksWindow.NodeType(typeof(Sequence), typeof(SequenceNode)),
                     new Rect(100 + i, 100 + i, BTConstants.kNodeWidht, BTConstants.kNodeHeight));
-                
+
                 NodeSocket.CurrentClickedSocket = editor.Nodes[editor.Nodes.Count - 2].exitSocket;
                 editor.OnNodeSocketClicked(editor.Nodes[editor.Nodes.Count - 1].entrySocket);
-                
+
                 Assert.That(editor.Connections[i].StartSocket != null);
                 Assert.That(editor.Connections[i].EndSocket != null);
             }
-            
-            Assert.That(editor.Connections.Count == n + 1);
 
-            
-            
+            Assert.That(editor.Connections.Count == n + 1);
         }
     }
 }

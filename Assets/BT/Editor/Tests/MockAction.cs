@@ -1,6 +1,6 @@
 namespace BT.Editor.Tests
 {
-    public class MockAction : AAction
+    public class MockAction : Action
     {
     }
 }

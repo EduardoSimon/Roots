@@ -1,6 +1,8 @@
 using System;
+using BT.Runtime;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using BT.Runtime;
 
 namespace BT
 {
@@ -8,20 +10,35 @@ namespace BT
     public class ATask : ScriptableObject
     {
         public TaskStatus Status;
-
-        private void OnEnable()
+        protected BTManager _manager;
+        public Transform transform;
+        
+        /// <summary>
+        /// This is called when the tree is initialized. Use it to gather your references
+        /// </summary>
+        public virtual void OnTreeInitialize()
         {
-            hideFlags = HideFlags.HideInHierarchy;
+            _manager = BTManager.Instance;
         }
+        
+        /// <summary>
+        /// This method is called the first time is tick.
+        /// </summary>
+        protected virtual void OnFirstTick() {}
 
-        protected virtual void OnInitialize() { }
-
+        /// <summary>
+        /// This method is called every tick of the tree when it hasnt succeded or failed.
+        /// </summary>
+        /// <returns></returns>
         protected virtual TaskStatus Update()
         {
             return TaskStatus.Invalid;
         }
 
-        protected virtual void OnTerminate(TaskStatus status) { }
+        protected virtual void OnTerminate(TaskStatus status)
+        {
+            status = TaskStatus.NonInitialized;
+        }
 
         public TaskStatus Tick()
         {
@@ -32,7 +49,12 @@ namespace BT
             }
 
             if (Status == TaskStatus.NonInitialized)
-                OnInitialize();
+            {
+                OnFirstTick();
+            }
+
+            if (_manager != null && _manager.isDebugMode)
+                _manager.CurrentTickingController.currentTickingTask = this;
 
             Status = Update();
 
@@ -45,8 +67,16 @@ namespace BT
         public void Abort()
         {
             Status = TaskStatus.Aborted;
-        } 
-       
-    }
+        }
 
+        public void Reset()
+        {
+            Status = TaskStatus.NonInitialized;
+        }
+
+        public virtual void OnDrawGizmos()
+        {
+            
+        }
+    }
 }

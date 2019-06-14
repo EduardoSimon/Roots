@@ -1,4 +1,5 @@
 using System.Data;
+using BT.Runtime;
 using UnityEngine;
 
 namespace BT
@@ -16,22 +17,24 @@ namespace BT
     [System.Serializable]
     public class BehaviorTree
     {
-        [SerializeField]private ATask rootNode;
+        [SerializeField]private ATask rootTask;
 
-        public ATask RootNode => rootNode;
+        public ATask RootTask => rootTask;
 
         public TaskStatus Tick()
         {
-            return RootNode.Tick();
+            return RootTask.Tick();
         }
 
         public void AddRoot(ATask task)
         {
             if (task != null)
-                rootNode = task;
+                rootTask = task;
             else
                 throw new NoNullAllowedException();
         }
+        
+        
         
         
     }

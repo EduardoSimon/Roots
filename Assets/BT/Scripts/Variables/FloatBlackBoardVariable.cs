@@ -1,30 +1,34 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BT.Scripts
 {
     public class FloatBlackBoardVariable : BlackBoardVariable
     {
-        public float FloatVariable;
+        public float Variable = 5f;
 
-        public override void SaveBlackboardVariable()
-        {
-            base.SaveBlackboardVariable();
-        }
 
-        public override void DrawVariableInspector(string label, Event current)
+        public override Rect DrawVariableInspector(Rect rect, string label,ref int id)
         {
-            base.DrawVariableInspector(label, current);
+            base.DrawVariableInspector(rect,label, ref id);
+#if UNITY_EDITOR
+            GUI.SetNextControlName("Variable" + id);
+            Variable = EditorGUI.FloatField(rect,label,Variable);
             
-            GUI.SetNextControlName("FloatVariable");
-            EditorGUI.BeginChangeCheck();
-            FloatVariable = EditorGUILayout.FloatField(label, FloatVariable);
-
-            if (EditorGUI.EndChangeCheck())
+            if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
-                GUI.FocusControl("FloatVariable");
+                GUI.FocusControl(null);
+                
             }
+            else if(Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
+            
+#endif
 
+            return rect;
         }
     }
 }

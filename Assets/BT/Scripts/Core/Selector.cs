@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BT
 {
-    [SearchMenu("Composites/Selector")]
+    [SearchTaskPath("Composites/Selector")]
     [TaskTooltip("A selector is bla bla bla")]
     public class Selector : ATask, IComposite
     {
@@ -35,7 +35,7 @@ namespace BT
             Children.Clear();
         }
 
-        protected override void OnInitialize() { }
+        protected override void OnFirstTick() { }
 
         protected override TaskStatus Update()
         {

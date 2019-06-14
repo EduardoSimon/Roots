@@ -5,16 +5,16 @@ using UnityEngine;
 namespace BT.Core
 {
     [CustomNodeDrawer(typeof(LogNode))]
-    [SearchMenu("Action/Log")]
+    [SearchTaskPath("Action/Log")]
     [TaskTooltip("HI IM A LOG")]
-    public class Log : AAction
+    public class Log : Action
     {
         public string message;
         public bool isLogError;
         
-        protected override void OnInitialize()
+        protected override void OnFirstTick()
         {
-            base.OnInitialize();
+            base.OnFirstTick();
         }
 
         protected override TaskStatus Update()

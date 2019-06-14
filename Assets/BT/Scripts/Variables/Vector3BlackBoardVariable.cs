@@ -5,20 +5,31 @@ namespace BT.Scripts
 {
     public class Vector3BlackBoardVariable : BlackBoardVariable
     {
-        public Vector3 Vector3Variable;
+        public Vector3 Variable;
         
-        public override void DrawVariableInspector(string label, Event current)
+        
+        public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
-            base.DrawVariableInspector(label, current);
-            
-            GUI.SetNextControlName("Vector3Variable");
+            base.DrawVariableInspector(rect,label,ref id);
+            #if UNITY_EDITOR
             EditorGUI.BeginChangeCheck();
-            Vector3Variable = EditorGUILayout.Vector3Field(label,Vector3Variable);
-
-            if (EditorGUI.EndChangeCheck())
+            GUI.SetNextControlName("Variable"  + id);
+            Variable = EditorGUI.Vector3Field( rect,label,Variable);
+            
+            
+            if(Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
-                GUI.FocusControl("Vector3Variable");
+                GUI.FocusControl(null);
+                
             }
+            else if(Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            {
+                GUI.FocusControl("Variable" + id);
+            }
+
+            #endif
+            return rect;
+
         }
     }
 }
