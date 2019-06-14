@@ -2,9 +2,9 @@
 
 namespace BT
 {
-    [SearchTaskPath("Action/Patrol")]
-    [CustomNodeDrawer(typeof(AAction))]
-    public class Patrol : AAction
+    [SearchMenu("Action/Patrol")]
+    [CustomNodeDrawer(typeof(Action))]
+    public class Patrol : Action
     {
         protected override void OnFirstTick()
         {

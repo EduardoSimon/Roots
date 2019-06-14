@@ -10,6 +10,7 @@ namespace BT
     {
         public TaskStatus Status;
         protected BTManager _manager;
+        public Transform transform;
         
         /// <summary>
         /// This is called when the tree is initialized. Use it to gather your references

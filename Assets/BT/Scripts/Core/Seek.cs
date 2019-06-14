@@ -8,7 +8,7 @@ namespace BT.Scripts.Core
     [CustomNodeDrawer(typeof(LeafNode))]
     [SearchTaskPath("Action/Seek")]
     [TaskTooltip("The Seek Task follows its target until reaching a minimum distance.")]
-    public class Seek : AAction
+    public class Seek : Action
     {
         public Transform target;
         public float speed = 10f;

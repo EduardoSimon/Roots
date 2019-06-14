@@ -7,7 +7,7 @@ namespace BT.Core
     [CustomNodeDrawer(typeof(LogNode))]
     [SearchTaskPath("Action/Log")]
     [TaskTooltip("HI IM A LOG")]
-    public class Log : AAction
+    public class Log : Action
     {
         public string message;
         public bool isLogError;
