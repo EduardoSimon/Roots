@@ -22,6 +22,8 @@ namespace BT.Runtime
         }
 
         public BehaviorTreeGraph treeGraph;
+        public BlackBoard treeBlackboard;
+        
         public ATask currentTickingTask;
         [TextArea] [SerializeField] private string behaviorTreeDescription;
         [SerializeField] public EUpdateType updateType;
@@ -175,6 +177,25 @@ namespace BT.Runtime
                     nodes.Task.Reset();
                 }
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            DrawTreeGizmos(_tree.RootTask);
+        }
+
+        private void DrawTreeGizmos(ATask task)
+        {
+            if (task is IComposite composite)
+            {
+                foreach (var child
+                    in composite.Children)
+                {
+                    DrawTreeGizmos(child);
+                }
+            }
+            
+            task.OnDrawGizmos();
         }
     }
 }

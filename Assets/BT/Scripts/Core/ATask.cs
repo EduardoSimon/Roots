@@ -73,5 +73,10 @@ namespace BT
         {
             Status = TaskStatus.NonInitialized;
         }
+
+        public virtual void OnDrawGizmos()
+        {
+            
+        }
     }
 }

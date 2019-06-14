@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Name: IsTargetInRange
   m_EditorClassIdentifier: 
   Status: 3
+  transform: {fileID: 0}
   target: {fileID: 0}
   distanceRange: 5
 --- !u!114 &-43797167277382486
@@ -307,6 +308,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   Status: 3
+  transform: {fileID: 0}
   _children:
   - {fileID: -1774600931277735034}
   - {fileID: 6797482271865271472}
@@ -354,6 +356,7 @@ MonoBehaviour:
   m_Name: Seek
   m_EditorClassIdentifier: 
   Status: 3
+  transform: {fileID: 0}
   board: {fileID: 0}
   target: {fileID: 0}
   speed: 5
