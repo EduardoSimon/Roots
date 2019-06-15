@@ -152,14 +152,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f31160f463622d4091cbb11d0ae1ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeGraph: {fileID: 11400000, guid: dde33037d5de046088a1b7249018ae6c, type: 2}
-  treeBlackboard: {fileID: 0}
+  treeGraph: {fileID: 0}
   currentTickingTask: {fileID: 0}
   behaviorTreeDescription: 
   updateType: 0
   startOnEnable: 1
   pauseOnDisabled: 0
-  restartOnComplete: 1
+  restartOnComplete: 0
   minimunLogLevel: 0
 --- !u!65 &38728038
 BoxCollider:

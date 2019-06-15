@@ -1,0 +1,16 @@
+using UnityEngine;
+using System.Collections;
+using BT;
+ 
+public class #SCRIPTNAME# : Decorator
+{
+    protected override TaskStatus Update()
+    {
+        if (child != null)
+        {
+            TaskStatus childStatus = child.Tick();
+        }
+        
+        return TaskStatus.Succeeded;
+    }
+}

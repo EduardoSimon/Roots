@@ -635,17 +635,8 @@ namespace BT
                     if (e.button == 0)
                     {
                         if (position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
-                        {
-                            UDebug.Log("Contained");
                             Focus();
 
-                        }
-                        else
-                        {
-                            UDebug.Log("Not Contained");
-
-                        }
-                        
                     }
                     break;
                 case EventType.MouseDrag:

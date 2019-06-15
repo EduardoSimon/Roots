@@ -14,6 +14,7 @@ namespace BT
 
         protected override void OnFirstTick()
         {
+            base.OnFirstTick();
             Status = TaskStatus.Running;
         }
 
