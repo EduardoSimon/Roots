@@ -35,7 +35,7 @@ namespace BT.Editor
             instance.windowRect = windowRect;
             instance.windowTitle = instance.Task.name;
 
-            if (instance.Task is IComposite)
+            if (instance.Task is IComposite || instance.Task is Decorator)
             {
                 instance.exitSocket = ScriptableObject.CreateInstance<NodeSocket>();
                 instance.exitSocket.Init(
@@ -54,11 +54,11 @@ namespace BT.Editor
 
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(nodeContainer));
 
-            if (instance.Task is IComposite cast)
+            if (instance.Task is IComposite  || instance.Task is Decorator)
                 instance.Init(null, false, editor.Nodes.Count == 0 ? true : false,
-                    true, OnNodeSocketClicked); // if we pass null to the guid a new one will be created
+                    true, OnNodeSocketClicked,editor.currentGraph); // if we pass null to the guid a new one will be created
             else
-                instance.Init(null, false, editor.Nodes.Count == 0 ? true : false, false, OnNodeSocketClicked);
+                instance.Init(null, false, editor.Nodes.Count == 0 ? true : false, false, OnNodeSocketClicked,editor.currentGraph);
 
             instance.CopyVariables(null);
             return instance;

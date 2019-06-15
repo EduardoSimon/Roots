@@ -24,10 +24,15 @@ namespace BT.Editor.ContextualCommands
                 {
                     connection.StartSocket.Node.children.Remove(clickedNode);
 
-                    if (!(connection.StartSocket.Node.Task is IComposite cast))
+                    if (!(connection.StartSocket.Node.Task is IComposite cast) || !(connection.StartSocket.Node.Task is Decorator decorator))
                         throw new NullReferenceException("Not null allowed as a IComposite task in a Parent Node");
                     
-                    cast.RemoveChildren(clickedNode.Task);
+                    if(cast != null)
+                        cast.RemoveChildren(clickedNode.Task);
+                    
+                    if(decorator != null)
+                        cast.RemoveChildren(clickedNode.Task);
+                    
                 }
                 
                 connection.StartSocket.IsHooked = false;

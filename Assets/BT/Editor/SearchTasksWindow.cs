@@ -56,7 +56,11 @@ namespace Editor
                             new NodeType(type, customNodeDrawerAttributes[0].DrawWindowType);
                     else if (customNodeDrawerAttributes.Length == 0)
                         _avaliableTasksDictionary[searchMenuAttributes[0].GetMenuPathSplit()] =
-                            new NodeType(type, type.GetInterfaces().Contains(typeof(IComposite)) ? typeof(BaseNode) : typeof(LeafNode));
+                            new NodeType(type,
+                                type.GetInterfaces().Contains(typeof(IComposite)) || type == typeof(Decorator) ||
+                                type.IsSubclassOf(typeof(Decorator))
+                                    ? typeof(BaseNode)
+                                    : typeof(LeafNode));
                 }
             }
         }
@@ -78,7 +82,6 @@ namespace Editor
                 Event.current.keyCode == KeyCode.Escape && focusedWindow == this ||
                 Event.current.keyCode == KeyCode.Escape || Event.current.type == EventType.MouseLeaveWindow)
             {
-                
                 parentWindow.Focus();
                 Close();
                 parentWindow.searchableTaskWindow = null;

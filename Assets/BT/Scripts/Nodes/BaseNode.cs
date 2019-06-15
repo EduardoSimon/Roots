@@ -11,7 +11,7 @@ using UnityEngine;
 namespace BT
 {
     [SerializeField]
-    public abstract class BaseNode : ScriptableObject, ISavableNode
+    public class BaseNode : ScriptableObject, ISavableNode
     {
         public class InspectorFieldData
         {
@@ -30,13 +30,14 @@ namespace BT
         private GUISkin _skin;
         private int _id;
         private int focusID = 1;
-        private int index;
         [SerializeField] private bool isParentNode;
         [SerializeField] private bool isRootView;
         [SerializeField] private bool isEntryPoint;
         [SerializeField] private bool isSelected;
         [SerializeField] private string guid;
-
+        [SerializeField] private BehaviorTreeGraph _graphContext;
+        [SerializeField] private string[] avaliableBBKeys;
+        
         protected int VariableId;
         protected List<InspectorFieldData> inspectorVariables;
         [SerializeField] protected ATask _task;
@@ -80,9 +81,10 @@ namespace BT
         /// <param name="isRootView"> Is the entry view of the graph</param>
         /// <param name="isParentView"> Is allowed to have children</param>
         public virtual void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView,
-            Action<NodeSocket> OnSocketClicked)
+            Action<NodeSocket> OnSocketClicked, BehaviorTreeGraph context)
         {
 #if UNITY_EDITOR
+            _graphContext = context;
             if (variables == null)
                 variables = new List<BlackBoardVariable>();
 
@@ -183,11 +185,22 @@ namespace BT
                                 15)
                             : new Rect(inspectorRect.x + 10, previousRect.Value.y + 20, inspectorRect.width - 40,
                                 15);
-                        if(blackBoard != null)
-                            index = UnityEditor.EditorGUI.Popup(previousRect.Value, inspectorField.fieldName, index,
-                            blackBoard.BBKeys.Keys.ToArray());
+                        if (blackBoard != null)
+                        {
+                            avaliableBBKeys = blackBoard.Keys.Where(key =>
+                                blackBoard.GetVariable<BlackBoardVariable>(key).GetType().GetField("Variable")
+                                    .FieldType == inspectorField.variable.GetType()
+                                    .GetField("Variable").FieldType).ToArray();
+                            inspectorField.variable.bbIndex = UnityEditor.EditorGUI.Popup(previousRect.Value,
+                                inspectorField.fieldName, inspectorField.variable.bbIndex, avaliableBBKeys);
+                        }
                         else
-                            EditorGUILayout.HelpBox("Select a BlackBoard in the toolbar.", MessageType.Error);
+                            EditorGUI.HelpBox(previousRect.Value, "Select a BlackBoard in the toolbar.",
+                                MessageType.Error);
+
+                        inspectorField.variable.isLocalVariable = GUI.Toggle(
+                            new Rect(previousRect.Value.xMax, previousRect.Value.y, 15, 15),
+                            inspectorField.variable.isLocalVariable, "");
                         continue;
                     }
 
@@ -288,9 +301,26 @@ namespace BT
             {
                 if (variable != null)
                 {
+                    bool isLocalField = variable.GetType().GetField("isLocalVariable").GetValue(variable) is bool
+                        ? (bool) variable.GetType().GetField("isLocalVariable").GetValue(variable)
+                        : throw new InvalidCastException("Couldnt find the field isLocalVariable in the " +
+                                                         nameof(BlackBoardVariable) +
+                                                         " class. Please make sure the field is named isLocalVariable.");
+
                     FieldInfo variableField = variable.GetType().GetField("Variable");
                     FieldInfo taskField = _task.GetType().GetField(variable.taskFieldName);
-                    taskField.SetValue(_task, variableField.GetValue(variable));
+                    
+                    if (isLocalField)
+                    {
+                        taskField.SetValue(_task, variableField.GetValue(variable));
+                    }
+                    else
+                    {
+                        BlackBoardVariable bbVariable = _graphContext.BlackBoard.GetVariable(_graphContext.BlackBoard.Keys[variable.bbIndex]);
+                        taskField.SetValue(_task, bbVariable.GetType().GetField("Variable").GetValue(bbVariable));
+
+                    }
+
                 }
             }
         }

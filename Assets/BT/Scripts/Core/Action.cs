@@ -1,10 +1,7 @@
 namespace BT
 {
-    [CustomNodeDrawer(typeof(ActionView))]
     public class Action : ATask
     {
-        public BlackBoard board;
-
         public Action()
         {
             Status = TaskStatus.NonInitialized;

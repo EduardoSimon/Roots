@@ -11,9 +11,9 @@ namespace BT.Editor
 {
     public class NodeUtils
     {
-        public static void InitializeNode(BaseNode node, Action<NodeSocket> onNodeSocketClicked)
+        public static void InitializeNode(BaseNode node, Action<NodeSocket> onNodeSocketClicked, BehaviorTreeGraph context)
         {
-            node.Init(node.GUID, node.IsEntryPoint, node.IsRootView, node.IsParentNode, onNodeSocketClicked);
+            node.Init(node.GUID, node.IsEntryPoint, node.IsRootView, node.IsParentNode, onNodeSocketClicked, context);
 
             if (node.IsEntryPoint || node.IsParentNode)
                 node.exitSocket.Init(node.exitSocket._socketRect, node.exitSocket.SocketType, node.exitSocket.Node,
@@ -64,7 +64,8 @@ namespace BT.Editor
         {
             int count = 0;
 
-            foreach (var field in node.Task.GetType().GetFields().Where(info => info.IsPublic && info.FieldType != typeof(TaskStatus) && info.FieldType != typeof(BlackBoard)))
+            //Todo refactor the inspector filter
+            foreach (var field in node.Task.GetType().GetFields().Where(info => info.IsPublic && info.FieldType != typeof(TaskStatus) & info.FieldType != typeof(ATask) && info.FieldType != typeof(BlackBoard)))
             {
                 BTLog.Log("Copying variable with field name: " + field.Name + "of type: " + field.FieldType);
 

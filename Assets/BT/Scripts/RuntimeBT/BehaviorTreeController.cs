@@ -22,9 +22,7 @@ namespace BT.Runtime
         }
 
         public BehaviorTreeGraph treeGraph;
-        public BlackBoard treeBlackboard;
-        
-        public ATask currentTickingTask;
+        [HideInInspector] public ATask currentTickingTask;
         [TextArea] [SerializeField] private string behaviorTreeDescription;
         [SerializeField] public EUpdateType updateType;
         [SerializeField] public bool startOnEnable = true;
@@ -114,6 +112,11 @@ namespace BT.Runtime
                     InitializeTasks(compositeNode.Children[i]);
                 }
             }
+            else if (task is Decorator decorator)
+            {
+                if(decorator.child != null)
+                    InitializeTasks(decorator.child);
+            }
 
             task.OnTreeInitialize();
         }
@@ -181,11 +184,15 @@ namespace BT.Runtime
 
         private void OnDrawGizmos()
         {
-            DrawTreeGizmos(_tree.RootTask);
+            if (_tree != null)
+                DrawTreeGizmos(_tree.RootTask);
         }
 
         private void DrawTreeGizmos(ATask task)
         {
+            if (task == null)
+                return;
+
             if (task is IComposite composite)
             {
                 foreach (var child
@@ -194,7 +201,12 @@ namespace BT.Runtime
                     DrawTreeGizmos(child);
                 }
             }
-            
+            else if (task is Decorator decorator)
+            {
+                if(decorator.child != null)
+                    DrawTreeGizmos(decorator.child);
+            }
+
             task.OnDrawGizmos();
         }
     }

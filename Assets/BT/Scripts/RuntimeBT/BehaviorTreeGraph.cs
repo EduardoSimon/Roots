@@ -10,6 +10,7 @@ namespace BT.Editor
     [CreateAssetMenu(menuName = "BT/Behavior Tree Graph")]
     public class  BehaviorTreeGraph : ScriptableObject
     {
+        public BlackBoard BlackBoard;
         public string GraphName;
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
         public List<BaseNode> SavedNodes = new List<BaseNode>();
@@ -87,19 +88,37 @@ namespace BT.Editor
                         }
                     }
                 }
+                else if (node.Task is Decorator decorator)
+                {
+                    if (node.children != null)
+                    {
+                        decorator.child = null;
+
+                        if (node.children.Count > 0)
+                        {
+                            decorator.child = node.children[0].Task;
+                            ConstructTree(node.children[0]);
+                        }
+                    }
+                }
             }
            
         }
 
         public void PrintTree(ATask task)
         {
-            if (task is IComposite compositeNode)
+            if (task is IComposite composite)
             {
-                for (int i = 0; i < compositeNode.Children.Count; i++)
+                for (int i = 0; i < composite.Children.Count; i++)
                 {
-                    ATask taskNode = (ATask) compositeNode;
-                    PrintTree(compositeNode.Children[i]);
+                    ATask taskNode = (ATask) composite;
+                    PrintTree(composite.Children[i]);
                 }
+            }
+            else if (task is Decorator decorator)
+            {
+                if(decorator.child != null)
+                    PrintTree(decorator.child);
             }
 
             Debug.Log(task);

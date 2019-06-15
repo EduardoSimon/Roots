@@ -2,17 +2,12 @@ using System;
 
 namespace BT.Decorators
 {
-    public class Repeat : ADecorator
+    [TaskTooltip("Ticks a specified number of types, hence repeating whats below.")]
+    [SearchTaskPath("Decorator/Repeat")]
+    public class Repeat : Decorator
     {
-        private int _counter;
-        private readonly int _repetitionsLimit;
-
-        public Repeat(ATask child, int repetitionsLimit) : base(child)
-        {
-            _counter = 0;
-            _repetitionsLimit = repetitionsLimit;
-            Status = TaskStatus.NonInitialized;
-        }
+        public int _counter;
+        public int repetitionsLimit;
 
         protected override void OnFirstTick()
         {
@@ -21,20 +16,21 @@ namespace BT.Decorators
 
         protected override TaskStatus Update()
         {
-            var childStatus = _child.Tick();
+            var childStatus = child.Tick();
 
             if (childStatus == TaskStatus.Running) return TaskStatus.Running;
 
             if (childStatus == TaskStatus.Failed) return TaskStatus.Failed;
 
-            if (++_counter == _repetitionsLimit) return TaskStatus.Succeeded;
+            if (++_counter == repetitionsLimit) return TaskStatus.Succeeded;
 
             return TaskStatus.Invalid;
         }
 
         protected override void OnTerminate(TaskStatus status)
         {
-            //throw new NotImplementedException();
+            if(_counter == repetitionsLimit)
+                this.Status = TaskStatus.Succeeded;
         }
     }
 }

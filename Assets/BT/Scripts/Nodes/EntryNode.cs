@@ -10,9 +10,9 @@ public class EntryNode : BaseNode
 {
     private Texture2D iconTexture2D;
 
-    public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
+    public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked, BehaviorTreeGraph context)
     {
-        base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked);
+        base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked,context);
         iconTexture2D = Resources.Load<Texture2D>("entry_icon");
     }
 

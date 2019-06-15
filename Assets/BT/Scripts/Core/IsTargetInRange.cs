@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using BT;
 using BT.Runtime;
+using BT.Scripts;
 using BT.Scripts.Nodes;
 using UnityEditor;
 using UnityEngine;
@@ -15,9 +16,7 @@ public class IsTargetInRange : ACondition
 {
     public Transform target;
     public float distanceRange;
-
-    public Transform FoundTarget;
-
+    
     private void OnEnable()
     {
         Debug.Log("Calling on Enable;");

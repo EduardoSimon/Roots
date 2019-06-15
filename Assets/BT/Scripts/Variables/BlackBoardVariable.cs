@@ -8,10 +8,12 @@ namespace BT.Scripts
     [System.Serializable]
     public class BlackBoardVariable : ScriptableObject
     {
+        public int bbIndex;
         public bool isLocalVariable = true;
         public BaseNode node;
         public string taskFieldName;
         [SerializeField] public string guid;
+
 
         public string Guid => guid;
 

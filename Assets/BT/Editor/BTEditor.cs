@@ -61,7 +61,6 @@ namespace BT
         private ConnectionData _entryConnectionID;
         private int entryID;
         private List<Command> _commands;
-        private BlackBoard _currentBb;
 
         public List<BaseNode> Nodes => nodes;
         public List<NodeConnection> Connections => _connections;
@@ -166,7 +165,7 @@ namespace BT
             if (entry == null)
                 CreateEntryNode();
             else
-                NodeUtils.InitializeNode(entry, OnNodeSocketClicked);
+                NodeUtils.InitializeNode(entry, OnNodeSocketClicked, currentGraph);
 
 
             for (int i = 0; i < currentGraph.SavedNodes.Count; i++)
@@ -174,7 +173,7 @@ namespace BT
                 nodes.Add(currentGraph.SavedNodes[i]);
                 nodes[i].Task = currentGraph.SavedNodes[i].Task;
 
-                NodeUtils.InitializeNode(nodes[i], OnNodeSocketClicked);
+                NodeUtils.InitializeNode(nodes[i], OnNodeSocketClicked, currentGraph);
 
                 nodes[i].OnClickedNode += OnClickedNode;
 
@@ -400,7 +399,7 @@ namespace BT
             else
             {
                 GUILayout.Label("Selected Node: " + _selectedNode.windowTitle, _skin.GetStyle("H2"));
-                _selectedNode.DrawInspector(inspectorRect, _currentBb);
+                _selectedNode.DrawInspector(inspectorRect, currentGraph.BlackBoard);
             }
 
             GUILayout.EndVertical();
@@ -447,7 +446,7 @@ namespace BT
                     BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, entry, OnNodeSocketClicked);
             entry.exitSocket.name = entry.name + " exitSocket";
 
-            entry.Init(null, true, false, false, OnNodeSocketClicked);
+            entry.Init(null, true, false, false, OnNodeSocketClicked,currentGraph);
 
             AssetDatabase.AddObjectToAsset(entry.exitSocket, currentGraph);
             AssetDatabase.AddObjectToAsset(entry, currentGraph);
@@ -512,7 +511,8 @@ namespace BT
                 }
             }
             
-            _currentBb = EditorGUILayout.ObjectField(_currentBb, typeof(BlackBoard), false, GUILayout.MaxWidth(position.width / 5), GUILayout.MinWidth(200)) as BlackBoard;
+            if(currentGraph != null)
+                currentGraph.BlackBoard = EditorGUILayout.ObjectField(currentGraph.BlackBoard, typeof(BlackBoard), false, GUILayout.MaxWidth(position.width / 5), GUILayout.MinWidth(200)) as BlackBoard;
 
             EditorGUILayout.Separator();
             EditorGUI.BeginChangeCheck();
@@ -530,9 +530,7 @@ namespace BT
             _saveOnPlay = GUILayout.Toggle(_saveOnPlay, "Save on Play Pressed", EditorStyles.toolbarButton);
             if (EditorGUI.EndChangeCheck())
                 GUI.FocusControl(null);
-
-            GUILayout.Label("Current Graph ID: " + GraphInstanceID + " and graph value: " + currentGraph,
-                EditorStyles.whiteLabel);
+            
             /*
             if (GUILayout.Button("Show window"))
                 _showWindows = !_showWindows;*/

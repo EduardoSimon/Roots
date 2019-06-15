@@ -8,9 +8,9 @@ namespace BT
     {
         private Texture2D icon;
 
-        public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked)
+        public override void Init(string id, bool isEntryPoint, bool isRootView, bool isParentView, Action<NodeSocket> OnSocketClicked, BehaviorTreeGraph context)
         {
-            base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked);
+            base.Init(id, isEntryPoint, isRootView, isParentView, OnSocketClicked,context);
             icon = Resources.Load<Texture2D>("sequence_icon");
         }
 

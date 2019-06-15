@@ -24,9 +24,9 @@ namespace BT.Scripts.Drawers
         /// <param name="isParentView"></param>
         /// <param name="OnSocketClicked"></param>
         public override void Init(string guid, bool isEntryPoint, bool isRootView, bool isParentView,
-            Action<NodeSocket> OnSocketClicked)
+            Action<NodeSocket> OnSocketClicked, BehaviorTreeGraph context)
         {
-            base.Init(guid, isEntryPoint, isRootView, isParentView, OnSocketClicked);
+            base.Init(guid, isEntryPoint, isRootView, isParentView, OnSocketClicked,context);
 
             if (_texture2D == null)
                 _texture2D = Resources.Load<Texture2D>("log_icon");
