@@ -335,19 +335,6 @@ namespace BT
                 _tooltipWindow.Close();
         }
 
-        [DidReloadScripts]
-        private static void OnScriptsReloaded()
-        {
-            if (EditorPrefs.GetBool("ActiveEditor") && !EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                var window = GetWindow<BtEditor>();
-
-                window.Close();
-                Init();
-                BTLog.Log("Scripts recompiled! Regenerating window!");
-            }
-        }
-
         private void OnApplicationQuit()
         {
             EditorUtility.SetDirty(currentGraph);
@@ -551,7 +538,7 @@ namespace BT
 
             GUILayout.BeginVertical();
             if (currentGraph != null)
-                GUILayout.Label(currentGraph.GraphName, _skin.GetStyle("H1"));
+                GUILayout.Label(currentGraph.name, _skin.GetStyle("H1"));
             GUILayout.EndVertical();
 
             GUILayout.EndArea();

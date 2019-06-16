@@ -11,7 +11,6 @@ namespace BT.Editor
     public class  BehaviorTreeGraph : ScriptableObject
     {
         public BlackBoard BlackBoard;
-        public string GraphName;
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
         public List<BaseNode> SavedNodes = new List<BaseNode>();
 

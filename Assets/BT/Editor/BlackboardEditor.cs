@@ -45,7 +45,7 @@ namespace BT.Editor
             {
                 _variableTypes.Add(variableType.Name);
             }
-            
+
             if (_currentBb != null)
             {
                 obj = new SerializedObject(_currentBb);
@@ -83,7 +83,11 @@ namespace BT.Editor
             }
 
             if (_currentBb == null)
+            {
+                ShowNotification(new GUIContent("Please Select a BlackBoard to edit its variables.",
+                    Resources.Load<Texture>("blackboard_icon")));
                 return;
+            }
 
 
             if (_property == null)
@@ -143,8 +147,10 @@ namespace BT.Editor
         private void ListOnDrawElementCallback(Rect rect, int index1, bool isActive, bool isFocused)
         {
             string keyName = _property.GetArrayElementAtIndex(index1).FindPropertyRelative("keyName").stringValue;
-            BlackBoardVariable variable = _property.GetArrayElementAtIndex(index1).FindPropertyRelative("Variable").objectReferenceValue as BlackBoardVariable;
-            
+            BlackBoardVariable variable =
+                _property.GetArrayElementAtIndex(index1).FindPropertyRelative("Variable").objectReferenceValue as
+                    BlackBoardVariable;
+
             switch (variable)
             {
                 case BoolBlackBoardVariable bVar:
