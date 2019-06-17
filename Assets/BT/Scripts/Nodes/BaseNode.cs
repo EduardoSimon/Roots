@@ -74,6 +74,11 @@ namespace BT
 
         #endregion
 
+        private void OnEnable()
+        {
+            hideFlags = HideFlags.HideInHierarchy;
+        }
+        
         /// <summary>
         /// Emulates the constructor of the class. Override this method calling the base one for your custom initialization
         /// </summary>

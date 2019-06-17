@@ -14,6 +14,10 @@ namespace BT.Scripts
         public string taskFieldName;
         [SerializeField] public string guid;
 
+        protected virtual void OnEnable()
+        {
+            hideFlags = HideFlags.HideInHierarchy;
+        }
 
         public string Guid => guid;
 

@@ -12,7 +12,12 @@ namespace BT
         public TaskStatus Status;
         protected BTManager _manager;
         private Transform transform;
-        
+
+        protected virtual void OnEnable()
+        {
+            hideFlags = HideFlags.HideInHierarchy;
+        }
+
         /// <summary>
         /// This is called when the tree is initialized. Use it to gather your references
         /// </summary>

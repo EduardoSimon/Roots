@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using BT.Scripts.Nodes;
+using UnityEngine;
 
 namespace BT
 {
     [SearchTaskPath("Action/Patrol")]
-    [CustomNodeDrawer(typeof(Action))]
+    [CustomNodeDrawer(typeof(ActionNode))]
     public class Patrol : Action
     {
         protected override void OnFirstTick()

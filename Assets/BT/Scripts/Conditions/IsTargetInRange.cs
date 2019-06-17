@@ -11,7 +11,7 @@ using UnityEngine.Rendering;
 
 [TaskTooltip("Returns true if the distance to target is less than distanceRange.")]
 [SearchTaskPath("Conditions/IsTargetInRange")]
-[CustomNodeDrawer(typeof(LeafNode))]
+[CustomNodeDrawer(typeof(ConditionalNode))]
 public class IsTargetInRange : Condition
 {
     public Transform target;

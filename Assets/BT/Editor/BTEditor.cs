@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Versioning;
-using System.Threading.Tasks;
 using BT.Editor;
 using BT.Editor.ContextualCommands;
 using BT.Scripts;
 using BT.Scripts.Drawers;
 using Editor;
 using UnityEditor;
-using UnityEditor.Callbacks;
 using UnityEngine;
-using UnityEngine.XR;
-using Debug = System.Diagnostics.Debug;
 using UDebug = UnityEngine.Debug;
 
 namespace BT
@@ -24,8 +18,9 @@ namespace BT
         private const float MaxZoomDistance = 10f;
         private const float MinZoomDistance = 0.5f;
         private const float ZoomStep = 0.01f;
-        private const string saveOnCloseKey = "SAVE_ON_CLOSE";
-        private const string saveOnPlayKey = "SAVE_ON_PLAY_KEY";
+        private const string ksaveOnCloseKey = "SAVE_ON_CLOSE";
+        private const string ksaveOnPlayKey = "SAVE_ON_PLAY_KEY";
+        private const string kautosaveKey = "AUTOSAVE_KEY";
 
         private static List<BaseNode> nodes = new List<BaseNode>();
         private static List<NodeConnection> _connections = new List<NodeConnection>();
@@ -45,6 +40,8 @@ namespace BT
         [SerializeField] private bool _saveOnPlay;
         private BaseNode _selectedNode;
         private GUISkin _skin;
+        private string _tooltip;
+        private bool _showTooltip;
 
         private TooltipWindow _tooltipWindow;
         public SearchTasksWindow searchableTaskWindow;
@@ -116,8 +113,9 @@ namespace BT
             Application.quitting += OnApplicationQuit;
             EditorApplication.playModeStateChanged += EditorApplicationOnPlayModeStateChanged;
 
-            _saveOnPlay = EditorPrefs.GetBool(saveOnPlayKey, false);
-            _saveOnClose = EditorPrefs.GetBool(saveOnCloseKey, false);
+            _saveOnPlay = EditorPrefs.GetBool(ksaveOnPlayKey, true);
+            _saveOnClose = EditorPrefs.GetBool(ksaveOnCloseKey, true);
+            _autoSave = EditorPrefs.GetBool(kautosaveKey, true);
 
             _skin = Resources.Load<GUISkin>("BTSkin");
 
@@ -182,7 +180,7 @@ namespace BT
                 {
                     nodes[i].variables[j] = currentGraph.SavedNodes[i].variables[j];
                 }
-                
+
 
                 if (nodes[i].IsRootView)
                     rootNode = nodes[i];
@@ -211,8 +209,9 @@ namespace BT
             Application.quitting -= OnApplicationQuit;
             EditorApplication.playModeStateChanged -= EditorApplicationOnPlayModeStateChanged;
 
-            EditorPrefs.SetBool(saveOnPlayKey, _saveOnPlay);
-            EditorPrefs.SetBool(saveOnCloseKey, _saveOnClose);
+            EditorPrefs.SetBool(ksaveOnPlayKey, _saveOnPlay);
+            EditorPrefs.SetBool(ksaveOnCloseKey, _saveOnClose);
+            EditorPrefs.SetBool(kautosaveKey, _autoSave);
         }
 
         private void OnEnable()
@@ -240,99 +239,124 @@ namespace BT
 
         private void OnInspectorUpdate()
         {
-            if(EditorApplication.isPlaying)
+            if (EditorApplication.isPlaying)
                 Repaint();
         }
 
         private void ConvertIDsToObjects()
         {
+            //only convert the ids to actual objects if there is a graph selected
             if (GraphInstanceID != 0)
+            {
+                //This call its a wrapper for accesing the object with an InstanceID.
                 currentGraph = EditorUtility.InstanceIDToObject(GraphInstanceID) as BehaviorTreeGraph;
 
-            entry = EditorUtility.InstanceIDToObject(entryID) as BaseNode;
+                entry = EditorUtility.InstanceIDToObject(entryID) as BaseNode;
 
-            for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
-            {
-                currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
-
-                for (int i = 0; i < _blackBoardVariablesID[index].ids.Length; i++)
+                for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
                 {
-                    currentGraph.SavedNodes[index].variables[i] =
-                        EditorUtility.InstanceIDToObject(_blackBoardVariablesID[index].ids[i]) as BlackBoardVariable;
+                    //Thanks to polymorphism we can treat every Node object as a BaseNode.
+                    currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
+
+                    for (int i = 0; i < _blackBoardVariablesID[index].ids.Length; i++)
+                    {
+                        currentGraph.SavedNodes[index].variables[i] =
+                            EditorUtility.InstanceIDToObject(_blackBoardVariablesID[index]
+                                .ids[i]) as BlackBoardVariable;
+                    }
                 }
+
+                currentGraph.entryConnection.StartSocket =
+                    EditorUtility.InstanceIDToObject(_entryConnectionID.StartSocketID) as NodeSocket;
+
+                currentGraph.entryConnection.EndSocket =
+                    EditorUtility.InstanceIDToObject(_entryConnectionID.EndSocketID) as NodeSocket;
+
+                currentGraph.entryConnection =
+                    EditorUtility.InstanceIDToObject(_entryConnectionID.ConnectionID) as NodeConnection;
+
+                for (int i = 0; i < currentGraph.SavedConnections.Count; i++)
+                {
+                    currentGraph.SavedConnections[i].StartSocket =
+                        EditorUtility.InstanceIDToObject(_connectionsIDs[i].StartSocketID) as NodeSocket;
+
+                    currentGraph.SavedConnections[i].EndSocket =
+                        EditorUtility.InstanceIDToObject(_connectionsIDs[i].EndSocketID) as NodeSocket;
+
+                    currentGraph.SavedConnections[i] =
+                        EditorUtility.InstanceIDToObject(_connectionsIDs[i].ConnectionID) as NodeConnection;
+                }
+
+                EditorUtility.SetDirty(currentGraph);
             }
-
-            currentGraph.entryConnection.StartSocket =
-                EditorUtility.InstanceIDToObject(_entryConnectionID.StartSocketID) as NodeSocket;
-
-            currentGraph.entryConnection.EndSocket =
-                EditorUtility.InstanceIDToObject(_entryConnectionID.EndSocketID) as NodeSocket;
-
-            currentGraph.entryConnection =
-                EditorUtility.InstanceIDToObject(_entryConnectionID.ConnectionID) as NodeConnection;
-
-            for (int i = 0; i < currentGraph.SavedConnections.Count; i++)
-            {
-                currentGraph.SavedConnections[i].StartSocket =
-                    EditorUtility.InstanceIDToObject(_connectionsIDs[i].StartSocketID) as NodeSocket;
-
-                currentGraph.SavedConnections[i].EndSocket =
-                    EditorUtility.InstanceIDToObject(_connectionsIDs[i].EndSocketID) as NodeSocket;
-
-                currentGraph.SavedConnections[i] =
-                    EditorUtility.InstanceIDToObject(_connectionsIDs[i].ConnectionID) as NodeConnection;
-            }
-
-            EditorUtility.SetDirty(currentGraph);
         }
 
         private void CollectObjectsID()
+        {
+            ClearIDData();
+
+            if (currentGraph != null)
+            {
+                //we save if the flag save on play is on
+                if (_saveOnPlay)
+                    SerializingSystem.SaveGraphData(currentGraph, nodes, _connections);
+
+                //with this call we get the id of the current tree graph
+                GraphInstanceID = currentGraph.GetInstanceID();
+
+                entryID = entry.GetInstanceID();
+
+                CollectNodesAndVariablesIDs();
+
+                CollectConnectionsIDs();
+
+                //Marking the graph as dirty, we make sure that the data is serialized. Every dirty
+                //object will be queued for serialization with every of its fields
+                EditorUtility.SetDirty(currentGraph);
+            }
+
+            if (_tooltipWindow != null)
+                _tooltipWindow.Close();
+        }
+
+        private void CollectConnectionsIDs()
+        {
+            _entryConnectionID = new ConnectionData(currentGraph.entryConnection.StartSocket.GetInstanceID(),
+                currentGraph.entryConnection.EndSocket.GetInstanceID(),
+                currentGraph.entryConnection.GetInstanceID());
+
+            foreach (var connection in currentGraph.SavedConnections)
+            {
+                _connectionsIDs.Add(new ConnectionData(connection.StartSocket.GetInstanceID(),
+                    connection.EndSocket.GetInstanceID(), connection.GetInstanceID()));
+            }
+        }
+
+        private void CollectNodesAndVariablesIDs()
+        {
+            foreach (var savedNode in currentGraph.SavedNodes)
+            {
+                int[] variablesID = new int[savedNode.variables.Count];
+
+                for (int i = 0; i < savedNode.variables.Count; i++)
+                {
+                    variablesID[i] = savedNode.variables[i].GetInstanceID();
+                }
+
+                _blackBoardVariablesID.Add(new IDsListWrapper(variablesID));
+
+
+                nodeIDs.Add(savedNode.GetInstanceID());
+            }
+        }
+
+        private void ClearIDData()
         {
             nodeIDs.Clear();
             _blackBoardVariablesID.Clear();
             _entryConnectionID = null;
             _connectionsIDs.Clear();
             GraphInstanceID = 0;
-
-            if (currentGraph != null)
-            {
-                if (_saveOnPlay)
-                    SerializingSystem.SaveGraphData(currentGraph, nodes, _connections);
-
-                GraphInstanceID = currentGraph.GetInstanceID();
-
-                entryID = entry.GetInstanceID();
-
-                foreach (var savedNode in currentGraph.SavedNodes)
-                {
-                    int[] variablesID = new int[savedNode.variables.Count];
-
-                    for (int i = 0; i < savedNode.variables.Count; i++)
-                    {
-                        variablesID[i] = savedNode.variables[i].GetInstanceID();
-                    }
-
-                    _blackBoardVariablesID.Add(new IDsListWrapper(variablesID));
-
-
-                    nodeIDs.Add(savedNode.GetInstanceID());
-                }
-
-                _entryConnectionID = new ConnectionData(currentGraph.entryConnection.StartSocket.GetInstanceID(),
-                    currentGraph.entryConnection.EndSocket.GetInstanceID(),
-                    currentGraph.entryConnection.GetInstanceID());
-
-                foreach (var connection in currentGraph.SavedConnections)
-                {
-                    _connectionsIDs.Add(new ConnectionData(connection.StartSocket.GetInstanceID(),
-                        connection.EndSocket.GetInstanceID(), connection.GetInstanceID()));
-                }
-
-                EditorUtility.SetDirty(currentGraph);
-            }
-
-            if (_tooltipWindow != null)
-                _tooltipWindow.Close();
         }
 
         private void OnApplicationQuit()
@@ -389,6 +413,8 @@ namespace BT
                 _selectedNode.DrawInspector(inspectorRect, currentGraph.BlackBoard);
             }
 
+            DrawTooltip(inspectorRect);
+
             GUILayout.EndVertical();
             GUILayout.EndArea();
 
@@ -412,6 +438,24 @@ namespace BT
             EditorZoomArea.End();
 
             if (GUI.changed) Repaint();
+        } 
+
+        private void DrawTooltip(Rect inspectorRect)
+        {
+            if (_showTooltip)
+            {
+                Rect tooltipRect = new Rect(inspectorRect.x, inspectorRect.y + (inspectorRect.height - (300)),
+                    inspectorRect.width - 10, position.height / 6);
+                GUILayout.BeginArea(tooltipRect, EditorStyles.helpBox);
+/*
+                if (GUI.Button(new Rect(tooltipRect.xMax - 10, tooltipRect.y + 10, 50, 20), "Close"))
+                    _showTooltip = false;
+
+                GUI.Label(
+                    new Rect(tooltipRect.xMin + 10, tooltipRect.xMin + 50, tooltipRect.width - 20, tooltipRect.height - 50),
+                    _tooltip);*/
+                GUILayout.EndArea();
+            }
         }
 
 
@@ -433,7 +477,7 @@ namespace BT
                     BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, entry, OnNodeSocketClicked);
             entry.exitSocket.name = entry.name + " exitSocket";
 
-            entry.Init(null, true, false, false, OnNodeSocketClicked,currentGraph);
+            entry.Init(null, true, false, false, OnNodeSocketClicked, currentGraph);
 
             AssetDatabase.AddObjectToAsset(entry.exitSocket, currentGraph);
             AssetDatabase.AddObjectToAsset(entry, currentGraph);
@@ -497,9 +541,10 @@ namespace BT
                     GraphInstanceID = currentGraph.GetInstanceID();
                 }
             }
-            
-            if(currentGraph != null)
-                currentGraph.BlackBoard = EditorGUILayout.ObjectField(currentGraph.BlackBoard, typeof(BlackBoard), false, GUILayout.MaxWidth(position.width / 5), GUILayout.MinWidth(200)) as BlackBoard;
+
+            if (currentGraph != null)
+                currentGraph.BlackBoard = EditorGUILayout.ObjectField(currentGraph.BlackBoard, typeof(BlackBoard),
+                    false, GUILayout.MaxWidth(position.width / 5), GUILayout.MinWidth(200)) as BlackBoard;
 
             EditorGUILayout.Separator();
             EditorGUI.BeginChangeCheck();
@@ -517,7 +562,7 @@ namespace BT
             _saveOnPlay = GUILayout.Toggle(_saveOnPlay, "Save on Play Pressed", EditorStyles.toolbarButton);
             if (EditorGUI.EndChangeCheck())
                 GUI.FocusControl(null);
-            
+
             /*
             if (GUILayout.Button("Show window"))
                 _showWindows = !_showWindows;*/
@@ -527,7 +572,7 @@ namespace BT
 
             if (GUILayout.Button("Reset zoom", EditorStyles.toolbarButton))
                 _currentZoom = 1;
-            
+
 
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -552,27 +597,27 @@ namespace BT
             if (entry != null)
             {
                 entry.windowRect = GUI.Window(-1, entry.windowRect, (id) => entry.DrawNodeView(id),
-                    entry.windowTitle,_skin.GetStyle("window"));
+                    entry.windowTitle, _skin.GetStyle("window"));
 
                 entry.DrawSockets();
             }
-            
+
             for (var index = 0; index < nodes.Count; index++)
             {
                 GUI.contentColor = Color.white;
-                
+
                 if (EditorApplication.isPlaying)
                 {
-                    if(nodes[index].Task.Status == TaskStatus.Succeeded)
+                    if (nodes[index].Task.Status == TaskStatus.Succeeded)
                         GUI.backgroundColor = Color.green;
                     else if (nodes[index].Task.Status == TaskStatus.Failed)
                         GUI.backgroundColor = Color.red;
-                    else if(nodes[index].Task.Status == TaskStatus.Running)
+                    else if (nodes[index].Task.Status == TaskStatus.Running)
                         GUI.backgroundColor = Color.yellow;
                 }
-                
+
                 nodes[index].DrawSockets();
-                
+
                 nodes[index].windowRect = GUI.Window(index, nodes[index].windowRect, DrawNodeWindowCallback,
                     nodes[index].windowTitle);
             }
@@ -623,8 +668,8 @@ namespace BT
                     {
                         if (position.Contains(GUIUtility.GUIToScreenPoint(e.mousePosition)))
                             Focus();
-
                     }
+
                     break;
                 case EventType.MouseDrag:
                     if (e.button == 0)
@@ -651,7 +696,7 @@ namespace BT
                         e.Use();
                         ShowSearchTaskWindow(e);
                     }
-                    
+
                     else if (e.keyCode == KeyCode.Escape && NodeSocket.CurrentClickedSocket != null)
                         NodeSocket.CurrentClickedSocket = null;
                     else if (e.keyCode == KeyCode.Escape)
@@ -816,12 +861,8 @@ namespace BT
 
                 if (attribute != null)
                 {
-                    _tooltipWindow = GetWindow<TooltipWindow>(true, "Tooltip", false);
-
-                    _tooltipWindow.position =
-                        new Rect(position.xMin + 20 + _currentZoom * 10f, position.yMax - 100, 200, 80);
-                    _tooltipWindow.Tooltip = attribute.Tooltip;
-                    _tooltipWindow.ShowPopup();
+                    _showTooltip = true;
+                    _tooltip = attribute.Tooltip;
                 }
             }
         }

@@ -1,5 +1,8 @@
+using BT.Scripts.Nodes;
+
 namespace BT
 {
+    [CustomNodeDrawer(typeof(ActionNode))]
     public class Action : ATask
     {
         public Action()

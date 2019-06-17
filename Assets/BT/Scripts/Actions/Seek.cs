@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BT.Scripts.Core
 {
-    [CustomNodeDrawer(typeof(LeafNode))]
+    [CustomNodeDrawer(typeof(ActionNode))]
     [SearchTaskPath("Action/Seek")]
     [TaskTooltip("The Seek Task follows its target until reaching a minimum distance.")]
     public class Seek : Action

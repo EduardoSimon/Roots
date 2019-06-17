@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using BT.Scripts.Nodes;
 using UnityEngine;
 
 namespace BT
 {
+    [CustomNodeDrawer(typeof(ParallelNode))]
     [SearchTaskPath("Composites/Parallel")]
     public class Parallel : ATask, IComposite
     {

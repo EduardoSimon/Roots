@@ -9,6 +9,11 @@ namespace BT
     [Serializable]
     public class NodeSocket : ScriptableObject
     {
+        private void OnEnable()
+        {
+            hideFlags = HideFlags.HideInHierarchy;
+        }
+        
         [Serializable]
         public enum NodeSocketType
         {

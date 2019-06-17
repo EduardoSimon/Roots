@@ -23,11 +23,14 @@ namespace BT.Editor
         private static BaseNode InitializeNode(SearchTasksWindow.NodeType nodeType, Rect windowRect,
             BehaviorTreeGraph nodeContainer, Action<NodeSocket> OnNodeSocketClicked, BtEditor editor)
         {
+            //create a scriptable object of the type specified by the search task window
             var instance = ScriptableObject.CreateInstance(nodeType.DrawerType.FullName) as BaseNode;
             instance.name = nodeType.DrawerType.Name;
+            //add it to the main nodeContainer, that is, the tree graph currently being edited
             AssetDatabase.AddObjectToAsset(instance, nodeContainer);
             Debug.Assert(instance != null, "Couldn't create the node with name " + nameof(nodeType.DrawerType));
 
+            //Do the same with the task 
             instance.Task = ScriptableObject.CreateInstance(nodeType.taskType) as ATask;
             Debug.Assert(instance.Task != null, "Couldn't create the task with name " + nameof(nodeType.taskType));
             instance.Task.name = nodeType.taskType.Name;

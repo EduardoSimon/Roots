@@ -7,6 +7,11 @@ namespace BT.Scripts.Drawers
     [Serializable]
     public class NodeConnection : ScriptableObject
     {
+        private void OnEnable()
+        {
+            hideFlags = HideFlags.HideInHierarchy;
+        }
+        
         public void Init(NodeSocket startSocket, NodeSocket endSocket, Color connectionColor, bool isEntryConnection)
         {
             StartSocket = startSocket;

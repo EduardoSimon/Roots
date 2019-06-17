@@ -1,5 +1,8 @@
+using BT.Scripts.Nodes;
+
 namespace BT
 {
+    [CustomNodeDrawer(typeof(ConditionalNode))]
     public class Condition : ATask
     {
         public enum ConditionCheckMode
