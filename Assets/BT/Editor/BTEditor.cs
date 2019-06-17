@@ -21,6 +21,7 @@ namespace BT
         private const string ksaveOnCloseKey = "SAVE_ON_CLOSE";
         private const string ksaveOnPlayKey = "SAVE_ON_PLAY_KEY";
         private const string kautosaveKey = "AUTOSAVE_KEY";
+        private const string kDontShowTooltipAgainKey = "DONT_SHOW_TOOLTIP_AGAIN";
 
         private static List<BaseNode> nodes = new List<BaseNode>();
         private static List<NodeConnection> _connections = new List<NodeConnection>();
@@ -42,6 +43,7 @@ namespace BT
         private GUISkin _skin;
         private string _tooltip;
         private bool _showTooltip;
+        private bool _dontShowTooltipAgain;
 
         private TooltipWindow _tooltipWindow;
         public SearchTasksWindow searchableTaskWindow;
@@ -116,6 +118,8 @@ namespace BT
             _saveOnPlay = EditorPrefs.GetBool(ksaveOnPlayKey, true);
             _saveOnClose = EditorPrefs.GetBool(ksaveOnCloseKey, true);
             _autoSave = EditorPrefs.GetBool(kautosaveKey, true);
+            _dontShowTooltipAgain = EditorPrefs.GetBool(kDontShowTooltipAgainKey, false);
+            
 
             _skin = Resources.Load<GUISkin>("BTSkin");
 
@@ -212,6 +216,7 @@ namespace BT
             EditorPrefs.SetBool(ksaveOnPlayKey, _saveOnPlay);
             EditorPrefs.SetBool(ksaveOnCloseKey, _saveOnClose);
             EditorPrefs.SetBool(kautosaveKey, _autoSave);
+            EditorPrefs.SetBool(kDontShowTooltipAgainKey, _dontShowTooltipAgain);
         }
 
         private void OnEnable()
@@ -442,19 +447,28 @@ namespace BT
 
         private void DrawTooltip(Rect inspectorRect)
         {
-            if (_showTooltip)
+            if (_showTooltip && !_dontShowTooltipAgain)
             {
-                Rect tooltipRect = new Rect(inspectorRect.x, inspectorRect.y + (inspectorRect.height - (300)),
-                    inspectorRect.width - 10, position.height / 6);
+                Rect tooltipRect = new Rect(inspectorRect.x + 5, inspectorRect.yMax - (position.yMax / 3),
+                    inspectorRect.width - 10, (position.height / 6) );
                 GUILayout.BeginArea(tooltipRect, EditorStyles.helpBox);
-/*
-                if (GUI.Button(new Rect(tooltipRect.xMax - 10, tooltipRect.y + 10, 50, 20), "Close"))
-                    _showTooltip = false;
 
-                GUI.Label(
-                    new Rect(tooltipRect.xMin + 10, tooltipRect.xMin + 50, tooltipRect.width - 20, tooltipRect.height - 50),
-                    _tooltip);*/
-                GUILayout.EndArea();
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Close", GUILayout.MaxWidth(50)))
+                {
+                    _showTooltip = false;
+                }
+                    
+                EditorGUI.BeginChangeCheck();
+                _dontShowTooltipAgain = GUILayout.Toggle(_dontShowTooltipAgain, "Don't show tooltip again.");
+                if (EditorGUI.EndChangeCheck())
+                    GUI.FocusControl(null);
+
+                GUILayout.EndHorizontal();
+                GUILayout.BeginVertical();
+                EditorGUILayout.LabelField(_tooltip, EditorStyles.wordWrappedLabel);
+                GUILayout.EndVertical();
+                GUILayout.EndArea(); 
             }
         }
 
@@ -560,6 +574,11 @@ namespace BT
             EditorGUI.BeginChangeCheck();
 
             _saveOnPlay = GUILayout.Toggle(_saveOnPlay, "Save on Play Pressed", EditorStyles.toolbarButton);
+            if (EditorGUI.EndChangeCheck())
+                GUI.FocusControl(null);
+            
+            EditorGUI.BeginChangeCheck();
+            _dontShowTooltipAgain = GUILayout.Toggle(_dontShowTooltipAgain, "Dont Show Tooltip", EditorStyles.toolbarButton);
             if (EditorGUI.EndChangeCheck())
                 GUI.FocusControl(null);
 
