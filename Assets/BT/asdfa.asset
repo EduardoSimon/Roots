@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-570488251073014238
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9226d078b5408445a98c64bd52932368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParentNode: 0
+  isRootView: 0
+  isEntryPoint: 1
+  isSelected: 0
+  guid: 65733257-b093-4234-9ced-9c0893d07447
+  _graphContext: {fileID: 11400000}
+  avaliableBBKeys: []
+  _task: {fileID: 0}
+  entrySocket: {fileID: 0}
+  exitSocket: {fileID: 209166158533250565}
+  windowRect:
+    serializedVersion: 2
+    x: 571.6667
+    y: 181.66667
+    width: 100
+    height: 100
+  windowTitle: Entry View
+  variables: []
+  children:
+  - {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb08b08fdab4a2d956d0784676a2c88, type: 3}
+  m_Name: asdfa
+  m_EditorClassIdentifier: 
+  BlackBoard: {fileID: 0}
+  SavedConnections: []
+  SavedNodes: []
+  entryConnection: {fileID: 0}
+  root: {fileID: 0}
+  _tree:
+    rootTask: {fileID: 0}
+  EntryNode: {fileID: -570488251073014238}
+--- !u!114 &209166158533250565
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: ' exitSocket'
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 584.1667
+    y: 276.6667
+    width: 80
+    height: 16
+  SocketType: 1
+  Node: {fileID: -570488251073014238}
+  NodeGuid: 
+  IsHooked: 0

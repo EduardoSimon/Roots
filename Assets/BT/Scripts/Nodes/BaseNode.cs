@@ -190,12 +190,17 @@ namespace BT
                                 15)
                             : new Rect(inspectorRect.x + 10, previousRect.Value.y + 20, inspectorRect.width - 40,
                                 15);
+                        
+                        //if there is a blackboard selected inspect its keys and only retrieve the ones that match
+                        //the current inspected variable type
                         if (blackBoard != null)
                         {
                             avaliableBBKeys = blackBoard.Keys.Where(key =>
                                 blackBoard.GetVariable<BlackBoardVariable>(key).GetType().GetField("Variable")
                                     .FieldType == inspectorField.variable.GetType()
                                     .GetField("Variable").FieldType).ToArray();
+                            
+                            //store the index for drawing purposes and for retrieving the correct variable from the blackboard list.
                             inspectorField.variable.bbIndex = UnityEditor.EditorGUI.Popup(previousRect.Value,
                                 inspectorField.fieldName, inspectorField.variable.bbIndex, avaliableBBKeys);
                         }

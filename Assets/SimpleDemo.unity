@@ -152,13 +152,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f31160f463622d4091cbb11d0ae1ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeGraph: {fileID: 0}
+  treeGraph: {fileID: 11400000, guid: 70537cec91d8c9446a6c9218ebf9b12e, type: 2}
   currentTickingTask: {fileID: 0}
   behaviorTreeDescription: 
   updateType: 0
   startOnEnable: 1
   pauseOnDisabled: 0
-  restartOnComplete: 0
+  restartOnComplete: 1
   minimunLogLevel: 0
 --- !u!65 &38728038
 BoxCollider:
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTickingController: {fileID: 0}
-  TickMode: 0
+  TickMode: 1
   UpdateMsFreq: 10
   references:
     reorderableList:
@@ -295,7 +295,17 @@ MonoBehaviour:
     - 9151fc73e830146e0afafc75f3c7c0ce
     - 12fd5a1e63d8540fe9bfd0bfc867f95a
     - d3a4fccc4e6314958bbb82a10a101f22
+    - 89422b1e60b2c9646bb2d4aa71773fa8
+    - ac1f4f677882c6a439335c9f407edf99
+    - 253617eac17ae8c4cb8d05193c9f9581
+    - 5b6b4dfbe87a07d4b964714e1c8b5c93
+    - a63c2fa1d51fa7b4c956a375ba95e100
     _values:
+    - {fileID: 118884581}
+    - {fileID: 118884581}
+    - {fileID: 118884581}
+    - {fileID: 118884581}
+    - {fileID: 118884581}
     - {fileID: 118884581}
     - {fileID: 118884581}
     - {fileID: 118884581}
