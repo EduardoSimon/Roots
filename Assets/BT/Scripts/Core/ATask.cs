@@ -11,7 +11,7 @@ namespace BT
     {
         public TaskStatus Status;
         protected BTManager _manager;
-        private Transform transform;
+        protected Transform transform;
 
         protected virtual void OnEnable()
         {
@@ -21,9 +21,11 @@ namespace BT
         /// <summary>
         /// This is called when the tree is initialized. Use it to gather your references
         /// </summary>
-        public virtual void OnTreeInitialize()
+        /// <param name="behaviorTreeController"></param>
+        public virtual void Initialize(BehaviorTreeController behaviorTreeController)
         {
             _manager = BTManager.Instance;
+            transform = behaviorTreeController.transform;
         }
         
         /// <summary>

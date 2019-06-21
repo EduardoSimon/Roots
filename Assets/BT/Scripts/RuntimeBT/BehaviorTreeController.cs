@@ -74,7 +74,7 @@ namespace BT.Runtime
                 else if (updateType == EUpdateType.LateUpdate)
                     _manager._lateUpdateTrees.Add(this);
 
-                InitializeTasks(_tree.RootTask);
+                InitializeTasks(_tree.RootTask,this);
                 InitializeVariables(treeGraph.root);
             }
             else
@@ -103,22 +103,22 @@ namespace BT.Runtime
             }
         }
 
-        private void InitializeTasks(ATask task)
+        private void InitializeTasks(ATask task, BehaviorTreeController behaviorTreeController)
         {
             if (task is IComposite compositeNode)
             {
                 for (int i = 0; i < compositeNode.Children.Count; i++)
                 {
-                    InitializeTasks(compositeNode.Children[i]);
+                    InitializeTasks(compositeNode.Children[i],this);
                 }
             }
             else if (task is Decorator decorator)
             {
                 if(decorator.child != null)
-                    InitializeTasks(decorator.child);
+                    InitializeTasks(decorator.child,this);
             }
 
-            task.OnTreeInitialize();
+            task.Initialize(this);
         }
 
         private void OnGUI()

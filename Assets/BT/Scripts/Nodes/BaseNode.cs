@@ -327,7 +327,8 @@ namespace BT
                     else
                     {
                         BlackBoardVariable bbVariable = _graphContext.BlackBoard.GetVariable(_graphContext.BlackBoard.Keys[variable.bbIndex]);
-                        taskField.SetValue(_task, bbVariable.GetType().GetField("Variable").GetValue(bbVariable));
+                        if(bbVariable.GetType().GetField("Variable").GetValue(bbVariable).GetType() != typeof(System.Single))
+                            taskField.SetValue(_task, bbVariable.GetType().GetField("Variable").GetValue(bbVariable));
 
                     }
 
