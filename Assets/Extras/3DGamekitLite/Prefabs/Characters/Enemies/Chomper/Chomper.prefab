@@ -3367,12 +3367,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4111328061247126}
   - component: {fileID: 95449222272042074}
-  - component: {fileID: 114290622220327500}
   - component: {fileID: 114700785457422906}
   - component: {fileID: 114675004760664532}
   - component: {fileID: 65771025306039616}
   - component: {fileID: 1241409172}
   - component: {fileID: 1241409173}
+  - component: {fileID: 712859663}
   m_Layer: 23
   m_Name: Chomper
   m_TagString: Untagged
@@ -3418,35 +3418,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114290622220327500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1722084123150156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93e09843a5c1c344f9a06661baac93cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meleeWeapon: {fileID: 114176760753491054}
-  playerScanner:
-    heightOffset: 1
-    detectionRadius: 15
-    detectionAngle: 270
-    maxHeightDifference: 1
-    viewBlockerLayerMask:
-      serializedVersion: 2
-      m_Bits: 2147483648
-  timeToStopPursuit: 3
-  attackAudio: {fileID: 114190857395315650}
-  frontStepAudio: {fileID: 114857521794206750}
-  backStepAudio: {fileID: 114736383910666334}
-  hitAudio: {fileID: 114951439143794754}
-  gruntAudio: {fileID: 114720182369786316}
-  deathAudio: {fileID: 114771674042626142}
-  spottedAudio: {fileID: 114643955118306876}
 --- !u!114 &114700785457422906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3489,7 +3460,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onDamageMessageReceivers:
-  - {fileID: 114290622220327500}
+  - {fileID: 114290622220327500, guid: e9569c7e13e51264082910415a120d38, type: 3}
 --- !u!114 &114675004760664532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3553,6 +3524,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interpolateTurning: 0
   applyAnimationRotation: 0
+--- !u!114 &712859663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722084123150156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f31160f463622d4091cbb11d0ae1ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeGraph: {fileID: 11400000, guid: e4469ded46420bd44a41562d85756a94, type: 2}
+  currentTickingTask: {fileID: 0}
+  behaviorTreeDescription: 
+  updateType: 0
+  startOnEnable: 1
+  pauseOnDisabled: 0
+  restartOnComplete: 1
+  minimunLogLevel: 0
 --- !u!1 &1737964142438470
 GameObject:
   m_ObjectHideFlags: 0

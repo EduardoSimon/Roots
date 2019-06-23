@@ -261,7 +261,7 @@ namespace BT
                 for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
                 {
                     //Thanks to polymorphism we can treat every Node object as a BaseNode.
-                    currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
+                     currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
 
                     for (int i = 0; i < _blackBoardVariablesID[index].ids.Length; i++)
                     {

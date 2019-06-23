@@ -47,7 +47,6 @@ namespace BT.Runtime
 
         private void Awake()
         {
-            Debug.Log("Called");
             if (Instance == null)
                 Instance = this;
             else if (Instance != null && Instance != this)

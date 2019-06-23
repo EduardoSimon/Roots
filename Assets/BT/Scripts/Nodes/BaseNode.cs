@@ -316,20 +316,18 @@ namespace BT
                         : throw new InvalidCastException("Couldnt find the field isLocalVariable in the " +
                                                          nameof(BlackBoardVariable) +
                                                          " class. Please make sure the field is named isLocalVariable.");
-
-                    FieldInfo variableField = variable.GetType().GetField("Variable");
+                    
                     FieldInfo taskField = _task.GetType().GetField(variable.taskFieldName);
                     
                     if (isLocalField)
                     {
-                        taskField.SetValue(_task, variableField.GetValue(variable));
+                        taskField.SetValue(_task, variable);
                     }
                     else
                     {
                         BlackBoardVariable bbVariable = _graphContext.BlackBoard.GetVariable(_graphContext.BlackBoard.Keys[variable.bbIndex]);
-                        if(bbVariable.GetType().GetField("Variable").GetValue(bbVariable).GetType() != typeof(System.Single))
-                            taskField.SetValue(_task, bbVariable.GetType().GetField("Variable").GetValue(bbVariable));
-
+                        
+                        taskField.SetValue(_task, bbVariable);
                     }
 
                 }

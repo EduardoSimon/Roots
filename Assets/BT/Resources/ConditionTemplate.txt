@@ -4,7 +4,7 @@ using BT;
  
 public class #SCRIPTNAME# : Condition
 {
-    protected virtual bool isConditionSatisfied()
+    protected override bool isConditionSatisfied()
     {
         return false;
     }

@@ -73,8 +73,8 @@ namespace BT.Editor
 
                 if (previousVariables == null)
                 {
-                    variable = VariableFactory.CreateVariable(field.FieldType);
-                    
+                    //variable = VariableFactory.CreateVariable(field.FieldType);
+                    variable = ScriptableObject.CreateInstance(field.FieldType) as BlackBoardVariable;
                     if (variable != null)
                     {
                         AssetDatabase.AddObjectToAsset(variable, node);

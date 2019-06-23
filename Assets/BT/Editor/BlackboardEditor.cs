@@ -157,8 +157,8 @@ namespace BT.Editor
                     bVar.Variable = EditorGUI.Toggle(rect, keyName, bVar.Variable);
                     break;
                 case TransformBlackBoardVariable tVar:
-                    //tVar.Variable = EditorGUI.ObjectField(rect, keyName, tVar.Variable, typeof(Transform), false) as Transform;
-                    GUI.Label(rect, "The transform variable is only assignable at runtime.");
+                    tVar.Variable = EditorGUI.ObjectField(rect, keyName, tVar.Variable, typeof(Transform), false) as Transform;
+                    //GUI.Label(rect, "The transform variable is only assignable at runtime.");
                     break;
                 case FloatBlackBoardVariable fVar:
                     fVar.Variable = EditorGUI.FloatField(rect, keyName, fVar.Variable);

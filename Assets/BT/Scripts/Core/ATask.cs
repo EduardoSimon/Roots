@@ -15,7 +15,6 @@ namespace BT
 
         protected virtual void OnEnable()
         {
-            hideFlags = HideFlags.HideInHierarchy;
         }
 
         /// <summary>

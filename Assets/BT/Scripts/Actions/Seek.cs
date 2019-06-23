@@ -10,8 +10,8 @@ namespace BT.Scripts.Core
     [TaskTooltip("The Seek Task follows its target until reaching a minimum distance.")]
     public class Seek : Action
     {
-        public Transform target;
-        public float speed = 10f;
+        public TransformBlackBoardVariable target;
+        public FloatBlackBoardVariable speed;
         
         protected override void OnFirstTick()
         {
@@ -21,18 +21,18 @@ namespace BT.Scripts.Core
 
         protected override TaskStatus Update()
         {
-            var transform = _manager.CurrentTickingController.transform;
+            if (target.Variable == null)
+                return TaskStatus.Failed;
+            
             var position = transform.position;
-            Vector3 dir = target.position - position;
-            position += speed * Time.deltaTime * dir.normalized;
+            Vector3 dir = target.Variable.position - position;
+            position += speed.Variable * Time.deltaTime * dir.normalized;
             transform.position = position;
 
-            if (Vector3.Distance(transform.position, target.position) < 1f)
+            if (Vector3.Distance(transform.position, target.Variable.position) < 1f)
                 return TaskStatus.Succeeded;
-            else
-            {
-                return TaskStatus.Running;
-            }
+
+            return TaskStatus.Running;
         }
     }
 }

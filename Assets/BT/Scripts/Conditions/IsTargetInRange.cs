@@ -32,11 +32,11 @@ public class IsTargetInRange : Condition
     {
         Transform t = BTManager.Instance.CurrentTickingController.transform;
         Vector3 startPos = new Vector3(t.transform.position.x, t.transform.position.y - 0.5f, t.transform.position.z);
-        
+#if UNITY_EDITOR       
         base.OnDrawGizmos();
         Handles.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.05f) : new Color(0, 1, 0, 0.05f);
         Handles.DrawSolidArc(startPos, t.up, t.forward.normalized * distanceRange, 360f, distanceRange);
-#if !UNITY_EDITOR
+#else
         if (_manager.isDebugMode)
         {  
             Gizmos.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.2f) : new Color(0, 1, 0, 0.2f);

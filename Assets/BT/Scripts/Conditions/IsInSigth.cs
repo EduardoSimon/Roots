@@ -1,5 +1,6 @@
 ﻿using BT.Runtime;
 using BT.Scripts.Nodes;
+using UnityEditor;
 using UnityEngine;
 
 namespace BT.Scripts.Conditions
@@ -8,19 +9,20 @@ namespace BT.Scripts.Conditions
     [CustomNodeDrawer(typeof(ConditionalNode))]
     public class IsInSight : Condition
     {
-        public float fov = 30;
-        public string searchTagName;
-        
+        public FloatBlackBoardVariable fov;
+        public StringBlackBoardVariable searchTagName;
+        public FloatBlackBoardVariable maxRange;
+
         //return value
-        public Transform targetInSight;
+        public TransformBlackBoardVariable SightedTarget;
 
         private Transform[] availableTargets;
-        
+
         public override void Initialize(BehaviorTreeController behaviorTreeController)
         {
             base.Initialize(behaviorTreeController);
-            
-            var targets = GameObject.FindGameObjectsWithTag(searchTagName);
+
+            var targets = GameObject.FindGameObjectsWithTag(searchTagName.Variable);
             availableTargets = new Transform[targets.Length];
 
             for (var index = 0; index < targets.Length; index++)
@@ -30,18 +32,40 @@ namespace BT.Scripts.Conditions
             }
         }
 
-        protected virtual bool isConditionSatisfied()
+        protected override bool isConditionSatisfied()
         {
             for (int i = 0; i < availableTargets.Length; i++)
             {
                 Vector3 dir = availableTargets[i].position - transform.position;
-                if (Vector3.Angle(dir, transform.forward) < fov)
+                Debug.DrawRay(transform.position, dir);
+                if (Vector3.Angle(dir, transform.forward) < fov.Variable &&
+                    Vector3.Distance(transform.position, availableTargets[i].position) < maxRange.Variable)
                 {
-                    targetInSight = availableTargets[i];
+                    SightedTarget.Variable = availableTargets[i];
                     return true;
-                }    
+                }
             }
+
+            SightedTarget.Variable = null;
             return false;
+        }
+
+        public override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+#if UNITY_EDITOR
+            Handles.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.05f) : new Color(0, 1, 0, 0.05f);
+            Handles.DrawSolidArc(transform.position, transform.up, transform.forward.normalized * maxRange.Variable,
+                -fov.Variable, maxRange.Variable);
+            Handles.DrawSolidArc(transform.position, transform.up, transform.forward.normalized * maxRange.Variable,
+                fov.Variable, maxRange.Variable);
+#else
+        if (_manager.isDebugMode)
+        {  
+            Gizmos.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.2f) : new Color(0, 1, 0, 0.2f);
+            Gizmos.DrawWireSphere(BTManager.Instance.CurrentTickingController.transform.position, distanceRange);
+        }
+#endif
         }
     }
 }

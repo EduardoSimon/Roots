@@ -7,7 +7,7 @@ namespace BT
 {
     [CustomNodeDrawer(typeof(SequenceNode))]
     [SearchTaskPath("Composites/Sequence")]
-    [TaskTooltip("BALABABAB sequence")]
+    [TaskTooltip("A sequence returns Failed when any of its children fails and Succeeded when every of its children succeed.")]
     public class Sequence : ATask, IComposite
     {
         [SerializeField]private List<ATask> _children;

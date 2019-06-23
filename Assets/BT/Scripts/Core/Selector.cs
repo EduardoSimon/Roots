@@ -5,7 +5,7 @@ using System.Text;
 namespace BT
 {
     [SearchTaskPath("Composites/Selector")]
-    [TaskTooltip("A selector is bla bla bla")]
+    [TaskTooltip("A return Succeeded as soon as one children succeeds. It will keep going unless one if its children succeeds")]
     public class Selector : ATask, IComposite
     {
         public List<ATask> Children { get; set; }

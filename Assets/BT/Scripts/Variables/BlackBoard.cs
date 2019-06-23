@@ -46,6 +46,14 @@ public class BlackBoard : ScriptableObject
     {
         if (_bbKeys == null)
             _bbKeys = new List<Key>();
+
+        foreach (var bbKey in _bbKeys)
+        {
+            TransformBlackBoardVariable variable = bbKey.Variable as TransformBlackBoardVariable;
+            
+            if (variable != null)
+                variable.Variable = null;
+        }
     }
 
     public T GetVariable<T>(string keyName) where T : BlackBoardVariable

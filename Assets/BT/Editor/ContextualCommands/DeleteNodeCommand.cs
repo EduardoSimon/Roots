@@ -24,14 +24,16 @@ namespace BT.Editor.ContextualCommands
                 {
                     connection.StartSocket.Node.children.Remove(clickedNode);
 
-                    if (!(connection.StartSocket.Node.Task is IComposite cast) || !(connection.StartSocket.Node.Task is Decorator decorator))
-                        throw new NullReferenceException("Not null allowed as a IComposite task in a Parent Node");
+                    IComposite compositeCast = connection.StartSocket.Node.Task as IComposite;
+                    Decorator decoratorCast = connection.StartSocket.Node.Task as Decorator;
                     
-                    if(cast != null)
-                        cast.RemoveChildren(clickedNode.Task);
+                    if (compositeCast == null  && decoratorCast == null)
+                        throw new NullReferenceException("The node had a broken node, which had an invalid parent. Please create a new file.");
                     
-                    if(decorator != null)
-                        cast.RemoveChildren(clickedNode.Task);
+                    if(compositeCast != null)
+                        compositeCast.RemoveChildren(clickedNode.Task);
+                    else if (decoratorCast != null)
+                        decoratorCast.child = null;
                     
                 }
                 

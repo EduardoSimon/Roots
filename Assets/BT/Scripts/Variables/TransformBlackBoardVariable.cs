@@ -19,8 +19,10 @@ namespace BT.Scripts
         public override void OnTreeInit()
         {
             base.OnTreeInit();
-            Debug.Log("INIT Variable");
-            RetrieveVariable();
+            Variable = null;
+            
+            if(isLocalVariable)
+                RetrieveVariable();
         }
         
 #if UNITY_EDITOR
