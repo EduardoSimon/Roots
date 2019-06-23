@@ -53,6 +53,8 @@ namespace BT.Runtime
                 Destroy(this.gameObject);
             
             _updateTrees = new List<BehaviorTreeController>();
+            _lateUpdateTrees = new List<BehaviorTreeController>();
+            _fixedUpdateTrees = new List<BehaviorTreeController>();
 
             if (references == null)
                 references = new ReferenceDictionary();
@@ -64,6 +66,8 @@ namespace BT.Runtime
 
             foreach (var controller in _behaviorTreeControllers)
             {
+//                controller.treeGraph.Compile();
+                
                 if (controller.startOnEnable)
                     controller.Init();
             }

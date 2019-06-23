@@ -26,6 +26,7 @@ namespace BT.Editor.ContextualCommands
 
             context.entry.exitSocket.IsHooked = true;
             clickedNode.entrySocket.IsHooked = true;
+            clickedNode.Init(clickedNode.GUID,false,true,clickedNode.IsParentNode, context.OnNodeSocketClicked,context.currentGraph);
 
             context.Connections.Add(NodeUtils.CreateConnection(context.currentGraph, context.entry.exitSocket, clickedNode.entrySocket,
                 Color.red));

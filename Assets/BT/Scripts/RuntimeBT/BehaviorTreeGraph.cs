@@ -21,7 +21,7 @@ namespace BT.Editor
         public BaseNode EntryNode;
         
 
-        public void OnSave()
+        public void Compile()
         {
             root = null;
             
@@ -49,7 +49,7 @@ namespace BT.Editor
             PrintTree(_tree.RootTask);
         }
 
-        public void ConstructTree(BaseNode node)
+        private void ConstructTree(BaseNode node)
         {
             if (node.IsParentNode)
             {

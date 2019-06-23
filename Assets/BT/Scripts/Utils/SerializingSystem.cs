@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using BT.Editor;
 using BT.Scripts.Drawers;
-using UnityEditor;
 
 namespace BT.Scripts
 {
@@ -37,10 +36,19 @@ namespace BT.Scripts
 
                 BTLog.Log("Saved " + currentGraph.SavedNodes.Count + " nodes.");
 
-                currentGraph.OnSave();
+                currentGraph.Compile();
 
 #if  UNITY_EDITOR
-                EditorUtility.SetDirty(currentGraph);
+                UnityEditor.EditorUtility.SetDirty(currentGraph);
+
+                string[] guids = UnityEditor.AssetDatabase.FindAssets("t:BehaviorTreeGraph");
+
+                foreach (var guid in guids)
+                {
+                    var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<BehaviorTreeGraph>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid));
+                    asset.Compile();
+                    BTLog.Log(asset.root);
+                }
 #endif
             }
         }

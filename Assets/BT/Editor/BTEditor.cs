@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BT.Editor;
 using BT.Editor.ContextualCommands;
+using BT.Runtime;
 using BT.Scripts;
 using BT.Scripts.Drawers;
 using Editor;
@@ -113,13 +114,14 @@ namespace BT
         {
             BTLog.Log("On Enable Called");
             Application.quitting += OnApplicationQuit;
+            Selection.selectionChanged += SelectionChanged;
             EditorApplication.playModeStateChanged += EditorApplicationOnPlayModeStateChanged;
 
             _saveOnPlay = EditorPrefs.GetBool(ksaveOnPlayKey, true);
             _saveOnClose = EditorPrefs.GetBool(ksaveOnCloseKey, true);
             _autoSave = EditorPrefs.GetBool(kautosaveKey, true);
             _dontShowTooltipAgain = EditorPrefs.GetBool(kDontShowTooltipAgainKey, false);
-            
+
 
             _skin = Resources.Load<GUISkin>("BTSkin");
 
@@ -147,6 +149,24 @@ namespace BT
             _tooltipWindow = null;
 
             BTLog.Log("Started Editor");
+        }
+
+        private void SelectionChanged()
+        {
+            if (Selection.activeGameObject != null)
+            {
+                var controller = Selection.activeGameObject.GetComponent<BehaviorTreeController>();
+                if (controller != null && controller.treeGraph != null)
+                {
+                    currentGraph = controller.treeGraph;
+
+                    nodes.Clear();
+                    _connections.Clear();
+                    RestoreSerializedData();
+                    GraphInstanceID = currentGraph.GetInstanceID();
+                    Repaint();
+                }
+            }
         }
 
         private void RestoreSerializedData()
@@ -211,7 +231,8 @@ namespace BT
         {
             BTLog.Log("On Disable Called");
             Application.quitting -= OnApplicationQuit;
-            EditorApplication.playModeStateChanged -= EditorApplicationOnPlayModeStateChanged;
+            Selection.selectionChanged -= SelectionChanged;
+            //EditorApplication.playModeStateChanged -= EditorApplicationOnPlayModeStateChanged;
 
             EditorPrefs.SetBool(ksaveOnPlayKey, _saveOnPlay);
             EditorPrefs.SetBool(ksaveOnCloseKey, _saveOnClose);
@@ -224,9 +245,12 @@ namespace BT
             StartEditor();
         }
 
-
         private void EditorApplicationOnPlayModeStateChanged(PlayModeStateChange state)
         {
+            
+            if(EditorApplication.isPlayingOrWillChangePlaymode)
+                CollectObjectsID();
+
             switch (state)
             {
                 case PlayModeStateChange.ExitingEditMode:
@@ -258,38 +282,47 @@ namespace BT
 
                 entry = EditorUtility.InstanceIDToObject(entryID) as BaseNode;
 
-                for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
+                if (nodeIDs.Count == currentGraph.SavedNodes.Count)
                 {
-                    //Thanks to polymorphism we can treat every Node object as a BaseNode.
-                     currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
-
-                    for (int i = 0; i < _blackBoardVariablesID[index].ids.Length; i++)
+                    for (var index = 0; index < currentGraph.SavedNodes.Count; index++)
                     {
-                        currentGraph.SavedNodes[index].variables[i] =
-                            EditorUtility.InstanceIDToObject(_blackBoardVariablesID[index]
-                                .ids[i]) as BlackBoardVariable;
+                        //Thanks to polymorphism we can treat every Node object as a BaseNode.
+                        currentGraph.SavedNodes[index] = EditorUtility.InstanceIDToObject(nodeIDs[index]) as BaseNode;
+
+                        for (int i = 0; i < _blackBoardVariablesID[index].ids.Length; i++)
+                        {
+                            currentGraph.SavedNodes[index].variables[i] =
+                                EditorUtility.InstanceIDToObject(_blackBoardVariablesID[index]
+                                    .ids[i]) as BlackBoardVariable;
+                        }
                     }
                 }
 
-                currentGraph.entryConnection.StartSocket =
-                    EditorUtility.InstanceIDToObject(_entryConnectionID.StartSocketID) as NodeSocket;
-
-                currentGraph.entryConnection.EndSocket =
-                    EditorUtility.InstanceIDToObject(_entryConnectionID.EndSocketID) as NodeSocket;
-
-                currentGraph.entryConnection =
-                    EditorUtility.InstanceIDToObject(_entryConnectionID.ConnectionID) as NodeConnection;
-
-                for (int i = 0; i < currentGraph.SavedConnections.Count; i++)
+                if (_entryConnectionID.ConnectionID != 0)
                 {
-                    currentGraph.SavedConnections[i].StartSocket =
-                        EditorUtility.InstanceIDToObject(_connectionsIDs[i].StartSocketID) as NodeSocket;
+                    currentGraph.entryConnection.StartSocket =
+                        EditorUtility.InstanceIDToObject(_entryConnectionID.StartSocketID) as NodeSocket;
 
-                    currentGraph.SavedConnections[i].EndSocket =
-                        EditorUtility.InstanceIDToObject(_connectionsIDs[i].EndSocketID) as NodeSocket;
+                    currentGraph.entryConnection.EndSocket =
+                        EditorUtility.InstanceIDToObject(_entryConnectionID.EndSocketID) as NodeSocket;
 
-                    currentGraph.SavedConnections[i] =
-                        EditorUtility.InstanceIDToObject(_connectionsIDs[i].ConnectionID) as NodeConnection;
+                    currentGraph.entryConnection =
+                        EditorUtility.InstanceIDToObject(_entryConnectionID.ConnectionID) as NodeConnection;
+                }
+
+                if (_connectionsIDs.Count == currentGraph.SavedConnections.Count)
+                {
+                    for (int i = 0; i < currentGraph.SavedConnections.Count; i++)
+                    {
+                        currentGraph.SavedConnections[i].StartSocket =
+                            EditorUtility.InstanceIDToObject(_connectionsIDs[i].StartSocketID) as NodeSocket;
+
+                        currentGraph.SavedConnections[i].EndSocket =
+                            EditorUtility.InstanceIDToObject(_connectionsIDs[i].EndSocketID) as NodeSocket;
+
+                        currentGraph.SavedConnections[i] =
+                            EditorUtility.InstanceIDToObject(_connectionsIDs[i].ConnectionID) as NodeConnection;
+                    }
                 }
 
                 EditorUtility.SetDirty(currentGraph);
@@ -443,14 +476,14 @@ namespace BT
             EditorZoomArea.End();
 
             if (GUI.changed) Repaint();
-        } 
+        }
 
         private void DrawTooltip(Rect inspectorRect)
         {
             if (_showTooltip && !_dontShowTooltipAgain)
             {
                 Rect tooltipRect = new Rect(inspectorRect.x + 5, inspectorRect.yMax - (position.yMax / 3),
-                    inspectorRect.width - 10, (position.height / 6) );
+                    inspectorRect.width - 10, (position.height / 6));
                 GUILayout.BeginArea(tooltipRect, EditorStyles.helpBox);
 
                 GUILayout.BeginHorizontal();
@@ -458,7 +491,7 @@ namespace BT
                 {
                     _showTooltip = false;
                 }
-                    
+
                 EditorGUI.BeginChangeCheck();
                 _dontShowTooltipAgain = GUILayout.Toggle(_dontShowTooltipAgain, "Don't show tooltip again.");
                 if (EditorGUI.EndChangeCheck())
@@ -468,7 +501,7 @@ namespace BT
                 GUILayout.BeginVertical();
                 EditorGUILayout.LabelField(_tooltip, EditorStyles.wordWrappedLabel);
                 GUILayout.EndVertical();
-                GUILayout.EndArea(); 
+                GUILayout.EndArea();
             }
         }
 
@@ -576,9 +609,10 @@ namespace BT
             _saveOnPlay = GUILayout.Toggle(_saveOnPlay, "Save on Play Pressed", EditorStyles.toolbarButton);
             if (EditorGUI.EndChangeCheck())
                 GUI.FocusControl(null);
-            
+
             EditorGUI.BeginChangeCheck();
-            _dontShowTooltipAgain = GUILayout.Toggle(_dontShowTooltipAgain, "Dont Show Tooltip", EditorStyles.toolbarButton);
+            _dontShowTooltipAgain =
+                GUILayout.Toggle(_dontShowTooltipAgain, "Dont Show Tooltip", EditorStyles.toolbarButton);
             if (EditorGUI.EndChangeCheck())
                 GUI.FocusControl(null);
 

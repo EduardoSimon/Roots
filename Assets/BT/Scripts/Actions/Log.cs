@@ -9,8 +9,8 @@ namespace BT.Core
     [TaskTooltip("HI IM A LOG")]
     public class Log : Action
     {
-        public string message;
-        public bool isLogError;
+        public StringBlackBoardVariable message;
+        public BoolBlackBoardVariable isLogError;
         
         protected override void OnFirstTick()
         {
