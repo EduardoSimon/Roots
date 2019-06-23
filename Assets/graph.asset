@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8811294855144016818
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
-  m_Name: Connection
-  m_EditorClassIdentifier: 
-  IsEntryConnection: 0
-  StartSocket: {fileID: 5298401354622807263}
-  EndSocket: {fileID: -5611982826608016003}
-  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &-8710307063910792368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,28 +36,6 @@ MonoBehaviour:
   taskFieldName: destination
   guid: addfb34c9a668430db84cf4c4d6a8adf
   Variable: {fileID: 0}
---- !u!114 &-6733297834449080578
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
-  m_Name: SequenceNode entrySocket
-  m_EditorClassIdentifier: 
-  _socketRect:
-    serializedVersion: 2
-    x: 453.83344
-    y: 196.33334
-    width: 80
-    height: 16
-  SocketType: 0
-  Node: {fileID: -4414829964214267603}
-  NodeGuid: 
-  IsHooked: 1
 --- !u!114 &-6722352104999414903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,8 +68,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 358.16663
-    y: 385.33328
+    x: 214.83324
+    y: 395.33362
     width: 80
     height: 16
   SocketType: 0
@@ -138,30 +100,15 @@ MonoBehaviour:
   exitSocket: {fileID: 7809781298262457233}
   windowRect:
     serializedVersion: 2
-    x: 448.33334
-    y: 45.000004
+    x: 346.66666
+    y: 51.666683
     width: 100
     height: 100
   windowTitle: Entry View
   variables: []
   children:
-  - {fileID: -4414829964214267603}
---- !u!114 &-4983856310446293179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5795ca095464c13aa0f4e4ff601c7d6, type: 3}
-  m_Name: Sequence
-  m_EditorClassIdentifier: 
-  Status: 3
-  _children:
-  - {fileID: -4132067485279366156}
-  - {fileID: -3467148280244903131}
+  - {fileID: 0}
+  - {fileID: -3991531844883714319}
 --- !u!114 &-4559114830657655090
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,47 +123,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 540.83344
-    y: 382.99994
+    x: 467.50037
+    y: 398
     width: 80
     height: 16
   SocketType: 0
   Node: {fileID: -2819302547007383387}
   NodeGuid: 
   IsHooked: 1
---- !u!114 &-4414829964214267603
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b378b15cbdab4c0ca5e0776d325332b5, type: 3}
-  m_Name: SequenceNode
-  m_EditorClassIdentifier: 
-  isParentNode: 1
-  isRootView: 1
-  isEntryPoint: 0
-  isSelected: 0
-  guid: d88365df-cbef-4a37-823a-d8bbf507455b
-  _graphContext: {fileID: 11400000}
-  avaliableBBKeys: []
-  _task: {fileID: -4983856310446293179}
-  entrySocket: {fileID: -6733297834449080578}
-  exitSocket: {fileID: 5298401354622807263}
-  windowRect:
-    serializedVersion: 2
-    x: 441.33344
-    y: 207.33334
-    width: 100
-    height: 100
-  windowTitle: Sequence
-  variables: []
-  children:
-  - {fileID: -2819302547007383387}
-  - {fileID: 2633730608472513107}
 --- !u!114 &-4132067485279366156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +149,39 @@ MonoBehaviour:
   maxRange: {fileID: -2479558882280490577}
   SightedTarget: {fileID: -239811252278940969, guid: 6773752da64c94a49b83ed6b87eed110,
     type: 2}
+--- !u!114 &-3991531844883714319
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b378b15cbdab4c0ca5e0776d325332b5, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  isParentNode: 1
+  isRootView: 1
+  isEntryPoint: 0
+  isSelected: 0
+  guid: 4f7967fa-9d95-4bd4-9bc5-3ffb893f9160
+  _graphContext: {fileID: 11400000}
+  avaliableBBKeys: []
+  _task: {fileID: 1637171044038396969}
+  entrySocket: {fileID: 5022405964658843765}
+  exitSocket: {fileID: 3207258737366452042}
+  windowRect:
+    serializedVersion: 2
+    x: 328.66663
+    y: 214
+    width: 100
+    height: 100
+  windowTitle: Sequence
+  variables: []
+  children:
+  - {fileID: 2633730608472513107}
+  - {fileID: -2819302547007383387}
 --- !u!114 &-3738398262962680804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -293,8 +240,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 528.33344
-    y: 393.99994
+    x: 455.00037
+    y: 409
     width: 100
     height: 100
   windowTitle: SetDestination
@@ -333,7 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsEntryConnection: 1
   StartSocket: {fileID: 7809781298262457233}
-  EndSocket: {fileID: -6733297834449080578}
+  EndSocket: {fileID: 0}
   ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -349,18 +296,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlackBoard: {fileID: 11400000, guid: 6773752da64c94a49b83ed6b87eed110, type: 2}
   SavedConnections:
-  - {fileID: 193704707324702675}
-  - {fileID: -8811294855144016818}
+  - {fileID: 3244629346543329945}
+  - {fileID: 4504087387570893757}
+  - {fileID: 990781337152570897}
   SavedNodes:
-  - {fileID: -4414829964214267603}
   - {fileID: -2819302547007383387}
   - {fileID: 2633730608472513107}
-  entryConnection: {fileID: -1034587743845892487}
-  root: {fileID: -4414829964214267603}
+  - {fileID: -3991531844883714319}
+  entryConnection: {fileID: 9207816529005754008}
+  root: {fileID: -3991531844883714319}
   _tree:
-    rootTask: {fileID: -4983856310446293179}
+    rootTask: {fileID: 1637171044038396969}
   EntryNode: {fileID: -5084869924220701430}
---- !u!114 &193704707324702675
+--- !u!114 &990781337152570897
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -373,9 +321,25 @@ MonoBehaviour:
   m_Name: Connection
   m_EditorClassIdentifier: 
   IsEntryConnection: 0
-  StartSocket: {fileID: 5298401354622807263}
-  EndSocket: {fileID: -4559114830657655090}
+  StartSocket: {fileID: 7809781298262457233}
+  EndSocket: {fileID: 5022405964658843765}
   ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1637171044038396969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5795ca095464c13aa0f4e4ff601c7d6, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  Status: 3
+  _children:
+  - {fileID: -4132067485279366156}
+  - {fileID: -3467148280244903131}
 --- !u!114 &2633730608472513107
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -401,8 +365,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 345.66663
-    y: 396.33328
+    x: 202.33324
+    y: 406.33362
     width: 100
     height: 100
   windowTitle: IsInSight
@@ -412,7 +376,7 @@ MonoBehaviour:
   - {fileID: -2479558882280490577}
   - {fileID: -6722352104999414903}
   children: []
---- !u!114 &5298401354622807263
+--- !u!114 &3207258737366452042
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -426,12 +390,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 453.83344
-    y: 302.33334
+    x: 341.16663
+    y: 309
     width: 80
     height: 16
   SocketType: 1
-  Node: {fileID: -4414829964214267603}
+  Node: {fileID: -3991531844883714319}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &3244629346543329945
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 0
+  StartSocket: {fileID: 3207258737366452042}
+  EndSocket: {fileID: -5611982826608016003}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &4504087387570893757
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 0
+  StartSocket: {fileID: 3207258737366452042}
+  EndSocket: {fileID: -4559114830657655090}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &5022405964658843765
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: SequenceNode entrySocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 341.16663
+    y: 203
+    width: 80
+    height: 16
+  SocketType: 0
+  Node: {fileID: -3991531844883714319}
   NodeGuid: 
   IsHooked: 1
 --- !u!114 &7809781298262457233
@@ -448,11 +466,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 460.83334
-    y: 140
+    x: 359.16666
+    y: 146.66669
     width: 80
     height: 16
   SocketType: 1
   Node: {fileID: -5084869924220701430}
   NodeGuid: 
   IsHooked: 1
+--- !u!114 &9207816529005754008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 1
+  StartSocket: {fileID: 7809781298262457233}
+  EndSocket: {fileID: 5022405964658843765}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
