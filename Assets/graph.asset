@@ -68,8 +68,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 214.83324
-    y: 395.33362
+    x: 263.16663
+    y: 533.66705
     width: 80
     height: 16
   SocketType: 0
@@ -100,8 +100,8 @@ MonoBehaviour:
   exitSocket: {fileID: 7809781298262457233}
   windowRect:
     serializedVersion: 2
-    x: 346.66666
-    y: 51.666683
+    x: 381.6667
+    y: 108.33334
     width: 100
     height: 100
   windowTitle: Entry View
@@ -123,8 +123,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 467.50037
-    y: 398
+    x: 449.16656
+    y: 517.9997
     width: 80
     height: 16
   SocketType: 0
@@ -173,8 +173,8 @@ MonoBehaviour:
   exitSocket: {fileID: 3207258737366452042}
   windowRect:
     serializedVersion: 2
-    x: 328.66663
-    y: 214
+    x: 368.66644
+    y: 327.33295
     width: 100
     height: 100
   windowTitle: Sequence
@@ -240,8 +240,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 455.00037
-    y: 409
+    x: 436.66656
+    y: 528.9997
     width: 100
     height: 100
   windowTitle: SetDestination
@@ -303,6 +303,7 @@ MonoBehaviour:
   - {fileID: -2819302547007383387}
   - {fileID: 2633730608472513107}
   - {fileID: -3991531844883714319}
+  - {fileID: 0}
   entryConnection: {fileID: 9207816529005754008}
   root: {fileID: -3991531844883714319}
   _tree:
@@ -365,8 +366,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 202.33324
-    y: 406.33362
+    x: 250.66661
+    y: 544.66705
     width: 100
     height: 100
   windowTitle: IsInSight
@@ -390,8 +391,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 341.16663
-    y: 309
+    x: 381.16644
+    y: 422.33295
     width: 80
     height: 16
   SocketType: 1
@@ -444,8 +445,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 341.16663
-    y: 203
+    x: 381.16644
+    y: 316.33295
     width: 80
     height: 16
   SocketType: 0
@@ -466,8 +467,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 359.16666
-    y: 146.66669
+    x: 394.1667
+    y: 203.33334
     width: 80
     height: 16
   SocketType: 1

@@ -1,0 +1,279 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8615277386657642815
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 1
+  StartSocket: {fileID: 2517294175087279544}
+  EndSocket: {fileID: -1683617747618349318}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &-6455259344718484428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bbIndex: 0
+  isLocalVariable: 1
+  node: {fileID: 1949178474457795047}
+  taskFieldName: point4
+  guid: 9b3f763c4066b8b4396f2a04942f26fe
+  Variable: {fileID: 0}
+--- !u!114 &-4845074170797564033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bbIndex: 0
+  isLocalVariable: 1
+  node: {fileID: 1949178474457795047}
+  taskFieldName: point6
+  guid: f296122cae8a02940ac6c950583dae14
+  Variable: {fileID: 0}
+--- !u!114 &-4070127428611450027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bbIndex: 0
+  isLocalVariable: 1
+  node: {fileID: 1949178474457795047}
+  taskFieldName: point1
+  guid: e3f2bcc4d6a6a354cb091363767eb46e
+  Variable: {fileID: 0}
+--- !u!114 &-2783948346942111173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd34e5ef58c59f40b954ba849dc1cca, type: 3}
+  m_Name: Patrol
+  m_EditorClassIdentifier: 
+  Status: 3
+  point1: {fileID: -4070127428611450027}
+  point2: {fileID: 6427299355086680645}
+  point3: {fileID: 3948413845763177506}
+  point4: {fileID: -6455259344718484428}
+  point5: {fileID: 2112162546597134283}
+  point6: {fileID: -4845074170797564033}
+--- !u!114 &-1683617747618349318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: ActionNode entrySocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 403.8334
+    y: 350.33304
+    width: 80
+    height: 16
+  SocketType: 0
+  Node: {fileID: 1949178474457795047}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb08b08fdab4a2d956d0784676a2c88, type: 3}
+  m_Name: patrol
+  m_EditorClassIdentifier: 
+  BlackBoard: {fileID: 0}
+  SavedConnections: []
+  SavedNodes:
+  - {fileID: 1949178474457795047}
+  entryConnection: {fileID: -8615277386657642815}
+  root: {fileID: 1949178474457795047}
+  _tree:
+    rootTask: {fileID: -2783948346942111173}
+  EntryNode: {fileID: 3654180199312063756}
+--- !u!114 &1949178474457795047
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e97815c71e4de992f80e3760dbfdfc, type: 3}
+  m_Name: ActionNode
+  m_EditorClassIdentifier: 
+  isParentNode: 0
+  isRootView: 1
+  isEntryPoint: 0
+  isSelected: 0
+  guid: 0764ca0e-ce07-44b3-a8e7-bb0e426f2278
+  _graphContext: {fileID: 11400000}
+  avaliableBBKeys: []
+  _task: {fileID: -2783948346942111173}
+  entrySocket: {fileID: -1683617747618349318}
+  exitSocket: {fileID: 0}
+  windowRect:
+    serializedVersion: 2
+    x: 391.3334
+    y: 361.33304
+    width: 100
+    height: 100
+  windowTitle: Patrol
+  variables:
+  - {fileID: -4070127428611450027}
+  - {fileID: 6427299355086680645}
+  - {fileID: 3948413845763177506}
+  - {fileID: -6455259344718484428}
+  - {fileID: 2112162546597134283}
+  - {fileID: -4845074170797564033}
+  children: []
+--- !u!114 &2112162546597134283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bbIndex: 0
+  isLocalVariable: 1
+  node: {fileID: 1949178474457795047}
+  taskFieldName: point5
+  guid: 14f267b16aa53b545ac79cca054bbab4
+  Variable: {fileID: 0}
+--- !u!114 &2517294175087279544
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: ' exitSocket'
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 430.83322
+    y: 241.66664
+    width: 80
+    height: 16
+  SocketType: 1
+  Node: {fileID: 3654180199312063756}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &3654180199312063756
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9226d078b5408445a98c64bd52932368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParentNode: 0
+  isRootView: 0
+  isEntryPoint: 1
+  isSelected: 0
+  guid: 8fa0cc52-ddfd-4ed1-86c5-0ad242523aa8
+  _graphContext: {fileID: 11400000}
+  avaliableBBKeys: []
+  _task: {fileID: 0}
+  entrySocket: {fileID: 0}
+  exitSocket: {fileID: 2517294175087279544}
+  windowRect:
+    serializedVersion: 2
+    x: 418.33322
+    y: 146.66664
+    width: 100
+    height: 100
+  windowTitle: Entry View
+  variables: []
+  children:
+  - {fileID: 1949178474457795047}
+--- !u!114 &3948413845763177506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bbIndex: 0
+  isLocalVariable: 1
+  node: {fileID: 1949178474457795047}
+  taskFieldName: point3
+  guid: cdda8d55b6660834896475b80dd524c5
+  Variable: {fileID: 0}
+--- !u!114 &6427299355086680645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef0a91f6ae04b7c87d53b1c2411f86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bbIndex: 0
+  isLocalVariable: 1
+  node: {fileID: 1949178474457795047}
+  taskFieldName: point2
+  guid: f4fc0caee688e2441a27ad00c7088ba3
+  Variable: {fileID: 0}

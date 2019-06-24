@@ -1,9 +1,0 @@
-
-=== Mon Jun 10 21:42:09 2019
-
-Packages were changed.
-Update Mode: updateDependencies
-
-The following packages were updated:
-  com.unity.postprocessing from version 2.1.0 to 2.1.4
-  com.unity.textmeshpro from version 2.0.0 to 2.0.1

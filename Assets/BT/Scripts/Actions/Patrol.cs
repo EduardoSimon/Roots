@@ -1,5 +1,9 @@
-﻿using BT.Scripts.Nodes;
+﻿using BT.Runtime;
+using BT.Scripts;
+using BT.Scripts.Nodes;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace BT
 {
@@ -7,15 +11,64 @@ namespace BT
     [CustomNodeDrawer(typeof(ActionNode))]
     public class Patrol : Action
     {
+        public TransformBlackBoardVariable point1;
+        public TransformBlackBoardVariable point2;
+        public TransformBlackBoardVariable point3;
+        public TransformBlackBoardVariable point4;
+        public TransformBlackBoardVariable point5;
+        public TransformBlackBoardVariable point6;
+
+        private Transform[] waypoints;
+        private NavMeshAgent _agent;
+        private int currentIndex;
+
+        public override void Initialize(BehaviorTreeController behaviorTreeController)
+        {
+            base.Initialize(behaviorTreeController);
+            waypoints = new Transform[]
+                {point1.Variable, point2.Variable, point3.Variable, point4.Variable, point5.Variable, point6.Variable};
+            _agent = transform.GetComponent<NavMeshAgent>();
+        }
+
         protected override void OnFirstTick()
         {
             base.OnFirstTick();
+
+            if (waypoints[currentIndex] != null)
+                _agent.SetDestination(waypoints[0].position);
+
             Debug.Log("Initialized Patrol Action");
         }
 
         protected override TaskStatus Update()
         {
-            Debug.Log("Tick Patrol Action");
+            if (waypoints[currentIndex] != null)
+            {
+                float distance = Vector3.Distance(transform.position, waypoints[currentIndex].position);
+                if (distance < 0.5f)
+                {
+                    currentIndex++;
+
+                    if (currentIndex == waypoints.Length)
+                        currentIndex = 0;
+
+                    if (waypoints[currentIndex] != null)
+                    {
+                        _agent.SetDestination(waypoints[currentIndex].position);
+                    }
+                    else
+                    {
+                        while (waypoints[currentIndex] == null)
+                        {
+                            currentIndex++;
+
+                            if (currentIndex == waypoints.Length)
+                                currentIndex = 0;
+                        }
+                    }
+                }
+            }
+
             return base.Update();
         }
 
