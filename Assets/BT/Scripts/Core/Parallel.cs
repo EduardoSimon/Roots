@@ -14,16 +14,17 @@ namespace BT
             RequireAll
         }
 
-        protected Policy _failurePolicy;
+        protected Policy _failurePolicy = Policy.RequireAll;
 
-        protected Policy _successPolicy;
+        protected Policy _successPolicy = Policy.RequireOne;
 
-        //todo refactor this, cant have constructors  in scriptable objects
-        public Parallel(Policy successPolicy, Policy failurePolicy)
+        protected override void OnEnable()
         {
-            _successPolicy = successPolicy;
-            _failurePolicy = failurePolicy;
-            Children = new List<ATask>();
+            base.OnEnable();
+
+            if (Children == null)
+                Children = new List<ATask>();
+
             Status = TaskStatus.NonInitialized;
         }
 

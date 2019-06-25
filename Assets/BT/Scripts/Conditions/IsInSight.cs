@@ -56,9 +56,8 @@ namespace BT.Scripts.Conditions
 #if UNITY_EDITOR
             Handles.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.05f) : new Color(0, 1, 0, 0.05f);
             Handles.DrawSolidArc(transform.position, transform.up, transform.forward.normalized * maxRange.Variable,
-                -fov.Variable, maxRange.Variable);
-            Handles.DrawSolidArc(transform.position, transform.up, transform.forward.normalized * maxRange.Variable,
                 fov.Variable, maxRange.Variable);
+
 #else
         if (_manager.isDebugMode)
         {  

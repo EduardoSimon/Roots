@@ -115,7 +115,7 @@ namespace BT.Scripts
                 if (manager.references.ContainsKey(guid))
                 {
                     Variable = manager.references[this.guid].transform;
-                    node.Task.GetType().GetField(taskFieldName).SetValue(node.Task, Variable);
+                    node.Task.GetType().GetField(taskFieldName).SetValue(node.Task, this);
                 }
             }
         }
