@@ -19,10 +19,11 @@ namespace BT.Scripts
         public override void OnTreeInit()
         {
             base.OnTreeInit();
-            Variable = null;
-            
-            if(isLocalVariable)
+
+            if (isLocalVariable)
                 RetrieveVariable();
+            else
+                Variable = null;
         }
         
 #if UNITY_EDITOR
@@ -70,7 +71,7 @@ namespace BT.Scripts
                 btManager = gameObject.GetComponent<BTManager>();
             }
 
-            if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid))
+            if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid) && Variable != null)
             {
                 btManager.references[guid] = Variable.transform;
             }

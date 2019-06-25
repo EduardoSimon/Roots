@@ -103,8 +103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 403.8334
-    y: 350.33304
+    x: 247.16656
+    y: 325.3332
     width: 80
     height: 16
   SocketType: 0
@@ -156,8 +156,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 391.3334
-    y: 361.33304
+    x: 234.66656
+    y: 336.3332
     width: 100
     height: 100
   windowTitle: Patrol

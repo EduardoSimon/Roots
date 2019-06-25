@@ -44,26 +44,32 @@ namespace BT
         {
             if (waypoints[currentIndex] != null)
             {
-                float distance = Vector3.Distance(transform.position, waypoints[currentIndex].position);
-                if (distance < 0.5f)
+                // Check if we've reached the destination
+                if (!_agent.pathPending)
                 {
-                    currentIndex++;
-
-                    if (currentIndex == waypoints.Length)
-                        currentIndex = 0;
-
-                    if (waypoints[currentIndex] != null)
+                    if (_agent.remainingDistance <= _agent.stoppingDistance)
                     {
-                        _agent.SetDestination(waypoints[currentIndex].position);
-                    }
-                    else
-                    {
-                        while (waypoints[currentIndex] == null)
+                        if (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f)
                         {
-                            currentIndex++;
+                            currentIndex += 1;
 
                             if (currentIndex == waypoints.Length)
                                 currentIndex = 0;
+
+                            if (waypoints[currentIndex] != null)
+                            {
+                                _agent.SetDestination(waypoints[currentIndex].position);
+                            }
+                            else
+                            {
+                                while (waypoints[currentIndex] == null)
+                                {
+                                    currentIndex++;
+
+                                    if (currentIndex == waypoints.Length)
+                                        currentIndex = 0;
+                                }
+                            }
                         }
                     }
                 }
