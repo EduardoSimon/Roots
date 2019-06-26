@@ -151,6 +151,8 @@ namespace BT.Runtime
             if (status != TaskStatus.Running)
                 _hasCompletedOnce = true;
 
+            #if UNITY_ASSERTIONS
+            /*
             if (status == TaskStatus.Running)
                 BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status,
                     BTLog.ELogLevel.Warning);
@@ -159,6 +161,8 @@ namespace BT.Runtime
                     BTLog.ELogLevel.Succeded);
             else
                 BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Error);
+                */
+            #endif
         }
 
         private void OnDisable()

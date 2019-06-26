@@ -93,7 +93,7 @@ namespace BT
 
         //Called only when created the window.
         [MenuItem("BT/Editor")]
-        private static void Init()
+        public static BtEditor Init()
         {
             var _editor = GetWindow<BtEditor>("", true, new Type[1]
             {
@@ -107,6 +107,8 @@ namespace BT
 
             EditorPrefs.SetBool("ActiveEditor", true);
             BTLog.Log("Init Called");
+
+            return _editor;
         }
 
         //Called every time the editor is enabled.
@@ -149,6 +151,7 @@ namespace BT
             _tooltipWindow = null;
 
             BTLog.Log("Started Editor");
+            
         }
 
         private void SelectionChanged()
@@ -160,10 +163,7 @@ namespace BT
                 {
                     currentGraph = controller.treeGraph;
 
-                    nodes.Clear();
-                    _connections.Clear();
-                    RestoreSerializedData();
-                    GraphInstanceID = currentGraph.GetInstanceID();
+                    LoadGraph();
                     Repaint();
                 }
             }
@@ -582,10 +582,7 @@ namespace BT
 
                 if (currentGraph != null)
                 {
-                    nodes.Clear();
-                    _connections.Clear();
-                    RestoreSerializedData();
-                    GraphInstanceID = currentGraph.GetInstanceID();
+                    LoadGraph();
                 }
             }
 
@@ -641,6 +638,23 @@ namespace BT
 
             GUILayout.EndArea();
             return controlsArea;
+        }
+
+        public void LoadGraph()
+        {
+            nodes.Clear();
+            _connections.Clear();
+            RestoreSerializedData();
+            GraphInstanceID = currentGraph.GetInstanceID();
+
+            foreach (var savedNode in currentGraph.SavedNodes)
+            {
+                foreach (var variable in savedNode.variables)
+                {
+                    if (variable.GetType() == typeof(TransformBlackBoardVariable))
+                        variable.OnTreeInit();
+                }
+            }
         }
 
         private void DrawWindows()

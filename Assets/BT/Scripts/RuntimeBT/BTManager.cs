@@ -66,7 +66,7 @@ namespace BT.Runtime
 
             foreach (var controller in _behaviorTreeControllers)
             {
-//                controller.treeGraph.Compile();
+              //controller.treeGraph.Compile();
                 
                 if (controller.startOnEnable)
                     controller.Init();

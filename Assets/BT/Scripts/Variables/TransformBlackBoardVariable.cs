@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
+using UnityEditor.Compilation;
 using UnityEditor.SceneManagement;
 
 #endif
@@ -15,6 +16,7 @@ namespace BT.Scripts
     public class TransformBlackBoardVariable : BlackBoardVariable
     {
         public Transform Variable;
+        
         
         public override void OnTreeInit()
         {
@@ -104,7 +106,11 @@ namespace BT.Scripts
         private void RetrieveVariable()
         {
             BTManager manager = BTManager.Instance;
-
+            
+            #if UNITY_EDITOR
+            manager = FindObjectOfType<BTManager>();
+            #endif
+            
             if (manager == null)
             {
                 return;

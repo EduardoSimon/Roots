@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Extras/3DGamekitLite/Scenes/DemoScene.unity
-    guid: a93c8f727f3196941b92761d8a44628c
+    path: Assets/SimpleDemo2.unity
+    guid: 17218f8607f3c40acba4cd33446e193d
   m_configObjects: {}

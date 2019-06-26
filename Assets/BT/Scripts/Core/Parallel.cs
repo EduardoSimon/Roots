@@ -28,7 +28,13 @@ namespace BT
             Status = TaskStatus.NonInitialized;
         }
 
-        public List<ATask> Children { get; set; }
+        [SerializeField] private List<ATask> children;
+        
+        public List<ATask> Children
+        {
+            get { return children;}
+            set => children = value;
+        }
 
         protected override void OnFirstTick()
         {

@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8424913605646642841
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 1
+  StartSocket: {fileID: -7688248384144388843}
+  EndSocket: {fileID: 5845969846461805721}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &-7702089187452179512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 412.5
-    y: 115
+    x: 410.43683
+    y: 131.6667
     width: 80
     height: 16
   SocketType: 1
@@ -56,19 +72,6 @@ MonoBehaviour:
   _children:
   - {fileID: 1176439006844510886}
   - {fileID: -725068924470139456}
---- !u!114 &-6943797918740214830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c3b5ebb6cc480c9cc1e0969ce474dc, type: 3}
-  m_Name: Parallel
-  m_EditorClassIdentifier: 
-  Status: 3
 --- !u!114 &-6502763267226982056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,12 +104,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 454.4999
-    y: 539.6671
+    x: 452.437
+    y: 556.33356
     width: 80
     height: 16
   SocketType: 0
   Node: {fileID: 1356639060024213584}
+  NodeGuid: 
+  IsHooked: 1
+--- !u!114 &-5576675552522922901
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: ParallelNode exitSocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 406.16666
+    y: 288.66663
+    width: 80
+    height: 16
+  SocketType: 1
+  Node: {fileID: 3302850849872996689}
   NodeGuid: 
   IsHooked: 1
 --- !u!114 &-5052569648367150741
@@ -123,8 +148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 643.1666
-    y: 541
+    x: 641.1039
+    y: 557.66644
     width: 80
     height: 16
   SocketType: 0
@@ -145,15 +170,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 550.49994
-    y: 469.66653
+    x: 519.86584
+    y: 492.9206
     width: 80
     height: 16
   SocketType: 1
   Node: {fileID: 4492136638730606922}
   NodeGuid: 
   IsHooked: 1
---- !u!114 &-2956792319324481978
+--- !u!114 &-3956835948716145687
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,8 +191,8 @@ MonoBehaviour:
   m_Name: Connection
   m_EditorClassIdentifier: 
   IsEntryConnection: 0
-  StartSocket: {fileID: 8040417577811184980}
-  EndSocket: {fileID: 7082214410250773987}
+  StartSocket: {fileID: -7688248384144388843}
+  EndSocket: {fileID: 5845969846461805721}
   ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &-1936959121867071168
 MonoBehaviour:
@@ -212,8 +237,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 281.33325
-    y: 368.33344
+    x: 257.84134
+    y: 407.14304
     width: 100
     height: 100
   windowTitle: Patrol
@@ -225,6 +250,22 @@ MonoBehaviour:
   - {fileID: -7702089187452179512}
   - {fileID: 5746028464925415053}
   children: []
+--- !u!114 &-1817846227078353035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c3b5ebb6cc480c9cc1e0969ce474dc, type: 3}
+  m_Name: Parallel
+  m_EditorClassIdentifier: 
+  Status: 3
+  children:
+  - {fileID: -1936959121867071168}
+  - {fileID: -7467627593569903356}
 --- !u!114 &-725068924470139456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,19 +297,18 @@ MonoBehaviour:
   SavedConnections:
   - {fileID: 4166867260163674815}
   - {fileID: 9114232114390661941}
-  - {fileID: 2102617717989850874}
-  - {fileID: -2956792319324481978}
-  - {fileID: 7753373712512743507}
+  - {fileID: 735868069666400517}
+  - {fileID: 2078341456065380316}
   SavedNodes:
   - {fileID: -1898405026991561009}
   - {fileID: 4492136638730606922}
   - {fileID: 1356639060024213584}
   - {fileID: 431910921327578384}
-  - {fileID: 2319565243894286659}
-  entryConnection: {fileID: 3124841133333567170}
-  root: {fileID: 2319565243894286659}
+  - {fileID: 3302850849872996689}
+  entryConnection: {fileID: -8424913605646642841}
+  root: {fileID: 3302850849872996689}
   _tree:
-    rootTask: {fileID: -6943797918740214830}
+    rootTask: {fileID: -1817846227078353035}
   EntryNode: {fileID: 2552181819366370459}
 --- !u!114 &431910921327578384
 MonoBehaviour:
@@ -295,14 +335,30 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 630.6666
-    y: 552
+    x: 628.6039
+    y: 568.66644
     width: 100
     height: 100
   windowTitle: SetDestination
   variables:
   - {fileID: 945015912160561523}
   children: []
+--- !u!114 &735868069666400517
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  IsEntryConnection: 0
+  StartSocket: {fileID: -5576675552522922901}
+  EndSocket: {fileID: 7082214410250773987}
+  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &945015912160561523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,15 +417,15 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 441.9999
-    y: 550.6671
+    x: 439.937
+    y: 567.33356
     width: 100
     height: 100
   windowTitle: IsNotNull
   variables:
   - {fileID: -6502763267226982056}
   children: []
---- !u!114 &2102617717989850874
+--- !u!114 &2078341456065380316
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -382,8 +438,8 @@ MonoBehaviour:
   m_Name: Connection
   m_EditorClassIdentifier: 
   IsEntryConnection: 0
-  StartSocket: {fileID: -7688248384144388843}
-  EndSocket: {fileID: 7600361430705511445}
+  StartSocket: {fileID: -5576675552522922901}
+  EndSocket: {fileID: 5726932174748076278}
   ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &2309402317799249835
 MonoBehaviour:
@@ -403,39 +459,6 @@ MonoBehaviour:
   taskFieldName: point2
   guid: 9a844406af46b4247b642a24c339304d
   Variable: {fileID: 0}
---- !u!114 &2319565243894286659
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf4ca97b71f4484b9ba2e25704975b0, type: 3}
-  m_Name: ParallelNode
-  m_EditorClassIdentifier: 
-  isParentNode: 1
-  isRootView: 1
-  isEntryPoint: 0
-  isSelected: 0
-  guid: eda0985e-5eec-4761-b209-221c8f6e01a3
-  _graphContext: {fileID: 11400000}
-  avaliableBBKeys: []
-  _task: {fileID: -6943797918740214830}
-  entrySocket: {fileID: 7600361430705511445}
-  exitSocket: {fileID: 8040417577811184980}
-  windowRect:
-    serializedVersion: 2
-    x: 393.33328
-    y: 188.66672
-    width: 100
-    height: 100
-  windowTitle: Parallel
-  variables: []
-  children:
-  - {fileID: -1898405026991561009}
-  - {fileID: 4492136638730606922}
 --- !u!114 &2552181819366370459
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -460,14 +483,16 @@ MonoBehaviour:
   exitSocket: {fileID: -7688248384144388843}
   windowRect:
     serializedVersion: 2
-    x: 400
-    y: 20
+    x: 397.93683
+    y: 36.6667
     width: 100
     height: 100
   windowTitle: Entry View
   variables: []
   children:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 3302850849872996689}
 --- !u!114 &2902295519849602684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,7 +511,7 @@ MonoBehaviour:
   taskFieldName: point4
   guid: 2c92113414519428d9a403abdffa43a3
   Variable: {fileID: 0}
---- !u!114 &3124841133333567170
+--- !u!114 &3302850849872996689
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -495,13 +520,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
-  m_Name: Connection
+  m_Script: {fileID: 11500000, guid: fbf4ca97b71f4484b9ba2e25704975b0, type: 3}
+  m_Name: ParallelNode
   m_EditorClassIdentifier: 
-  IsEntryConnection: 1
-  StartSocket: {fileID: -7688248384144388843}
-  EndSocket: {fileID: 7600361430705511445}
-  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+  isParentNode: 1
+  isRootView: 1
+  isEntryPoint: 0
+  isSelected: 0
+  guid: 6528ea67-f50f-4d06-a134-3dcfe5b915b2
+  _graphContext: {fileID: 11400000}
+  avaliableBBKeys: []
+  _task: {fileID: -1817846227078353035}
+  entrySocket: {fileID: 5845969846461805721}
+  exitSocket: {fileID: -5576675552522922901}
+  windowRect:
+    serializedVersion: 2
+    x: 393.66666
+    y: 193.66664
+    width: 100
+    height: 100
+  windowTitle: Parallel
+  variables: []
+  children:
+  - {fileID: -1898405026991561009}
+  - {fileID: 4492136638730606922}
 --- !u!114 &4166867260163674815
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -542,8 +584,8 @@ MonoBehaviour:
   exitSocket: {fileID: -4790065868326964548}
   windowRect:
     serializedVersion: 2
-    x: 537.99994
-    y: 374.66653
+    x: 507.3658
+    y: 397.9206
     width: 100
     height: 100
   windowTitle: Sequence
@@ -583,8 +625,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 550.49994
-    y: 363.66653
+    x: 519.86584
+    y: 386.9206
     width: 80
     height: 16
   SocketType: 0
@@ -609,6 +651,28 @@ MonoBehaviour:
   taskFieldName: point6
   guid: ab058d3731a234e3186c9503037eeb28
   Variable: {fileID: 0}
+--- !u!114 &5845969846461805721
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
+  m_Name: ParallelNode entrySocket
+  m_EditorClassIdentifier: 
+  _socketRect:
+    serializedVersion: 2
+    x: 406.16666
+    y: 182.66664
+    width: 80
+    height: 16
+  SocketType: 0
+  Node: {fileID: 3302850849872996689}
+  NodeGuid: 
+  IsHooked: 1
 --- !u!114 &6727131760313240228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,72 +705,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 293.83325
-    y: 357.33344
+    x: 270.34134
+    y: 396.14304
     width: 80
     height: 16
   SocketType: 0
   Node: {fileID: -1898405026991561009}
-  NodeGuid: 
-  IsHooked: 1
---- !u!114 &7600361430705511445
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
-  m_Name: ParallelNode entrySocket
-  m_EditorClassIdentifier: 
-  _socketRect:
-    serializedVersion: 2
-    x: 405.83328
-    y: 177.66672
-    width: 80
-    height: 16
-  SocketType: 0
-  Node: {fileID: 2319565243894286659}
-  NodeGuid: 
-  IsHooked: 1
---- !u!114 &7753373712512743507
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f5e011497d34886a2108f57f38749c3, type: 3}
-  m_Name: Connection
-  m_EditorClassIdentifier: 
-  IsEntryConnection: 0
-  StartSocket: {fileID: 8040417577811184980}
-  EndSocket: {fileID: 5726932174748076278}
-  ConnectionColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &8040417577811184980
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9306f11f35c24b518fdf36dc9fd580ce, type: 3}
-  m_Name: ParallelNode exitSocket
-  m_EditorClassIdentifier: 
-  _socketRect:
-    serializedVersion: 2
-    x: 405.83328
-    y: 283.66672
-    width: 80
-    height: 16
-  SocketType: 1
-  Node: {fileID: 2319565243894286659}
   NodeGuid: 
   IsHooked: 1
 --- !u!114 &9114232114390661941
