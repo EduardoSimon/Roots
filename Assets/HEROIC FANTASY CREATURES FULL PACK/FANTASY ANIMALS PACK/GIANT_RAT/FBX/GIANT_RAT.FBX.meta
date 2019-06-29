@@ -1,0 +1,409 @@
+fileFormatVersion: 2
+guid: 6684f69d0a801b743b0c385fea117a90
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: GIANT_RAT
+  - first:
+      1: 100004
+    second: GIANT_RAT_
+  - first:
+      1: 100006
+    second: GIANT_RAT_ Head
+  - first:
+      1: 100008
+    second: GIANT_RAT_ L Calf
+  - first:
+      1: 100010
+    second: GIANT_RAT_ L Clavicle
+  - first:
+      1: 100012
+    second: GIANT_RAT_ L Finger0
+  - first:
+      1: 100014
+    second: GIANT_RAT_ L Foot
+  - first:
+      1: 100016
+    second: GIANT_RAT_ L Forearm
+  - first:
+      1: 100018
+    second: GIANT_RAT_ L Hand
+  - first:
+      1: 100020
+    second: GIANT_RAT_ L HorseLink
+  - first:
+      1: 100022
+    second: GIANT_RAT_ L Thigh
+  - first:
+      1: 100024
+    second: GIANT_RAT_ L Toe0
+  - first:
+      1: 100026
+    second: GIANT_RAT_ L UpperArm
+  - first:
+      1: 100028
+    second: GIANT_RAT_ Neck
+  - first:
+      1: 100030
+    second: GIANT_RAT_ Pelvis
+  - first:
+      1: 100032
+    second: GIANT_RAT_ Ponytail1
+  - first:
+      1: 100034
+    second: GIANT_RAT_ R Calf
+  - first:
+      1: 100036
+    second: GIANT_RAT_ R Clavicle
+  - first:
+      1: 100038
+    second: GIANT_RAT_ R Finger0
+  - first:
+      1: 100040
+    second: GIANT_RAT_ R Foot
+  - first:
+      1: 100042
+    second: GIANT_RAT_ R Forearm
+  - first:
+      1: 100044
+    second: GIANT_RAT_ R Hand
+  - first:
+      1: 100046
+    second: GIANT_RAT_ R HorseLink
+  - first:
+      1: 100048
+    second: GIANT_RAT_ R Thigh
+  - first:
+      1: 100050
+    second: GIANT_RAT_ R Toe0
+  - first:
+      1: 100052
+    second: GIANT_RAT_ R UpperArm
+  - first:
+      1: 100054
+    second: GIANT_RAT_ Spine
+  - first:
+      1: 100056
+    second: GIANT_RAT_ Spine1
+  - first:
+      1: 100058
+    second: GIANT_RAT_ Tail
+  - first:
+      1: 100060
+    second: GIANT_RAT_ Tail1
+  - first:
+      1: 100062
+    second: GIANT_RAT_ Tail2
+  - first:
+      1: 100064
+    second: GIANT_RAT_ Tail3
+  - first:
+      1: 100066
+    second: GIANT_RAT_ Tail4
+  - first:
+      1: 100068
+    second: GIANT_RAT_ Tail5
+  - first:
+      1: 100070
+    second: GIANT_RAT_ Tail6
+  - first:
+      1: 100072
+    second: GIANT_RAT_ Tail7
+  - first:
+      1: 100074
+    second: GIANT_RAT_ Tail8
+  - first:
+      1: 100076
+    second: GIANT_RAT_ Tail9
+  - first:
+      1: 100078
+    second: ROOT_
+  - first:
+      1: 100080
+    second: ROOT_nub
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: GIANT_RAT
+  - first:
+      4: 400004
+    second: GIANT_RAT_
+  - first:
+      4: 400006
+    second: GIANT_RAT_ Head
+  - first:
+      4: 400008
+    second: GIANT_RAT_ L Calf
+  - first:
+      4: 400010
+    second: GIANT_RAT_ L Clavicle
+  - first:
+      4: 400012
+    second: GIANT_RAT_ L Finger0
+  - first:
+      4: 400014
+    second: GIANT_RAT_ L Foot
+  - first:
+      4: 400016
+    second: GIANT_RAT_ L Forearm
+  - first:
+      4: 400018
+    second: GIANT_RAT_ L Hand
+  - first:
+      4: 400020
+    second: GIANT_RAT_ L HorseLink
+  - first:
+      4: 400022
+    second: GIANT_RAT_ L Thigh
+  - first:
+      4: 400024
+    second: GIANT_RAT_ L Toe0
+  - first:
+      4: 400026
+    second: GIANT_RAT_ L UpperArm
+  - first:
+      4: 400028
+    second: GIANT_RAT_ Neck
+  - first:
+      4: 400030
+    second: GIANT_RAT_ Pelvis
+  - first:
+      4: 400032
+    second: GIANT_RAT_ Ponytail1
+  - first:
+      4: 400034
+    second: GIANT_RAT_ R Calf
+  - first:
+      4: 400036
+    second: GIANT_RAT_ R Clavicle
+  - first:
+      4: 400038
+    second: GIANT_RAT_ R Finger0
+  - first:
+      4: 400040
+    second: GIANT_RAT_ R Foot
+  - first:
+      4: 400042
+    second: GIANT_RAT_ R Forearm
+  - first:
+      4: 400044
+    second: GIANT_RAT_ R Hand
+  - first:
+      4: 400046
+    second: GIANT_RAT_ R HorseLink
+  - first:
+      4: 400048
+    second: GIANT_RAT_ R Thigh
+  - first:
+      4: 400050
+    second: GIANT_RAT_ R Toe0
+  - first:
+      4: 400052
+    second: GIANT_RAT_ R UpperArm
+  - first:
+      4: 400054
+    second: GIANT_RAT_ Spine
+  - first:
+      4: 400056
+    second: GIANT_RAT_ Spine1
+  - first:
+      4: 400058
+    second: GIANT_RAT_ Tail
+  - first:
+      4: 400060
+    second: GIANT_RAT_ Tail1
+  - first:
+      4: 400062
+    second: GIANT_RAT_ Tail2
+  - first:
+      4: 400064
+    second: GIANT_RAT_ Tail3
+  - first:
+      4: 400066
+    second: GIANT_RAT_ Tail4
+  - first:
+      4: 400068
+    second: GIANT_RAT_ Tail5
+  - first:
+      4: 400070
+    second: GIANT_RAT_ Tail6
+  - first:
+      4: 400072
+    second: GIANT_RAT_ Tail7
+  - first:
+      4: 400074
+    second: GIANT_RAT_ Tail8
+  - first:
+      4: 400076
+    second: GIANT_RAT_ Tail9
+  - first:
+      4: 400078
+    second: ROOT_
+  - first:
+      4: 400080
+    second: ROOT_nub
+  - first:
+      43: 4300000
+    second: GIANT_RAT
+  - first:
+      74: 7400000
+    second: Take 001
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: GIANT_RAT
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GAINT_RAT_FUR
+    second: {fileID: 2100000, guid: f3815ef0a563f8c47b85e9cd5ed30067, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GIANT_RAT
+    second: {fileID: 2100000, guid: f1679e647c959a34eb960cd77bd35bb7, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      internalID: 7400000
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips:
+  - 0fb4a0ec3c8b03f45b7d1b044eb7c35a
+  - 5cb7cda526d3d0c44b79150d5e4d497d
+  - bd4c95bcf1c6647429d934a9f558eeea
+  - eea1df7ec94655d49b19d2364036dee9
+  - 2e8f262e16205bc478e69ce4b529d102
+  - 727281fc6a084044f81d0048a32845e6
+  - 9042fc61c2c4d654ca4e399bdada4802
+  - c65eb61a102f2d44b9125f9ff0eb8e01
+  - 574bead685928054b824b240434c5c1b
+  - 03f46ab711a14d14c94a38f533dc84e9
+  - 13b1282f305078147acf537f69fce75a
+  - 1c14ae50b0cf3994cb716fb67c1222d5
+  - e083a1785b2323f45bb681f119f9615f
+  - 6f4b5bb18dfb0654391554e69f6f8c76
+  - 7880e06fe3bb37c4ca57e5e6a1959c28
+  - d1dc7657362d77840b889ad77abe1485
+  - 2d4955c596314254eb57d3b0496b289b
+  - 7d301079353296e4c877e2afc4272380
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: ROOT_
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -14,9 +14,9 @@ namespace BT
             RequireAll
         }
 
-        protected Policy _failurePolicy = Policy.RequireAll;
+        [SerializeField] protected Policy _failurePolicy = Policy.RequireAll;
 
-        protected Policy _successPolicy = Policy.RequireOne;
+        [SerializeField] protected Policy _successPolicy = Policy.RequireAll;
 
         protected override void OnEnable()
         {

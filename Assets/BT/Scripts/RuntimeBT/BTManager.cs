@@ -47,6 +47,8 @@ namespace BT.Runtime
 
         private void Awake()
         {
+            Application.targetFrameRate = Int32.MaxValue;
+            
             if (Instance == null)
                 Instance = this;
             else if (Instance != null && Instance != this)
@@ -66,8 +68,6 @@ namespace BT.Runtime
 
             foreach (var controller in _behaviorTreeControllers)
             {
-              //controller.treeGraph.Compile();
-                
                 if (controller.startOnEnable)
                     controller.Init();
             }

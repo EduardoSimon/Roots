@@ -27,7 +27,7 @@ namespace BT
             base.Initialize(behaviorTreeController);
             waypoints = new Transform[]
                 {point1.Variable, point2.Variable, point3.Variable, point4.Variable, point5.Variable, point6.Variable};
-            _agent = transform.GetComponent<NavMeshAgent>();
+            _agent = cachedTransform.GetComponent<NavMeshAgent>();
         }
 
         protected override void OnFirstTick()

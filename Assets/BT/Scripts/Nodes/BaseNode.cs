@@ -201,8 +201,10 @@ namespace BT
                                     .GetField("Variable").FieldType).ToArray();
                             
                             //store the index for drawing purposes and for retrieving the correct variable from the blackboard list.
-                            inspectorField.variable.bbIndex = UnityEditor.EditorGUI.Popup(previousRect.Value,
-                                inspectorField.fieldName, inspectorField.variable.bbIndex, avaliableBBKeys);
+                            inspectorField.variable.BBIndex = UnityEditor.EditorGUI.Popup(previousRect.Value,
+                                inspectorField.fieldName, inspectorField.variable.BBIndex, avaliableBBKeys);
+                            if(avaliableBBKeys.Length > 0)
+                                inspectorField.variable.BBKey = avaliableBBKeys[inspectorField.variable.BBIndex];
                         }
                         else
                             EditorGUI.HelpBox(previousRect.Value, "Select a BlackBoard in the toolbar.",
@@ -325,7 +327,7 @@ namespace BT
                     }
                     else
                     {
-                        BlackBoardVariable bbVariable = _graphContext.BlackBoard.GetVariable(_graphContext.BlackBoard.Keys[variable.bbIndex]);
+                        BlackBoardVariable bbVariable = _graphContext.BlackBoard.GetVariable(variable.BBKey);
                         
                         taskField.SetValue(_task, bbVariable);
                     }

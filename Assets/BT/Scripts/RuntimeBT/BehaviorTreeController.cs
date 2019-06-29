@@ -74,8 +74,8 @@ namespace BT.Runtime
                 else if (updateType == EUpdateType.LateUpdate)
                     _manager._lateUpdateTrees.Add(this);
 
-                InitializeTasks(_tree.RootTask,this);
                 InitializeVariables(treeGraph.root);
+                InitializeTasks(_tree.RootTask,this);
             }
             else
             {

@@ -1,0 +1,300 @@
+fileFormatVersion: 2
+guid: 0fb4a0ec3c8b03f45b7d1b044eb7c35a
+timeCreated: 1488297330
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: GIANT_RAT_
+    100004: GIANT_RAT_ Head
+    100006: GIANT_RAT_ L Calf
+    100008: GIANT_RAT_ L Clavicle
+    100010: GIANT_RAT_ L Finger0
+    100012: GIANT_RAT_ L Foot
+    100014: GIANT_RAT_ L Forearm
+    100016: GIANT_RAT_ L Hand
+    100018: GIANT_RAT_ L HorseLink
+    100020: GIANT_RAT_ L Thigh
+    100022: GIANT_RAT_ L Toe0
+    100024: GIANT_RAT_ L UpperArm
+    100026: GIANT_RAT_ Neck
+    100028: GIANT_RAT_ Pelvis
+    100030: GIANT_RAT_ Ponytail1
+    100032: GIANT_RAT_ R Calf
+    100034: GIANT_RAT_ R Clavicle
+    100036: GIANT_RAT_ R Finger0
+    100038: GIANT_RAT_ R Foot
+    100040: GIANT_RAT_ R Forearm
+    100042: GIANT_RAT_ R Hand
+    100044: GIANT_RAT_ R HorseLink
+    100046: GIANT_RAT_ R Thigh
+    100048: GIANT_RAT_ R Toe0
+    100050: GIANT_RAT_ R UpperArm
+    100052: GIANT_RAT_ Spine
+    100054: GIANT_RAT_ Spine1
+    100056: GIANT_RAT_ Tail
+    100058: GIANT_RAT_ Tail1
+    100060: GIANT_RAT_ Tail2
+    100062: GIANT_RAT_ Tail3
+    100064: GIANT_RAT_ Tail4
+    100066: GIANT_RAT_ Tail5
+    100068: GIANT_RAT_ Tail6
+    100070: GIANT_RAT_ Tail7
+    100072: GIANT_RAT_ Tail8
+    100074: GIANT_RAT_ Tail9
+    100076: ROOT_
+    100078: ROOT_nub
+    400000: //RootNode
+    400002: GIANT_RAT_
+    400004: GIANT_RAT_ Head
+    400006: GIANT_RAT_ L Calf
+    400008: GIANT_RAT_ L Clavicle
+    400010: GIANT_RAT_ L Finger0
+    400012: GIANT_RAT_ L Foot
+    400014: GIANT_RAT_ L Forearm
+    400016: GIANT_RAT_ L Hand
+    400018: GIANT_RAT_ L HorseLink
+    400020: GIANT_RAT_ L Thigh
+    400022: GIANT_RAT_ L Toe0
+    400024: GIANT_RAT_ L UpperArm
+    400026: GIANT_RAT_ Neck
+    400028: GIANT_RAT_ Pelvis
+    400030: GIANT_RAT_ Ponytail1
+    400032: GIANT_RAT_ R Calf
+    400034: GIANT_RAT_ R Clavicle
+    400036: GIANT_RAT_ R Finger0
+    400038: GIANT_RAT_ R Foot
+    400040: GIANT_RAT_ R Forearm
+    400042: GIANT_RAT_ R Hand
+    400044: GIANT_RAT_ R HorseLink
+    400046: GIANT_RAT_ R Thigh
+    400048: GIANT_RAT_ R Toe0
+    400050: GIANT_RAT_ R UpperArm
+    400052: GIANT_RAT_ Spine
+    400054: GIANT_RAT_ Spine1
+    400056: GIANT_RAT_ Tail
+    400058: GIANT_RAT_ Tail1
+    400060: GIANT_RAT_ Tail2
+    400062: GIANT_RAT_ Tail3
+    400064: GIANT_RAT_ Tail4
+    400066: GIANT_RAT_ Tail5
+    400068: GIANT_RAT_ Tail6
+    400070: GIANT_RAT_ Tail7
+    400072: GIANT_RAT_ Tail8
+    400074: GIANT_RAT_ Tail9
+    400076: ROOT_
+    400078: ROOT_nub
+    7400000: death
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: death
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 47
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ROOT_
+        weight: 1
+      - path: ROOT_/GIANT_RAT_
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ L Thigh
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ L Thigh/GIANT_RAT_ L Calf
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ L Thigh/GIANT_RAT_ L Calf/GIANT_RAT_
+          L HorseLink
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ L Thigh/GIANT_RAT_ L Calf/GIANT_RAT_
+          L HorseLink/GIANT_RAT_ L Foot
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ L Thigh/GIANT_RAT_ L Calf/GIANT_RAT_
+          L HorseLink/GIANT_RAT_ L Foot/GIANT_RAT_ L Toe0
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ R Thigh
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ R Thigh/GIANT_RAT_ R Calf
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ R Thigh/GIANT_RAT_ R Calf/GIANT_RAT_
+          R HorseLink
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ R Thigh/GIANT_RAT_ R Calf/GIANT_RAT_
+          R HorseLink/GIANT_RAT_ R Foot
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ R Thigh/GIANT_RAT_ R Calf/GIANT_RAT_
+          R HorseLink/GIANT_RAT_ R Foot/GIANT_RAT_ R Toe0
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          L Clavicle
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          L Clavicle/GIANT_RAT_ L UpperArm
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          L Clavicle/GIANT_RAT_ L UpperArm/GIANT_RAT_ L Forearm
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          L Clavicle/GIANT_RAT_ L UpperArm/GIANT_RAT_ L Forearm/GIANT_RAT_ L Hand
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          L Clavicle/GIANT_RAT_ L UpperArm/GIANT_RAT_ L Forearm/GIANT_RAT_ L Hand/GIANT_RAT_
+          L Finger0
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          Neck
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          Neck/GIANT_RAT_ Head
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          Neck/GIANT_RAT_ Head/GIANT_RAT_ Ponytail1
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          R Clavicle
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          R Clavicle/GIANT_RAT_ R UpperArm
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          R Clavicle/GIANT_RAT_ R UpperArm/GIANT_RAT_ R Forearm
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          R Clavicle/GIANT_RAT_ R UpperArm/GIANT_RAT_ R Forearm/GIANT_RAT_ R Hand
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Spine/GIANT_RAT_ Spine1/GIANT_RAT_
+          R Clavicle/GIANT_RAT_ R UpperArm/GIANT_RAT_ R Forearm/GIANT_RAT_ R Hand/GIANT_RAT_
+          R Finger0
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2/GIANT_RAT_ Tail3
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2/GIANT_RAT_ Tail3/GIANT_RAT_ Tail4
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2/GIANT_RAT_ Tail3/GIANT_RAT_ Tail4/GIANT_RAT_ Tail5
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2/GIANT_RAT_ Tail3/GIANT_RAT_ Tail4/GIANT_RAT_ Tail5/GIANT_RAT_ Tail6
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2/GIANT_RAT_ Tail3/GIANT_RAT_ Tail4/GIANT_RAT_ Tail5/GIANT_RAT_ Tail6/GIANT_RAT_
+          Tail7
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2/GIANT_RAT_ Tail3/GIANT_RAT_ Tail4/GIANT_RAT_ Tail5/GIANT_RAT_ Tail6/GIANT_RAT_
+          Tail7/GIANT_RAT_ Tail8
+        weight: 1
+      - path: ROOT_/GIANT_RAT_/GIANT_RAT_ Pelvis/GIANT_RAT_ Tail/GIANT_RAT_ Tail1/GIANT_RAT_
+          Tail2/GIANT_RAT_ Tail3/GIANT_RAT_ Tail4/GIANT_RAT_ Tail5/GIANT_RAT_ Tail6/GIANT_RAT_
+          Tail7/GIANT_RAT_ Tail8/GIANT_RAT_ Tail9
+        weight: 1
+      - path: ROOT_/ROOT_nub
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: ROOT_
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 6684f69d0a801b743b0c385fea117a90,
+    type: 3}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

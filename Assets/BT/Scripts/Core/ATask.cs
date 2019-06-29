@@ -11,7 +11,7 @@ namespace BT
     {
         public TaskStatus Status;
         protected BTManager _manager;
-        protected Transform transform;
+        protected Transform cachedTransform;
 
         protected virtual void OnEnable()
         {
@@ -24,7 +24,7 @@ namespace BT
         public virtual void Initialize(BehaviorTreeController behaviorTreeController)
         {
             _manager = BTManager.Instance;
-            transform = behaviorTreeController.transform;
+            cachedTransform = behaviorTreeController.transform;
         }
         
         /// <summary>

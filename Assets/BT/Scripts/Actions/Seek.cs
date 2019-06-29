@@ -24,12 +24,12 @@ namespace BT.Scripts.Core
             if (target.Variable == null)
                 return TaskStatus.Failed;
             
-            var position = transform.position;
+            var position = cachedTransform.position;
             Vector3 dir = target.Variable.position - position;
             position += speed.Variable * Time.deltaTime * dir.normalized;
-            transform.position = position;
+            cachedTransform.position = position;
 
-            if (Vector3.Distance(transform.position, target.Variable.position) < 1f)
+            if (Vector3.Distance(cachedTransform.position, target.Variable.position) < 1f)
                 return TaskStatus.Succeeded;
 
             return TaskStatus.Running;

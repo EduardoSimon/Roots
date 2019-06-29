@@ -11,29 +11,46 @@ namespace BT.Scripts.Actions
     public class SetDestination : Action
     {
         public TransformBlackBoardVariable destination;
-
         private NavMeshAgent _agent;
+
+        public FloatBlackBoardVariable speed;
         
         public override void Initialize(BehaviorTreeController behaviorTreeController)
         {
             base.Initialize(behaviorTreeController);
-            _agent = transform.gameObject.GetComponent<NavMeshAgent>();
-            _agent.Warp(transform.position);
+            _agent = cachedTransform.gameObject.GetComponent<NavMeshAgent>();
+            _agent.Warp(cachedTransform.position);
         }
 
         protected override void OnFirstTick()
         {
             base.OnFirstTick();
+            if(destination.Variable != null)
+                _agent.SetDestination(destination.Variable.position);
 
         }
 
         protected override TaskStatus Update()
         {
-            if(destination.Variable == null)
-                return TaskStatus.Failed;
+            speed.Variable = _agent.velocity.magnitude;
             
-            if (_agent.remainingDistance < _agent.stoppingDistance)
-                return TaskStatus.Succeeded;
+            if (destination.Variable == null)
+            {
+                _agent.isStopped = true;
+                return TaskStatus.Failed;
+            }
+            
+            
+            if (!_agent.pathPending)
+            {
+                if (_agent.remainingDistance <= _agent.stoppingDistance)
+                {
+                    if (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f)
+                    {
+                        return TaskStatus.Succeeded;
+                    }
+                }
+            }
             
             _agent.SetDestination(destination.Variable.position);
 

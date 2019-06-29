@@ -9,6 +9,7 @@ using BT.Scripts.Drawers;
 using Editor;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using UDebug = UnityEngine.Debug;
 
 namespace BT
@@ -148,7 +149,7 @@ namespace BT
 
             RestoreSerializedData();
 
-            _tooltipWindow = null;
+            _selectedNode = null;
 
             BTLog.Log("Started Editor");
             
@@ -609,7 +610,7 @@ namespace BT
 
             EditorGUI.BeginChangeCheck();
             _dontShowTooltipAgain =
-                GUILayout.Toggle(_dontShowTooltipAgain, "Dont Show Tooltip", EditorStyles.toolbarButton);
+                GUILayout.Toggle(_dontShowTooltipAgain, "Don't Show Tooltip", EditorStyles.toolbarButton, GUILayout.MaxWidth(100));
             if (EditorGUI.EndChangeCheck())
                 GUI.FocusControl(null);
 
@@ -642,6 +643,8 @@ namespace BT
 
         public void LoadGraph()
         {
+            _selectedNode = null;
+            _showTooltip = false;
             nodes.Clear();
             _connections.Clear();
             RestoreSerializedData();
@@ -932,6 +935,9 @@ namespace BT
                     _tooltip = attribute.Tooltip;
                 }
             }
+
+            Selection.activeObject = node.Task;
+            EditorGUIUtility.PingObject(node.Task);
         }
 
         #endregion
