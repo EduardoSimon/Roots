@@ -1,0 +1,362 @@
+fileFormatVersion: 2
+guid: a240fba8dcdf5724e9e65842a26b484f
+timeCreated: 1458326295
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: DRAGONIDE_
+    100004: DRAGONIDE_ Head
+    100006: DRAGONIDE_ L Calf
+    100008: DRAGONIDE_ L Clavicle
+    100010: DRAGONIDE_ L Finger0
+    100012: DRAGONIDE_ L Finger01
+    100014: DRAGONIDE_ L Finger02
+    100016: DRAGONIDE_ L Finger1
+    100018: DRAGONIDE_ L Finger11
+    100020: DRAGONIDE_ L Finger12
+    100022: DRAGONIDE_ L Foot
+    100024: DRAGONIDE_ L Forearm
+    100026: DRAGONIDE_ L Hand
+    100028: DRAGONIDE_ L HorseLink
+    100030: DRAGONIDE_ L Thigh
+    100032: DRAGONIDE_ L Toe0
+    100034: DRAGONIDE_ L Toe01
+    100036: DRAGONIDE_ L Toe02
+    100038: DRAGONIDE_ L UpperArm
+    100040: DRAGONIDE_ Neck
+    100042: DRAGONIDE_ Neck1
+    100044: DRAGONIDE_ Pelvis
+    100046: DRAGONIDE_ Queue de cheval 1
+    100048: DRAGONIDE_ R Calf
+    100050: DRAGONIDE_ R Clavicle
+    100052: DRAGONIDE_ R Finger0
+    100054: DRAGONIDE_ R Finger01
+    100056: DRAGONIDE_ R Finger02
+    100058: DRAGONIDE_ R Finger1
+    100060: DRAGONIDE_ R Finger11
+    100062: DRAGONIDE_ R Finger12
+    100064: DRAGONIDE_ R Foot
+    100066: DRAGONIDE_ R Forearm
+    100068: DRAGONIDE_ R Hand
+    100070: DRAGONIDE_ R HorseLink
+    100072: DRAGONIDE_ R Thigh
+    100074: DRAGONIDE_ R Toe0
+    100076: DRAGONIDE_ R Toe01
+    100078: DRAGONIDE_ R Toe02
+    100080: DRAGONIDE_ R UpperArm
+    100082: DRAGONIDE_ Spine
+    100084: DRAGONIDE_ Spine1
+    100086: DRAGONIDE_ Tail
+    100088: DRAGONIDE_ Tail1
+    100090: DRAGONIDE_ Tail2
+    100092: DRAGONIDE_ Tail3
+    100094: DRAGONIDE_ Tail4
+    100096: DRAGONIDE_ Tail5
+    100098: DRAGONIDE_ Tail6
+    100100: DRAGONIDE_ Tail7
+    400000: //RootNode
+    400002: DRAGONIDE_
+    400004: DRAGONIDE_ Head
+    400006: DRAGONIDE_ L Calf
+    400008: DRAGONIDE_ L Clavicle
+    400010: DRAGONIDE_ L Finger0
+    400012: DRAGONIDE_ L Finger01
+    400014: DRAGONIDE_ L Finger02
+    400016: DRAGONIDE_ L Finger1
+    400018: DRAGONIDE_ L Finger11
+    400020: DRAGONIDE_ L Finger12
+    400022: DRAGONIDE_ L Foot
+    400024: DRAGONIDE_ L Forearm
+    400026: DRAGONIDE_ L Hand
+    400028: DRAGONIDE_ L HorseLink
+    400030: DRAGONIDE_ L Thigh
+    400032: DRAGONIDE_ L Toe0
+    400034: DRAGONIDE_ L Toe01
+    400036: DRAGONIDE_ L Toe02
+    400038: DRAGONIDE_ L UpperArm
+    400040: DRAGONIDE_ Neck
+    400042: DRAGONIDE_ Neck1
+    400044: DRAGONIDE_ Pelvis
+    400046: DRAGONIDE_ Queue de cheval 1
+    400048: DRAGONIDE_ R Calf
+    400050: DRAGONIDE_ R Clavicle
+    400052: DRAGONIDE_ R Finger0
+    400054: DRAGONIDE_ R Finger01
+    400056: DRAGONIDE_ R Finger02
+    400058: DRAGONIDE_ R Finger1
+    400060: DRAGONIDE_ R Finger11
+    400062: DRAGONIDE_ R Finger12
+    400064: DRAGONIDE_ R Foot
+    400066: DRAGONIDE_ R Forearm
+    400068: DRAGONIDE_ R Hand
+    400070: DRAGONIDE_ R HorseLink
+    400072: DRAGONIDE_ R Thigh
+    400074: DRAGONIDE_ R Toe0
+    400076: DRAGONIDE_ R Toe01
+    400078: DRAGONIDE_ R Toe02
+    400080: DRAGONIDE_ R UpperArm
+    400082: DRAGONIDE_ Spine
+    400084: DRAGONIDE_ Spine1
+    400086: DRAGONIDE_ Tail
+    400088: DRAGONIDE_ Tail1
+    400090: DRAGONIDE_ Tail2
+    400092: DRAGONIDE_ Tail3
+    400094: DRAGONIDE_ Tail4
+    400096: DRAGONIDE_ Tail5
+    400098: DRAGONIDE_ Tail6
+    400100: DRAGONIDE_ Tail7
+    7400000: walkWeapon_RM
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 0
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: walkWeapon_RM
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: DRAGONIDE_
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ L Thigh
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ L Thigh/DRAGONIDE_ L Calf
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ L Thigh/DRAGONIDE_ L Calf/DRAGONIDE_
+          L HorseLink
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ L Thigh/DRAGONIDE_ L Calf/DRAGONIDE_
+          L HorseLink/DRAGONIDE_ L Foot
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ L Thigh/DRAGONIDE_ L Calf/DRAGONIDE_
+          L HorseLink/DRAGONIDE_ L Foot/DRAGONIDE_ L Toe0
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ L Thigh/DRAGONIDE_ L Calf/DRAGONIDE_
+          L HorseLink/DRAGONIDE_ L Foot/DRAGONIDE_ L Toe0/DRAGONIDE_ L Toe01
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ L Thigh/DRAGONIDE_ L Calf/DRAGONIDE_
+          L HorseLink/DRAGONIDE_ L Foot/DRAGONIDE_ L Toe0/DRAGONIDE_ L Toe01/DRAGONIDE_
+          L Toe02
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ R Thigh
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ R Thigh/DRAGONIDE_ R Calf
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ R Thigh/DRAGONIDE_ R Calf/DRAGONIDE_
+          R HorseLink
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ R Thigh/DRAGONIDE_ R Calf/DRAGONIDE_
+          R HorseLink/DRAGONIDE_ R Foot
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ R Thigh/DRAGONIDE_ R Calf/DRAGONIDE_
+          R HorseLink/DRAGONIDE_ R Foot/DRAGONIDE_ R Toe0
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ R Thigh/DRAGONIDE_ R Calf/DRAGONIDE_
+          R HorseLink/DRAGONIDE_ R Foot/DRAGONIDE_ R Toe0/DRAGONIDE_ R Toe01
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ R Thigh/DRAGONIDE_ R Calf/DRAGONIDE_
+          R HorseLink/DRAGONIDE_ R Foot/DRAGONIDE_ R Toe0/DRAGONIDE_ R Toe01/DRAGONIDE_
+          R Toe02
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm/DRAGONIDE_
+          L Hand
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm/DRAGONIDE_
+          L Hand/DRAGONIDE_ L Finger0
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm/DRAGONIDE_
+          L Hand/DRAGONIDE_ L Finger0/DRAGONIDE_ L Finger01
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm/DRAGONIDE_
+          L Hand/DRAGONIDE_ L Finger0/DRAGONIDE_ L Finger01/DRAGONIDE_ L Finger02
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm/DRAGONIDE_
+          L Hand/DRAGONIDE_ L Finger1
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm/DRAGONIDE_
+          L Hand/DRAGONIDE_ L Finger1/DRAGONIDE_ L Finger11
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ L Clavicle/DRAGONIDE_ L UpperArm/DRAGONIDE_ L Forearm/DRAGONIDE_
+          L Hand/DRAGONIDE_ L Finger1/DRAGONIDE_ L Finger11/DRAGONIDE_ L Finger12
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ Neck1
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ Neck1/DRAGONIDE_ Head
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ Neck1/DRAGONIDE_ Head/DRAGONIDE_ Queue de cheval 1
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm/DRAGONIDE_
+          R Hand
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm/DRAGONIDE_
+          R Hand/DRAGONIDE_ R Finger0
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm/DRAGONIDE_
+          R Hand/DRAGONIDE_ R Finger0/DRAGONIDE_ R Finger01
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm/DRAGONIDE_
+          R Hand/DRAGONIDE_ R Finger0/DRAGONIDE_ R Finger01/DRAGONIDE_ R Finger02
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm/DRAGONIDE_
+          R Hand/DRAGONIDE_ R Finger1
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm/DRAGONIDE_
+          R Hand/DRAGONIDE_ R Finger1/DRAGONIDE_ R Finger11
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Spine1/DRAGONIDE_
+          Neck/DRAGONIDE_ R Clavicle/DRAGONIDE_ R UpperArm/DRAGONIDE_ R Forearm/DRAGONIDE_
+          R Hand/DRAGONIDE_ R Finger1/DRAGONIDE_ R Finger11/DRAGONIDE_ R Finger12
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail/DRAGONIDE_
+          Tail1
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail/DRAGONIDE_
+          Tail1/DRAGONIDE_ Tail2
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail/DRAGONIDE_
+          Tail1/DRAGONIDE_ Tail2/DRAGONIDE_ Tail3
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail/DRAGONIDE_
+          Tail1/DRAGONIDE_ Tail2/DRAGONIDE_ Tail3/DRAGONIDE_ Tail4
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail/DRAGONIDE_
+          Tail1/DRAGONIDE_ Tail2/DRAGONIDE_ Tail3/DRAGONIDE_ Tail4/DRAGONIDE_ Tail5
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail/DRAGONIDE_
+          Tail1/DRAGONIDE_ Tail2/DRAGONIDE_ Tail3/DRAGONIDE_ Tail4/DRAGONIDE_ Tail5/DRAGONIDE_
+          Tail6
+        weight: 1
+      - path: DRAGONIDE_/DRAGONIDE_ Pelvis/DRAGONIDE_ Spine/DRAGONIDE_ Tail/DRAGONIDE_
+          Tail1/DRAGONIDE_ Tail2/DRAGONIDE_ Tail3/DRAGONIDE_ Tail4/DRAGONIDE_ Tail5/DRAGONIDE_
+          Tail6/DRAGONIDE_ Tail7
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: DRAGONIDE_
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 9ee11524dc07df345a8fc6d0005c4090,
+    type: 3}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

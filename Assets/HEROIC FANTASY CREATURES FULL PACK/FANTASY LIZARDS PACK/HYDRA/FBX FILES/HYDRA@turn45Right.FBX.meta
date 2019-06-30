@@ -1,0 +1,361 @@
+fileFormatVersion: 2
+guid: 3f8d162bf80e4494a916736b58edfa1e
+timeCreated: 1465938331
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: HYDRA_
+    100004: HYDRA_ Footsteps
+    100006: HYDRA_ Head
+    100008: HYDRA_ L Calf
+    100010: HYDRA_ L Clavicle
+    100012: HYDRA_ L Foot
+    100014: HYDRA_ L Forearm
+    100016: HYDRA_ L Hand
+    100018: HYDRA_ L Thigh
+    100020: HYDRA_ L UpperArm
+    100022: HYDRA_ Neck
+    100024: HYDRA_ Neck1
+    100026: HYDRA_ Neck2
+    100028: HYDRA_ Neck3
+    100030: HYDRA_ Neck4
+    100032: HYDRA_ Neck5
+    100034: HYDRA_ Pelvis
+    100036: HYDRA_ Queue de cheval 1
+    100038: HYDRA_ R Calf
+    100040: HYDRA_ R Clavicle
+    100042: HYDRA_ R Foot
+    100044: HYDRA_ R Forearm
+    100046: HYDRA_ R Hand
+    100048: HYDRA_ R Thigh
+    100050: HYDRA_ R Toe0
+    100052: HYDRA_ R UpperArm
+    100054: HYDRA_ Spine
+    100056: HYDRA_ Spine1
+    100058: HYDRA_ Tail
+    100060: HYDRA_ Tail1
+    100062: HYDRA_ Tail10
+    100064: HYDRA_ Tail2
+    100066: HYDRA_ Tail3
+    100068: HYDRA_ Tail4
+    100070: HYDRA_ Tail5
+    100072: HYDRA_ Tail6
+    100074: HYDRA_ Tail7
+    100076: HYDRA_ Tail8
+    100078: HYDRA_ Tail9
+    100080: HYDRA_HEAD_L
+    100082: HYDRA_HEAD_R
+    100084: HYDRA_JAW_L
+    100086: HYDRA_JAW_R
+    100088: HYDRA_NECK_L_1
+    100090: HYDRA_NECK_L_2
+    100092: HYDRA_NECK_L_3
+    100094: HYDRA_NECK_L_4
+    100096: HYDRA_NECK_L_5
+    100098: HYDRA_NECK_L_6
+    100100: HYDRA_NECK_R_1
+    100102: HYDRA_NECK_R_2
+    100104: HYDRA_NECK_R_3
+    100106: HYDRA_NECK_R_4
+    100108: HYDRA_NECK_R_5
+    100110: HYDRA_NECK_R_6
+    400000: //RootNode
+    400002: HYDRA_
+    400004: HYDRA_ Footsteps
+    400006: HYDRA_ Head
+    400008: HYDRA_ L Calf
+    400010: HYDRA_ L Clavicle
+    400012: HYDRA_ L Foot
+    400014: HYDRA_ L Forearm
+    400016: HYDRA_ L Hand
+    400018: HYDRA_ L Thigh
+    400020: HYDRA_ L UpperArm
+    400022: HYDRA_ Neck
+    400024: HYDRA_ Neck1
+    400026: HYDRA_ Neck2
+    400028: HYDRA_ Neck3
+    400030: HYDRA_ Neck4
+    400032: HYDRA_ Neck5
+    400034: HYDRA_ Pelvis
+    400036: HYDRA_ Queue de cheval 1
+    400038: HYDRA_ R Calf
+    400040: HYDRA_ R Clavicle
+    400042: HYDRA_ R Foot
+    400044: HYDRA_ R Forearm
+    400046: HYDRA_ R Hand
+    400048: HYDRA_ R Thigh
+    400050: HYDRA_ R Toe0
+    400052: HYDRA_ R UpperArm
+    400054: HYDRA_ Spine
+    400056: HYDRA_ Spine1
+    400058: HYDRA_ Tail
+    400060: HYDRA_ Tail1
+    400062: HYDRA_ Tail10
+    400064: HYDRA_ Tail2
+    400066: HYDRA_ Tail3
+    400068: HYDRA_ Tail4
+    400070: HYDRA_ Tail5
+    400072: HYDRA_ Tail6
+    400074: HYDRA_ Tail7
+    400076: HYDRA_ Tail8
+    400078: HYDRA_ Tail9
+    400080: HYDRA_HEAD_L
+    400082: HYDRA_HEAD_R
+    400084: HYDRA_JAW_L
+    400086: HYDRA_JAW_R
+    400088: HYDRA_NECK_L_1
+    400090: HYDRA_NECK_L_2
+    400092: HYDRA_NECK_L_3
+    400094: HYDRA_NECK_L_4
+    400096: HYDRA_NECK_L_5
+    400098: HYDRA_NECK_L_6
+    400100: HYDRA_NECK_R_1
+    400102: HYDRA_NECK_R_2
+    400104: HYDRA_NECK_R_3
+    400106: HYDRA_NECK_R_4
+    400108: HYDRA_NECK_R_5
+    400110: HYDRA_NECK_R_6
+    7400000: turn45Right
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: turn45Right
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: HYDRA_
+        weight: 1
+      - path: HYDRA_/HYDRA_ Footsteps
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ L Thigh
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ L Thigh/HYDRA_ L Calf
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ L Thigh/HYDRA_ L Calf/HYDRA_
+          L Foot
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ R Thigh
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ R Thigh/HYDRA_ R Calf
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ R Thigh/HYDRA_ R Calf/HYDRA_
+          R Foot
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ R Thigh/HYDRA_ R Calf/HYDRA_
+          R Foot/HYDRA_ R Toe0
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ L
+          Clavicle
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ L
+          Clavicle/HYDRA_ L UpperArm
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ L
+          Clavicle/HYDRA_ L UpperArm/HYDRA_ L Forearm
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ L
+          Clavicle/HYDRA_ L UpperArm/HYDRA_ L Forearm/HYDRA_ L Hand
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ Neck1
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ Neck1/HYDRA_
+          Neck2
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ Neck1/HYDRA_
+          Neck2/HYDRA_ Neck3
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ Neck1/HYDRA_
+          Neck2/HYDRA_ Neck3/HYDRA_ Neck4
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ Neck1/HYDRA_
+          Neck2/HYDRA_ Neck3/HYDRA_ Neck4/HYDRA_ Neck5
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ Neck1/HYDRA_
+          Neck2/HYDRA_ Neck3/HYDRA_ Neck4/HYDRA_ Neck5/HYDRA_ Head
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ Neck1/HYDRA_
+          Neck2/HYDRA_ Neck3/HYDRA_ Neck4/HYDRA_ Neck5/HYDRA_ Head/HYDRA_ Queue de
+          cheval 1
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ R
+          Clavicle
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ R
+          Clavicle/HYDRA_ R UpperArm
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ R
+          Clavicle/HYDRA_ R UpperArm/HYDRA_ R Forearm
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_ Neck/HYDRA_ R
+          Clavicle/HYDRA_ R UpperArm/HYDRA_ R Forearm/HYDRA_ R Hand
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1/HYDRA_NECK_L_2
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1/HYDRA_NECK_L_2/HYDRA_NECK_L_3
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1/HYDRA_NECK_L_2/HYDRA_NECK_L_3/HYDRA_NECK_L_4
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1/HYDRA_NECK_L_2/HYDRA_NECK_L_3/HYDRA_NECK_L_4/HYDRA_NECK_L_5
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1/HYDRA_NECK_L_2/HYDRA_NECK_L_3/HYDRA_NECK_L_4/HYDRA_NECK_L_5/HYDRA_NECK_L_6
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1/HYDRA_NECK_L_2/HYDRA_NECK_L_3/HYDRA_NECK_L_4/HYDRA_NECK_L_5/HYDRA_NECK_L_6/HYDRA_HEAD_L
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_L_1/HYDRA_NECK_L_2/HYDRA_NECK_L_3/HYDRA_NECK_L_4/HYDRA_NECK_L_5/HYDRA_NECK_L_6/HYDRA_HEAD_L/HYDRA_JAW_L
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1/HYDRA_NECK_R_2
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1/HYDRA_NECK_R_2/HYDRA_NECK_R_3
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1/HYDRA_NECK_R_2/HYDRA_NECK_R_3/HYDRA_NECK_R_4
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1/HYDRA_NECK_R_2/HYDRA_NECK_R_3/HYDRA_NECK_R_4/HYDRA_NECK_R_5
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1/HYDRA_NECK_R_2/HYDRA_NECK_R_3/HYDRA_NECK_R_4/HYDRA_NECK_R_5/HYDRA_NECK_R_6
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1/HYDRA_NECK_R_2/HYDRA_NECK_R_3/HYDRA_NECK_R_4/HYDRA_NECK_R_5/HYDRA_NECK_R_6/HYDRA_HEAD_R
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Spine1/HYDRA_NECK_R_1/HYDRA_NECK_R_2/HYDRA_NECK_R_3/HYDRA_NECK_R_4/HYDRA_NECK_R_5/HYDRA_NECK_R_6/HYDRA_HEAD_R/HYDRA_JAW_R
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3/HYDRA_ Tail4
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3/HYDRA_ Tail4/HYDRA_ Tail5
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3/HYDRA_ Tail4/HYDRA_ Tail5/HYDRA_ Tail6
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3/HYDRA_ Tail4/HYDRA_ Tail5/HYDRA_ Tail6/HYDRA_ Tail7
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3/HYDRA_ Tail4/HYDRA_ Tail5/HYDRA_ Tail6/HYDRA_ Tail7/HYDRA_ Tail8
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3/HYDRA_ Tail4/HYDRA_ Tail5/HYDRA_ Tail6/HYDRA_ Tail7/HYDRA_ Tail8/HYDRA_
+          Tail9
+        weight: 1
+      - path: HYDRA_/HYDRA_ Pelvis/HYDRA_ Spine/HYDRA_ Tail/HYDRA_ Tail1/HYDRA_ Tail2/HYDRA_
+          Tail3/HYDRA_ Tail4/HYDRA_ Tail5/HYDRA_ Tail6/HYDRA_ Tail7/HYDRA_ Tail8/HYDRA_
+          Tail9/HYDRA_ Tail10
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: HYDRA_
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: da2f76fab613fdb42829f5648d778150,
+    type: 3}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
