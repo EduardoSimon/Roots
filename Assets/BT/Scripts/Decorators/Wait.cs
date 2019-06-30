@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using BT;
 using BT.Editor;
+using BT.Scripts;
 using BT.Scripts.Nodes;
 
 [SearchTaskPath("Decorator/Wait")]
@@ -11,7 +12,7 @@ using BT.Scripts.Nodes;
 public class Wait : Decorator
 {
     private float timer;
-    public float WaitTime;
+    public FloatBlackBoardVariable WaitTime;
     private float lastTime;
 
     protected override void OnFirstTick()
@@ -26,7 +27,7 @@ public class Wait : Decorator
         float diff = Math.Abs(Time.time - lastTime);
         timer += diff;
         lastTime = Time.time;
-        return timer >= WaitTime ? TaskStatus.Succeeded : TaskStatus.Running;
+        return timer >= WaitTime.Variable ? TaskStatus.Succeeded : TaskStatus.Running;
     }
 
     protected override void OnTerminate(TaskStatus status)

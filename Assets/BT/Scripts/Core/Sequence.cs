@@ -77,7 +77,7 @@ namespace BT
             if (Children != null)
             {
                 foreach (var task in Children)
-                    task.Status = status;
+                    task.Status = TaskStatus.NonInitialized;
             }
 
 

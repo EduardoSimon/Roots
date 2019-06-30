@@ -30,7 +30,7 @@ public class SetAnimationFloat : Action
         if (value != null)
         {
             _animator.SetFloat(paramHashedName,value.Variable);
-            return TaskStatus.Succeeded;
+            return TaskStatus.Running;
         }
 
         return Status;

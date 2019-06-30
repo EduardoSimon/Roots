@@ -18,6 +18,8 @@ namespace BT
         public TransformBlackBoardVariable point5;
         public TransformBlackBoardVariable point6;
 
+        public FloatBlackBoardVariable patrolVelocity;
+
         private Transform[] waypoints;
         private NavMeshAgent _agent;
         private int currentIndex;
@@ -35,13 +37,18 @@ namespace BT
             base.OnFirstTick();
 
             if (waypoints[currentIndex] != null)
+            {
                 _agent.SetDestination(waypoints[0].position);
+                patrolVelocity.Variable = _agent.velocity.normalized.magnitude;
+            }
 
             Debug.Log("Initialized Patrol Action");
         }
 
         protected override TaskStatus Update()
         {
+            patrolVelocity.Variable = _agent.velocity.normalized.magnitude;
+            
             if (waypoints[currentIndex] != null)
             {
                 // Check if we've reached the destination
