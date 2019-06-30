@@ -30,7 +30,7 @@ public class Rotate : Action
 
     protected override TaskStatus Update()
     {
-        if (cachedTransform.localRotation.eulerAngles.y >= targetRotation.eulerAngles.y)
+        if (Quaternion.Angle(cachedTransform.localRotation, targetRotation) < 1.0f)
             return TaskStatus.Succeeded;
         
         cachedTransform.localRotation = Quaternion.RotateTowards(cachedTransform.localRotation,targetRotation, degPerSecond.Variable *  Time.deltaTime);
