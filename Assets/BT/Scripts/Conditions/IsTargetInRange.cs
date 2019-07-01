@@ -14,33 +14,54 @@ using UnityEngine.Rendering;
 [CustomNodeDrawer(typeof(ConditionalNode))]
 public class IsTargetInRange : Condition
 {
-    public Transform target;
-    public float distanceRange;
+    public TransformBlackBoardVariable target;
+    public FloatBlackBoardVariable distanceRange;
+
+    private Collider[] _colliders;
     
     private void OnEnable()
     {
         Debug.Log("Calling on Enable;");
     }
 
+    protected override void OnFirstTick()
+    {
+        base.OnFirstTick();
+        _colliders = new Collider[5];
+    }
+
     protected override bool isConditionSatisfied()
     {
-        return Vector3.Distance(BTManager.Instance.CurrentTickingController.transform.position, target.position) <
-               distanceRange;
+        Physics.OverlapSphereNonAlloc(cachedTransform.position, distanceRange.Variable,_colliders);
+        
+        for (int i = 0; i < _colliders.Length; i++)
+        {
+            if(_colliders[i] == null)
+                continue;
+            
+            if (_colliders[i].gameObject.CompareTag("Player"))
+            {
+                target.Variable = _colliders[i].gameObject.transform;
+                return true;
+            }
+        }
+
+
+        return false;
     }
 
     public override void OnDrawGizmos()
     {
-        Transform t = BTManager.Instance.CurrentTickingController.transform;
-        Vector3 startPos = new Vector3(t.transform.position.x, t.transform.position.y - 0.5f, t.transform.position.z);
+        Vector3 startPos = new Vector3(cachedTransform.position.x, cachedTransform.position.y - 0.5f, cachedTransform.position.z);
 #if UNITY_EDITOR       
         base.OnDrawGizmos();
         Handles.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.05f) : new Color(0, 1, 0, 0.05f);
-        Handles.DrawSolidArc(startPos, t.up, t.forward.normalized * distanceRange, 360f, distanceRange);
+        Handles.DrawSolidArc(startPos, cachedTransform.up, cachedTransform.forward.normalized * distanceRange.Variable, 360f, distanceRange.Variable);
 #else
         if (_manager.isDebugMode)
         {  
             Gizmos.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.2f) : new Color(0, 1, 0, 0.2f);
-            Gizmos.DrawWireSphere(BTManager.Instance.CurrentTickingController.transform.position, distanceRange);
+            Gizmos.DrawWireSphere(cachedTransform.position, distanceRange);
         }
 #endif
     }
