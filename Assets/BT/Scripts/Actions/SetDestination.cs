@@ -25,6 +25,8 @@ namespace BT.Scripts.Actions
         protected override void OnFirstTick()
         {
             base.OnFirstTick();
+            _agent.isStopped = false;
+            _agent.ResetPath();
             if(destination.Variable != null)
                 _agent.SetDestination(destination.Variable.position);
 
@@ -37,6 +39,7 @@ namespace BT.Scripts.Actions
             if (destination.Variable == null)
             {
                 _agent.isStopped = true;
+                _agent.ResetPath();
                 return TaskStatus.Failed;
             }
             
@@ -47,6 +50,7 @@ namespace BT.Scripts.Actions
                 {
                     if (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f)
                     {
+                        _agent.ResetPath();
                         return TaskStatus.Succeeded;
                     }
                 }

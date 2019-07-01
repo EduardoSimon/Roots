@@ -7,7 +7,8 @@ namespace BT
 {
     [CustomNodeDrawer(typeof(SequenceNode))]
     [SearchTaskPath("Composites/Sequence")]
-    [TaskTooltip("A sequence returns Failed when any of its children fails and Succeeded when every of its children succeed.")]
+    [TaskTooltip("A sequence returns Failed when any of its children " +
+                 "fails and Succeeded when every of its children succeed.")]
     public class Sequence : ATask, IComposite
     {
         [SerializeField]private List<ATask> _children;
@@ -77,10 +78,9 @@ namespace BT
             if (Children != null)
             {
                 foreach (var task in Children)
-                    task.Status = TaskStatus.NonInitialized;
+                    task.Status = status;
             }
-
-
+            
             //throw new NotImplementedException();
         }
 

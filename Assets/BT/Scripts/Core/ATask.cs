@@ -43,7 +43,7 @@ namespace BT
 
         protected virtual void OnTerminate(TaskStatus status)
         {
-            status = TaskStatus.NonInitialized;
+            Status = TaskStatus.NonInitialized;
         }
 
         public TaskStatus Tick()
