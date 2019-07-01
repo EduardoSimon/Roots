@@ -164,6 +164,8 @@ namespace BT
                 {
                     currentGraph = controller.treeGraph;
 
+                    if (controller.instantiatedTreeGraph != null)
+                        currentGraph = controller.instantiatedTreeGraph;
                     LoadGraph();
                     Repaint();
                 }
@@ -198,7 +200,7 @@ namespace BT
 
                 NodeUtils.InitializeNode(nodes[i], OnNodeSocketClicked, currentGraph);
 
-                nodes[i].OnClickedNode += OnClickedNode;
+                nodes[i].OnNodeClicked += OnNodeSocketClicked;
 
 
                 for (int j = 0; j < currentGraph.SavedNodes[i].variables.Count; j++)
@@ -527,10 +529,14 @@ namespace BT
 
             entry.Init(null, true, false, false, OnNodeSocketClicked, currentGraph);
 
-            AssetDatabase.AddObjectToAsset(entry.exitSocket, currentGraph);
-            AssetDatabase.AddObjectToAsset(entry, currentGraph);
+            if (AssetDatabase.IsMainAsset(currentGraph))
+            {
+                AssetDatabase.AddObjectToAsset(entry.exitSocket, currentGraph);
+                AssetDatabase.AddObjectToAsset(entry, currentGraph);
 
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+                AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(currentGraph));
+            }
+
         }
 
         public void CreateNodeView(SearchTasksWindow.NodeType nodeType, Rect windowRect)
@@ -539,7 +545,7 @@ namespace BT
 
             nodes.Add(instance);
 
-            instance.OnClickedNode += OnClickedNode;
+            instance.OnNodeClicked += OnNodeSocketClicked;
 
             if (_autoSave)
                 SerializingSystem.SaveGraphData(currentGraph, nodes, _connections);
@@ -918,7 +924,7 @@ namespace BT
             }
         }
 
-        private void OnClickedNode(BaseNode node)
+        private void OnNodeSocketClicked(BaseNode node)
         {
             _selectedNode = node;
 

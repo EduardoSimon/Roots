@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using BT.Runtime;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace BT
     [System.Serializable]
     public class BehaviorTree
     {
-        [SerializeField]private ATask rootTask;
+        [SerializeField] private ATask rootTask;
 
         public ATask RootTask => rootTask;
 
@@ -33,9 +34,5 @@ namespace BT
             else
                 throw new NoNullAllowedException();
         }
-        
-        
-        
-        
     }
 }

@@ -37,10 +37,11 @@ namespace BT
         [SerializeField] private string guid;
         [SerializeField] private BehaviorTreeGraph _graphContext;
         [SerializeField] private string[] avaliableBBKeys;
-        
+
         protected int VariableId;
         protected List<InspectorFieldData> inspectorVariables;
         [SerializeField] protected ATask _task;
+        [SerializeField] private Action<NodeSocket> OnNodeSocketClicked;
 
         #endregion
 
@@ -70,7 +71,7 @@ namespace BT
 
         public bool IsParentNode => isParentNode;
         public static event Action<BaseNode> OnNodeRightClicked;
-        public event Action<BaseNode> OnClickedNode;
+        public event Action<BaseNode> OnNodeClicked;
 
         #endregion
 
@@ -78,7 +79,7 @@ namespace BT
         {
             hideFlags = HideFlags.HideInHierarchy;
         }
-        
+
         /// <summary>
         /// Emulates the constructor of the class. Override this method calling the base one for your custom initialization
         /// </summary>
@@ -190,7 +191,7 @@ namespace BT
                                 15)
                             : new Rect(inspectorRect.x + 10, previousRect.Value.y + 20, inspectorRect.width - 40,
                                 15);
-                        
+
                         //if there is a blackboard selected inspect its keys and only retrieve the ones that match
                         //the current inspected variable type
                         if (blackBoard != null)
@@ -199,11 +200,11 @@ namespace BT
                                 blackBoard.GetVariable<BlackBoardVariable>(key).GetType().GetField("Variable")
                                     .FieldType == inspectorField.variable.GetType()
                                     .GetField("Variable").FieldType).ToArray();
-                            
+
                             //store the index for drawing purposes and for retrieving the correct variable from the blackboard list.
                             inspectorField.variable.BBIndex = UnityEditor.EditorGUI.Popup(previousRect.Value,
                                 inspectorField.fieldName, inspectorField.variable.BBIndex, avaliableBBKeys);
-                            if(avaliableBBKeys.Length > 0)
+                            if (avaliableBBKeys.Length > 0)
                                 inspectorField.variable.BBKey = avaliableBBKeys[inspectorField.variable.BBIndex];
                         }
                         else
@@ -269,7 +270,7 @@ namespace BT
                     {
                         case 0 when windowRect.Contains(e.mousePosition):
                             isSelected = true;
-                            OnClickedNode?.Invoke(this);
+                            OnNodeClicked?.Invoke(this);
                             GUI.FocusWindow(_id);
                             return true;
                         case 0:
@@ -318,9 +319,9 @@ namespace BT
                         : throw new InvalidCastException("Couldnt find the field isLocalVariable in the " +
                                                          nameof(BlackBoardVariable) +
                                                          " class. Please make sure the field is named isLocalVariable.");
-                    
+
                     FieldInfo taskField = _task.GetType().GetField(variable.taskFieldName);
-                    
+
                     if (isLocalField)
                     {
                         taskField.SetValue(_task, variable);
@@ -328,10 +329,9 @@ namespace BT
                     else
                     {
                         BlackBoardVariable bbVariable = _graphContext.BlackBoard.GetVariable(variable.BBKey);
-                        
+
                         taskField.SetValue(_task, bbVariable);
                     }
-
                 }
             }
         }
@@ -344,10 +344,91 @@ namespace BT
             return base.GetHashCode();
         }
 
+        public BaseNode Clone(BehaviorTreeGraph nodeContainer)
+        {
+            //create a scriptable object of the type specified by the search task window
+            var instance = ScriptableObject.CreateInstance(this.GetType()) as BaseNode;
+            instance.name = this.GetType().Name;
+            //add it to the main nodeContainer, that is, the tree graph currently being edited
+            Debug.Assert(instance != null, "Couldn't create the node with name " + GetType());
+            
+            
+
+            if (Task != null)
+            {
+                instance.Task = ScriptableObject.CreateInstance(Task.GetType()) as ATask;
+                //Do the same with the task 
+                Debug.Assert(instance.Task != null, "Couldn't create the task with name " + this.Task.GetType());
+                instance.Task.name = this.Task.GetType().Name;
+                instance.windowRect = windowRect;
+                instance.windowTitle = instance.Task.name;
+
+                if (instance.Task is IComposite || instance.Task is Decorator)
+                {
+                    instance.exitSocket = ScriptableObject.CreateInstance<NodeSocket>();
+                    instance.exitSocket.Init(
+                        new Rect(instance.windowRect.xMin, instance.windowRect.yMax, BTConstants.SocketWidth,
+                            BTConstants.SocketHeight), NodeSocket.NodeSocketType.Out, instance, OnNodeSocketClicked);
+                    instance.exitSocket.name = instance.name + " exitSocket";
+                }
+            }
+
+
+            instance.entrySocket = ScriptableObject.CreateInstance<NodeSocket>();
+            instance.entrySocket.Init(
+                new Rect(instance.windowRect.xMin, instance.windowRect.yMin, BTConstants.SocketWidth,
+                    BTConstants.SocketHeight), NodeSocket.NodeSocketType.In, instance, OnNodeSocketClicked);
+            instance.entrySocket.name = instance.name + " entrySocket";
+            
+
+            if (instance.Task is IComposite || instance.Task is Decorator)
+                instance.Init(null, false, isRootView,
+                    true, OnNodeSocketClicked, nodeContainer); // if we pass null to the guid a new one will be created
+            else
+                instance.Init(null, isEntryPoint, isRootView, false, OnNodeSocketClicked, nodeContainer);
+
+            if (!isEntryPoint)
+            {
+                int count = 0;
+
+                //Todo refactor the inspector filter
+                foreach (var field in instance.Task.GetType().GetFields().Where(info =>
+                    info.IsPublic && info.FieldType != typeof(TaskStatus) & info.FieldType != typeof(ATask) &&
+                    info.FieldType != typeof(BlackBoard)))
+                {
+                    BTLog.Log("Copying variable with field name: " + field.Name + "of type: " + field.FieldType);
+
+                    BlackBoardVariable variable;
+
+                    //variable = VariableFactory.CreateVariable(field.FieldType);
+                    variable = ScriptableObject.CreateInstance(field.FieldType) as BlackBoardVariable;
+                    if (variable != null)
+                    {
+                        Debug.Assert(variable != null, nameof(variable) + " != null");
+                        variable.node = instance;
+                        variable.taskFieldName = field.Name;
+                        instance.variables.Add(variable);
+                    }
+                    else
+                    {
+                        BTLog.Log("Couldnt create a variable of type: " + field.FieldType);
+                    }
+
+                    variable.Init(null);
+
+                    count++;
+                }
+            }
+
+            
+            return instance;
+        }
+
+
+
         public override bool Equals(object other)
         {
             var node = other as BaseNode;
-
             return node != null && node.guid == guid;
         }
     }

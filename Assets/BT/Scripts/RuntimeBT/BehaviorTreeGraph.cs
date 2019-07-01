@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BT.Scripts.Drawers;
 using UnityEditor;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.Serialization;
 namespace BT.Editor
 {
     [CreateAssetMenu(menuName = "BT/Behavior Tree Graph")]
-    public class  BehaviorTreeGraph : ScriptableObject
+    public class BehaviorTreeGraph : ScriptableObject, ICloneable
     {
         public BlackBoard BlackBoard;
         public List<NodeConnection> SavedConnections = new List<NodeConnection>();
@@ -19,12 +20,12 @@ namespace BT.Editor
         [SerializeField] public BaseNode root;
         [SerializeField] public BehaviorTree _tree;
         public BaseNode EntryNode;
-        
+
 
         public void Compile()
         {
             root = null;
-            
+
             foreach (var savedNode in SavedNodes)
             {
                 if (savedNode.IsRootView)
@@ -32,9 +33,8 @@ namespace BT.Editor
                     root = savedNode;
                     break;
                 }
-                
             }
-            
+
             if (root == null)
             {
                 Debug.Log("The Tree is empty, there's nothing to build");
@@ -45,7 +45,7 @@ namespace BT.Editor
             _tree.AddRoot(root.Task);
 
             ConstructTree(root);
-            
+
             PrintTree(_tree.RootTask);
         }
 
@@ -78,12 +78,11 @@ namespace BT.Editor
                                         xmin = unorderedNodes[j].windowRect.xMin;
                                     }
                                 }
-                                
+
                                 compositeTask.AddChild(unorderedNodes[index].Task);
                                 unorderedNodes.RemoveAt(index);
                                 ConstructTree(node.children[i]);
                             }
-                          
                         }
                     }
                 }
@@ -101,7 +100,6 @@ namespace BT.Editor
                     }
                 }
             }
-           
         }
 
         public void PrintTree(ATask task)
@@ -116,7 +114,7 @@ namespace BT.Editor
             }
             else if (task is Decorator decorator)
             {
-                if(decorator.child != null)
+                if (decorator.child != null)
                     PrintTree(decorator.child);
             }
 
@@ -124,7 +122,68 @@ namespace BT.Editor
         }
 
 
-        
-        
+        public object Clone()
+        {
+            var container = CreateInstance<BehaviorTreeGraph>();
+
+            List<BaseNode> clonedNodes = null;
+
+            if (SavedNodes != null)
+            {
+                clonedNodes = new List<BaseNode>();
+            }
+
+            List<NodeConnection> clonedConnections = null;
+            if (SavedConnections != null)
+            {
+                clonedConnections = new List<NodeConnection>();
+            }
+            
+            foreach (var nodeConnection in SavedConnections)
+            {
+                if(nodeConnection.IsEntryConnection)
+                    continue;
+                
+                BaseNode copiedStartNode = null, copiedEndNode = null;
+
+                if (nodeConnection.StartSocket.IsHooked)
+                    copiedStartNode = nodeConnection.StartSocket.Node.Clone(container);
+
+                if (nodeConnection.EndSocket.IsHooked)
+                    copiedEndNode = nodeConnection.EndSocket.Node.Clone(container);
+                
+                if(!clonedNodes.Contains(copiedStartNode))
+                    clonedNodes.Add(copiedStartNode);
+
+                if (!clonedNodes.Contains(copiedEndNode))
+                {
+                    copiedStartNode.children.Add(copiedEndNode);
+                    clonedNodes.Add(copiedEndNode);
+                }
+
+                var cloned = nodeConnection.Clone() as NodeConnection;
+                cloned.StartSocket = copiedStartNode.exitSocket;
+                cloned.EndSocket = copiedEndNode.entrySocket;
+                
+                clonedConnections.Add(cloned);
+            }
+
+            NodeConnection clonedEntryConnection = null;
+            if (entryConnection != null)
+            {
+                clonedEntryConnection = this.entryConnection.Clone() as NodeConnection;
+            }
+            
+            if (clonedNodes != null)
+                container.SavedNodes = clonedNodes;
+            
+            if (clonedConnections != null)
+                container.SavedConnections = clonedConnections;
+            
+            if (clonedEntryConnection != null)
+                container.entryConnection = clonedEntryConnection;
+
+            return container;
+        }
     }
 }

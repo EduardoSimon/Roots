@@ -32,6 +32,7 @@ namespace BT.Runtime
 
         private bool active = true;
         private BTDebugCanvasController _debugCanvasController;
+        public BehaviorTreeGraph instantiatedTreeGraph { get; private set; }
 
         private bool _hasCompletedOnce;
 
@@ -52,6 +53,12 @@ namespace BT.Runtime
         {
             _debugCanvasController = GetComponentInChildren<BTDebugCanvasController>();
             _manager = BTManager.Instance;
+
+            if (treeGraph != null)
+            {
+                instantiatedTreeGraph = treeGraph.Clone() as BehaviorTreeGraph;
+                if (treeGraph != null) instantiatedTreeGraph.Compile();
+            }
         }
 
         private void Start()
@@ -65,7 +72,7 @@ namespace BT.Runtime
         {
             if (treeGraph != null)
             {
-                _tree = treeGraph._tree;
+                _tree = instantiatedTreeGraph._tree;
 
                 if (updateType == EUpdateType.Update)
                     _manager._updateTrees.Add(this);
@@ -75,7 +82,7 @@ namespace BT.Runtime
                     _manager._lateUpdateTrees.Add(this);
 
                 InitializeVariables(treeGraph.root);
-                InitializeTasks(_tree.RootTask,this);
+                InitializeTasks(_tree.RootTask, this);
             }
             else
             {
@@ -109,13 +116,13 @@ namespace BT.Runtime
             {
                 for (int i = 0; i < compositeNode.Children.Count; i++)
                 {
-                    InitializeTasks(compositeNode.Children[i],this);
+                    InitializeTasks(compositeNode.Children[i], this);
                 }
             }
             else if (task is Decorator decorator)
             {
-                if(decorator.child != null)
-                    InitializeTasks(decorator.child,this);
+                if (decorator.child != null)
+                    InitializeTasks(decorator.child, this);
             }
 
             task.Initialize(this);
@@ -151,7 +158,7 @@ namespace BT.Runtime
             if (status != TaskStatus.Running)
                 _hasCompletedOnce = true;
 
-            #if UNITY_ASSERTIONS
+#if UNITY_ASSERTIONS
             /*
             if (status == TaskStatus.Running)
                 BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status,
@@ -162,7 +169,7 @@ namespace BT.Runtime
             else
                 BTLog.Log("The tree at " + gameObject.name + " gameobject returned: " + status, BTLog.ELogLevel.Error);
                 */
-            #endif
+#endif
         }
 
         private void OnDisable()
@@ -207,7 +214,7 @@ namespace BT.Runtime
             }
             else if (task is Decorator decorator)
             {
-                if(decorator.child != null)
+                if (decorator.child != null)
                     DrawTreeGizmos(decorator.child);
             }
 

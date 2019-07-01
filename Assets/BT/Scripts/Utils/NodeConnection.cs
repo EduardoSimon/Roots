@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BT.Scripts.Drawers
 {
     [Serializable]
-    public class NodeConnection : ScriptableObject
+    public class NodeConnection : ScriptableObject, ICloneable
     {
         private void OnEnable()
         {
@@ -31,6 +31,15 @@ namespace BT.Scripts.Drawers
             Handles.color = ConnectionColor;
             Handles.DrawLine(StartSocket.Position, EndSocket.Position);
             #endif
+        }
+
+        public object Clone()
+        {
+            NodeConnection instance = CreateInstance<NodeConnection>();
+            instance.ConnectionColor = this.ConnectionColor;
+            instance.IsEntryConnection = this.IsEntryConnection;
+
+            return instance;
         }
     }
 }

@@ -174,8 +174,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 278.5834
-    y: 540.5002
+    x: 115.25023
+    y: 173.83345
     width: 100
     height: 100
   windowTitle: IsInSight
@@ -727,7 +727,7 @@ MonoBehaviour:
   node: {fileID: -7996047665000701100}
   taskFieldName: fov
   guid: 3b927dfa1c4b8f440be6e29e0c388a95
-  Variable: 30
+  Variable: 20
 --- !u!114 &663096567472674043
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -761,8 +761,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 291.0834
-    y: 529.5002
+    x: 127.75023
+    y: 162.83345
     width: 80
     height: 16
   SocketType: 0

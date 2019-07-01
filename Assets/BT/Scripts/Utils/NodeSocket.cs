@@ -84,5 +84,10 @@ namespace BT
                     break;
             }
         }
+
+        public NodeSocket Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
