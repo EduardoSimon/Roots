@@ -65,7 +65,7 @@ namespace BT.Editor
             int count = 0;
 
             //Todo refactor the inspector filter
-            foreach (var field in node.Task.GetType().GetFields().Where(info => info.IsPublic && info.FieldType != typeof(TaskStatus) & info.FieldType != typeof(ATask) && info.FieldType != typeof(BlackBoard)))
+            foreach (var field in node.Task.GetType().GetFields().Where(info => info.IsPublic && info.FieldType != typeof(TaskStatus) & info.FieldType != typeof(ATask) && info.FieldType != typeof(BlackBoard) && info.FieldType != typeof(bool)))
             {
                 BTLog.Log("Copying variable with field name: " + field.Name + "of type: " + field.FieldType);
 

@@ -35,4 +35,10 @@ public class SetAnimationFloat : Action
 
         return Status;
     }
+
+    protected override void OnTerminate(TaskStatus taskStatus)
+    {
+        base.OnTerminate(taskStatus);
+        _animator.SetFloat(paramHashedName,0f);
+    }
 }

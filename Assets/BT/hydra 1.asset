@@ -32,6 +32,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 0
   _children:
   - {fileID: -7836296091684730147}
   - {fileID: -7320258608040053460}
@@ -92,8 +93,8 @@ MonoBehaviour:
   exitSocket: {fileID: -7686949966577221087}
   windowRect:
     serializedVersion: 2
-    x: 894.33325
-    y: 546.66656
+    x: 715.87494
+    y: 510.14297
     width: 100
     height: 100
   windowTitle: Wait
@@ -140,8 +141,8 @@ MonoBehaviour:
   exitSocket: {fileID: 3139354001206725688}
   windowRect:
     serializedVersion: 2
-    x: 434.9165
-    y: 373.83328
+    x: 268.959
+    y: 339.39297
     width: 100
     height: 100
   windowTitle: Sequence
@@ -174,8 +175,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 278.5834
-    y: 540.5002
+    x: 112.62601
+    y: 506.05988
     width: 100
     height: 100
   windowTitle: IsInSight
@@ -198,6 +199,7 @@ MonoBehaviour:
   m_Name: Rotate
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 0
   degrees: {fileID: 297510142718012545}
   rotateX: {fileID: -6448960052772721586}
   rotateY: {fileID: 8788583122581143338}
@@ -217,8 +219,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 906.83325
-    y: 641.66656
+    x: 728.37494
+    y: 605.14294
     width: 80
     height: 16
   SocketType: 1
@@ -238,6 +240,7 @@ MonoBehaviour:
   m_Name: Wait
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 0
   child: {fileID: 0}
   WaitTime: {fileID: 663096567472674043}
 --- !u!114 &-6479572029586709059
@@ -289,8 +292,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 622.0828
-    y: 134.16667
+    x: 456.12473
+    y: 99.726585
     width: 80
     height: 16
   SocketType: 1
@@ -345,6 +348,7 @@ MonoBehaviour:
   m_Name: SetAnimationFloat
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 1
   FloatParamName: {fileID: 5151995949886178278}
   value: {fileID: 3341118121688689422, guid: 6773752da64c94a49b83ed6b87eed110, type: 2}
 --- !u!114 &-4080735128731349078
@@ -392,8 +396,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 396.74997
-    y: 725.5833
+    x: 230.79254
+    y: 691.1432
     width: 100
     height: 100
   windowTitle: SetDestination
@@ -433,6 +437,7 @@ MonoBehaviour:
   m_Name: Parallel
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 1
   _failurePolicy: 0
   _successPolicy: 0
   children:
@@ -487,8 +492,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 1058.666
-    y: 540.74994
+    x: 892.708
+    y: 506.3097
     width: 80
     height: 16
   SocketType: 0
@@ -508,6 +513,7 @@ MonoBehaviour:
   m_Name: IsInSight
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 0
   fov: {fileID: 476524032574266011}
   searchTagName: {fileID: -2481305310390001404}
   maxRange: {fileID: -3179204033332963262}
@@ -537,8 +543,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 750.74976
-    y: 552.16644
+    x: 572.29144
+    y: 513.5596
     width: 100
     height: 100
   windowTitle: Rotate
@@ -613,6 +619,7 @@ MonoBehaviour:
   m_Name: SetDestination
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 1
   destination: {fileID: -239811252278940969, guid: 6773752da64c94a49b83ed6b87eed110,
     type: 2}
   speed: {fileID: 3341118121688689422, guid: 6773752da64c94a49b83ed6b87eed110, type: 2}
@@ -700,8 +707,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 580.91656
-    y: 727.1666
+    x: 419.1253
+    y: 692.72656
     width: 100
     height: 100
   windowTitle: SetAnimationFloat
@@ -746,7 +753,7 @@ MonoBehaviour:
   node: {fileID: -8111253157681705796}
   taskFieldName: WaitTime
   guid: fa40ed605c3b5af488cb6d7b3a6ad779
-  Variable: 2
+  Variable: 0.58
 --- !u!114 &693437233158835933
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -761,8 +768,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 291.0834
-    y: 529.5002
+    x: 125.12601
+    y: 495.05988
     width: 80
     height: 16
   SocketType: 0
@@ -802,8 +809,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 618.41644
-    y: 307.4998
+    x: 467.04166
+    y: 273.05978
     width: 80
     height: 16
   SocketType: 1
@@ -834,8 +841,8 @@ MonoBehaviour:
   exitSocket: {fileID: -6188852628507682765}
   windowRect:
     serializedVersion: 2
-    x: 609.5828
-    y: 39.16667
+    x: 443.62473
+    y: 4.7265854
     width: 100
     height: 100
   windowTitle: Entry View
@@ -856,8 +863,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 904.49963
-    y: 379.0833
+    x: 715.6249
+    y: 342.55966
     width: 80
     height: 16
   SocketType: 0
@@ -888,8 +895,8 @@ MonoBehaviour:
   exitSocket: {fileID: 901046764394552823}
   windowRect:
     serializedVersion: 2
-    x: 605.91644
-    y: 212.49979
+    x: 454.54166
+    y: 178.05978
     width: 100
     height: 100
   windowTitle: Selector
@@ -911,8 +918,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 618.41644
-    y: 201.49979
+    x: 467.04166
+    y: 167.05978
     width: 80
     height: 16
   SocketType: 0
@@ -933,8 +940,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 906.83325
-    y: 535.66656
+    x: 728.37494
+    y: 499.14297
     width: 80
     height: 16
   SocketType: 0
@@ -965,8 +972,8 @@ MonoBehaviour:
   exitSocket: {fileID: 5124940108281461566}
   windowRect:
     serializedVersion: 2
-    x: 891.99963
-    y: 390.0833
+    x: 703.1249
+    y: 353.55966
     width: 100
     height: 100
   windowTitle: Sequence
@@ -989,8 +996,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 520.75
-    y: 537.50006
+    x: 354.79242
+    y: 503.0598
     width: 80
     height: 16
   SocketType: 0
@@ -1030,8 +1037,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 447.4165
-    y: 468.83328
+    x: 281.459
+    y: 434.39297
     width: 80
     height: 16
   SocketType: 1
@@ -1067,6 +1074,7 @@ MonoBehaviour:
   m_Name: Selector
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 0
 --- !u!114 &3695578617392997951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1099,6 +1107,7 @@ MonoBehaviour:
   m_Name: SetAnimationTrigger
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 0
   ParamName: {fileID: 3014097485009075985}
 --- !u!114 &4268825353143448414
 MonoBehaviour:
@@ -1114,8 +1123,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 593.41656
-    y: 716.1666
+    x: 431.6253
+    y: 681.72656
     width: 80
     height: 16
   SocketType: 0
@@ -1135,6 +1144,7 @@ MonoBehaviour:
   m_Name: Sequence
   m_EditorClassIdentifier: 
   Status: 3
+  NeedsInterruption: 0
   _children:
   - {fileID: -1865581342852168297}
   - {fileID: -2942097888546150251}
@@ -1178,8 +1188,8 @@ MonoBehaviour:
   exitSocket: {fileID: 8766331424099736011}
   windowRect:
     serializedVersion: 2
-    x: 508.24997
-    y: 548.50006
+    x: 342.29242
+    y: 514.0598
     width: 100
     height: 100
   windowTitle: Parallel
@@ -1201,8 +1211,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 904.49963
-    y: 485.0833
+    x: 715.6249
+    y: 448.55966
     width: 80
     height: 16
   SocketType: 1
@@ -1242,8 +1252,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 447.4165
-    y: 362.83328
+    x: 281.459
+    y: 328.39297
     width: 80
     height: 16
   SocketType: 0
@@ -1274,8 +1284,8 @@ MonoBehaviour:
   exitSocket: {fileID: 0}
   windowRect:
     serializedVersion: 2
-    x: 1046.166
-    y: 551.74994
+    x: 880.208
+    y: 517.3097
     width: 100
     height: 100
   windowTitle: SetAnimationTrigger
@@ -1296,8 +1306,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 409.24997
-    y: 714.5833
+    x: 243.29254
+    y: 680.1432
     width: 80
     height: 16
   SocketType: 0
@@ -1318,8 +1328,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 520.75
-    y: 643.50006
+    x: 354.79242
+    y: 609.0598
     width: 80
     height: 16
   SocketType: 1
@@ -1359,8 +1369,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _socketRect:
     serializedVersion: 2
-    x: 763.24976
-    y: 541.16644
+    x: 584.79144
+    y: 502.55957
     width: 80
     height: 16
   SocketType: 0

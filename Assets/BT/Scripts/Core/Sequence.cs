@@ -12,6 +12,9 @@ namespace BT
     public class Sequence : ATask, IComposite
     {
         [SerializeField]private List<ATask> _children;
+
+        private int failedIndex;
+        
         /// <summary>
         /// This function is called when the object becomes enabled and active.
         /// </summary>
@@ -61,6 +64,7 @@ namespace BT
 
                 if (status != TaskStatus.Succeeded)
                 {
+                    failedIndex = i;
                     return status;
                 }
 
@@ -77,8 +81,19 @@ namespace BT
         {
             if (Children != null)
             {
-                foreach (var task in Children)
-                    task.Status = status;
+                for (var index = 0; index < Children.Count; index++)
+                {
+                    var task = Children[index];
+
+                    if (task.NeedsInterruption && task.Status == TaskStatus.Running)
+                    {
+                        task.Tick();
+                    }
+                    else
+                    {
+                        task.Status = status;
+                    }
+                }
             }
             
             //throw new NotImplementedException();

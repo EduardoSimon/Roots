@@ -26,11 +26,12 @@ public class Rotate : Action
         targetRotation = Quaternion.Euler(new Vector3(rotateX.Variable ? angles.x + degrees.Variable : angles.x,
             rotateY.Variable ? angles.y + degrees.Variable : angles.y,
             rotateZ.Variable ? angles.z + degrees.Variable : angles.z));
+        
     }
 
     protected override TaskStatus Update()
     {
-        if (Quaternion.Angle(cachedTransform.localRotation, targetRotation) < 1.0f)
+        if (Quaternion.Angle(cachedTransform.localRotation, targetRotation) < 0.01f)
             return TaskStatus.Succeeded;
         
         cachedTransform.localRotation = Quaternion.RotateTowards(cachedTransform.localRotation,targetRotation, degPerSecond.Variable *  Time.deltaTime);

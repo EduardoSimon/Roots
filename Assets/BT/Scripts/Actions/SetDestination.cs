@@ -36,6 +36,7 @@ namespace BT.Scripts.Actions
         {
             speed.Variable = _agent.velocity.magnitude;
             
+            
             if (destination.Variable == null)
             {
                 _agent.isStopped = true;

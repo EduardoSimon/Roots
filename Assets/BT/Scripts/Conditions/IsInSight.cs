@@ -45,8 +45,7 @@ namespace BT.Scripts.Conditions
                     return true;
                 }
             }
-
-            SightedTarget.Variable = null;
+            
             return false;
         }
 

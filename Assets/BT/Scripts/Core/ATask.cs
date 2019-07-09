@@ -12,6 +12,7 @@ namespace BT
         public TaskStatus Status;
         protected BTManager _manager;
         protected Transform cachedTransform;
+        [SerializeField] public bool NeedsInterruption = false;
 
         protected virtual void OnEnable()
         {
@@ -73,6 +74,8 @@ namespace BT
         public void Abort()
         {
             Status = TaskStatus.Aborted;
+            Tick();
+            Reset();
         }
 
         public void Reset()
