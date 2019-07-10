@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: SetDestination
   m_EditorClassIdentifier: 
   Status: 3
-  NeedsInterruption: 1
+  NeedsInterruption: 0
   destination: {fileID: -239811252278940969, guid: 6773752da64c94a49b83ed6b87eed110,
     type: 2}
   speed: {fileID: 4915126834388422273, guid: 6773752da64c94a49b83ed6b87eed110, type: 2}
@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Name: Parallel
   m_EditorClassIdentifier: 
   Status: 3
-  NeedsInterruption: 1
+  NeedsInterruption: 0
   _failurePolicy: 0
   _successPolicy: 0
   children:
@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Name: SetAnimationFloat
   m_EditorClassIdentifier: 
   Status: 3
-  NeedsInterruption: 1
+  NeedsInterruption: 0
   FloatParamName: {fileID: 3689548273395101131}
   value: {fileID: 4915126834388422273, guid: 6773752da64c94a49b83ed6b87eed110, type: 2}
 --- !u!114 &-514572849322483846
@@ -1284,7 +1284,7 @@ MonoBehaviour:
   m_Name: Parallel
   m_EditorClassIdentifier: 
   Status: 3
-  NeedsInterruption: 1
+  NeedsInterruption: 0
   _failurePolicy: 0
   _successPolicy: 0
   children:
@@ -1303,7 +1303,7 @@ MonoBehaviour:
   m_Name: SetAnimationFloat
   m_EditorClassIdentifier: 
   Status: 3
-  NeedsInterruption: 1
+  NeedsInterruption: 0
   FloatParamName: {fileID: -8884607786977542646}
   value: {fileID: 4915126834388422273, guid: 6773752da64c94a49b83ed6b87eed110, type: 2}
 --- !u!114 &1843114868065525167
@@ -1426,7 +1426,7 @@ MonoBehaviour:
   m_Name: SetDestination
   m_EditorClassIdentifier: 
   Status: 3
-  NeedsInterruption: 1
+  NeedsInterruption: 0
   destination: {fileID: -239811252278940969, guid: 6773752da64c94a49b83ed6b87eed110,
     type: 2}
   speed: {fileID: -5143779378251439821}

@@ -66,7 +66,9 @@ namespace BT.Runtime
             if (treeGraph != null)
             {
                 _tree = treeGraph._tree;
-
+                    
+                treeGraph.Compile();
+                
                 if (updateType == EUpdateType.Update)
                     _manager._updateTrees.Add(this);
                 else if (updateType == EUpdateType.FixedUpdate)

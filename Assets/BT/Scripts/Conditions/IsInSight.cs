@@ -64,9 +64,6 @@ namespace BT.Scripts.Conditions
 
 #else
 
-            Gizmos.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.2f) : new Color(0, 1, 0, 0.2f);
-            Gizmos.dra
-            Gizmos.DrawWireSphere(transform.position, maxRange.Variable);
         
 #endif
         }

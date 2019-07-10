@@ -61,7 +61,7 @@ public class IsTargetInRange : Condition
         if (_manager.isDebugMode)
         {  
             Gizmos.color = Status == TaskStatus.Failed ? new Color(1, 0, 0, 0.2f) : new Color(0, 1, 0, 0.2f);
-            Gizmos.DrawWireSphere(cachedTransform.position, distanceRange);
+            Gizmos.DrawWireSphere(cachedTransform.position, distanceRange.Variable);
         }
 #endif
     }

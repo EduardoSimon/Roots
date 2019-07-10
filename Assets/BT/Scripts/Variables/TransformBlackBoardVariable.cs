@@ -16,8 +16,8 @@ namespace BT.Scripts
     public class TransformBlackBoardVariable : BlackBoardVariable
     {
         public Transform Variable;
-        
-        
+
+
         public override void OnTreeInit()
         {
             base.OnTreeInit();
@@ -27,7 +27,7 @@ namespace BT.Scripts
             else
                 Variable = null;
         }
-        
+
 #if UNITY_EDITOR
         private void OnEnable()
         {
@@ -73,7 +73,8 @@ namespace BT.Scripts
                 btManager = gameObject.GetComponent<BTManager>();
             }
 
-            if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid) && Variable != null)
+            if (btManager != null && btManager.references != null && !btManager.references.ContainsKey(guid) &&
+                Variable != null)
             {
                 btManager.references[guid] = Variable.transform;
             }
@@ -83,12 +84,12 @@ namespace BT.Scripts
         public override Rect DrawVariableInspector(Rect rect, string label, ref int id)
         {
             base.DrawVariableInspector(rect, label, ref id);
-            
+
 #if UNITY_EDITOR
             GUI.SetNextControlName("Variable" + id);
 
             Variable =
-                EditorGUI.ObjectField(rect,label, Variable, typeof(Transform), true) as Transform;
+                EditorGUI.ObjectField(rect, label, Variable, typeof(Transform), true) as Transform;
 
             if (Event.current.type == EventType.MouseDown && !rect.Contains(Event.current.mousePosition))
             {
@@ -106,22 +107,26 @@ namespace BT.Scripts
         private void RetrieveVariable()
         {
             BTManager manager = BTManager.Instance;
-            
-            #if UNITY_EDITOR
+
+#if UNITY_EDITOR
             manager = FindObjectOfType<BTManager>();
-            #endif
-            
+#endif
+
             if (manager == null)
             {
                 return;
             }
-            
+
             if (manager.references != null && guid != null)
             {
                 if (manager.references.ContainsKey(guid))
                 {
                     Variable = manager.references[this.guid].transform;
-                    node.Task.GetType().GetField(taskFieldName).SetValue(node.Task, this);
+                    if (node != null)
+                    {
+                        if (node.Task != null)
+                            node.Task.GetType().GetField(taskFieldName).SetValue(node.Task, this);
+                    }
                 }
             }
         }
